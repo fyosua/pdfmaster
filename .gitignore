@@ -49,6 +49,7 @@ pnpm-debug.log*
 CONTRACT.md
 PRESERVATION.md
 scripts/renew.sh
+scripts/backup.sh
 # Environment & secrets (any .env*)
 .env
 .env.*

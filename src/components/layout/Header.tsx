@@ -12,6 +12,7 @@ import { searchTools, SearchResult } from '@/lib/utils/search';
 import { getToolContent } from '@/config/tool-content';
 import { getAllTools } from '@/config/tools';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageSelector } from './LanguageSelector';
 import { UpdateCheckButton } from '@/components/common/UpdateCheckButton';
 
 export interface HeaderProps {
@@ -323,6 +324,9 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
               </div>
             )}
 
+            {/* Language Selector (between Update check and Recent Files) */}
+            <LanguageSelector currentLocale={locale} />
+
             {/* Recent Files Dropdown */}
             <RecentFilesDropdown
               locale={locale}
@@ -350,9 +354,6 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
 
             {/* Theme Toggle: day/night, system-detected by default */}
             <ThemeToggle />
-
-            {/* Language Selector placeholder */}
-            <div id="language-selector-slot" />
 
             {/* Mobile Menu Toggle */}
             <Button

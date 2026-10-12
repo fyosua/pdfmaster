@@ -322,6 +322,11 @@ export async function fetchLatestRelease(): Promise<ReleaseInfo> {
       });
 
       if (!response.ok) {
+        // 404 on /releases/latest means the repo has no published release —
+        // for this static deployment that is "up to date", not an error.
+        if (response.status === 404) {
+          return { tag: '', name: '', publishedAt: '', htmlUrl: '', body: '', assets: [] };
+        }
         throw new Error(`API returned HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -398,6 +403,15 @@ export async function checkUpdate(
 
   try {
     const release = await fetchLatestRelease();
+    // No published release (404) → treat as "up to date", no error.
+    if (!release.tag) {
+      return {
+        hasUpdate: false,
+        currentVersion,
+        latestVersion: currentVersion,
+        matchedAssets: { all: [] },
+      };
+    }
     const latestVersion = release.tag;
     const hasUpdate = compareVersions(currentVersion, latestVersion, release.publishedAt);
 
