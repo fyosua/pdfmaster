@@ -2,36 +2,33 @@
 
 /* PDFCraft Design System - CSS Variables for Theming */
 :root {
-  /* Primary Colors - Officetools Neon Cyan (#00fff5) accent */
-  --color-primary: 178 100% 50%; /* #00fff5 - officetools neon cyan */
-  --color-primary-foreground: 240 20% 5%;
-  --color-primary-hover: 178 90% 42%;
-  
-  /* Secondary Colors - Deep slate for neutral elements */
-  --color-secondary: 240 20% 16%;
-  --color-secondary-foreground: 0 0% 88%;
-  --color-secondary-hover: 240 20% 24%;
-  
-  /* Accent Colors - Neon Magenta (#ff00ff) for highlights */
-  --color-accent: 300 100% 50%;
+  /* Light / DAY theme (default when .dark is absent). Neutrals match the
+     design system so component light-mode variants render coherently; the
+     neon cyan/magenta remain as the OfficeTools brand accent. */
+  color-scheme: light;
+  --color-primary: 189 94% 43%;   /* deeper cyan for contrast on light */
+  --color-primary-foreground: 0 0% 100%;
+  --color-primary-hover: 189 94% 36%;
+
+  --color-secondary: 214 32% 91%;
+  --color-secondary-foreground: 222 47% 11%;
+  --color-secondary-hover: 214 32% 84%;
+
+  --color-accent: 300 100% 45%;   /* magenta stays the brand accent */
   --color-accent-foreground: 0 0% 100%;
-  
-  /* Background Colors - Cyberpunk dark #0a0a0f */
-  --color-background: 240 20% 5%; /* #0a0a0f */
-  --color-foreground: 0 0% 88%;  /* #e0e0e0 */
-  
-  /* Muted Colors */
-  --color-muted: 240 15% 10%;
-  --color-muted-foreground: 0 0% 40%;
-  
-  /* Card Colors */
-  --color-card: 240 28% 14%; /* #1a1a2e */
-  --color-card-foreground: 0 0% 88%;
-  
-  /* Border Colors */
-  --color-border: 240 25% 20%;
-  --color-input: 240 25% 20%;
-  --color-ring: 178 100% 50%;
+
+  --color-background: 0 0% 98%;   /* near-white day background */
+  --color-foreground: 222 47% 11%;
+
+  --color-muted: 210 40% 96%;
+  --color-muted-foreground: 215 16% 47%;
+
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 222 47% 11%;
+
+  --color-border: 214 32% 91%;
+  --color-input: 214 32% 91%;
+  --color-ring: 189 94% 43%;
   
   /* Destructive Colors */
   --color-destructive: 0 84% 60%;
@@ -307,3 +304,9 @@ select option {
 .scroll-smooth { scroll-behavior: smooth; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Loading splash bar animation (see root layout) */
+@keyframes __otslide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}

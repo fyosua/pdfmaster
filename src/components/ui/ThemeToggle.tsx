@@ -13,10 +13,15 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
-    // Officetools is dark-themed only — ignore toggle, stay dark always.
-    document.documentElement.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-    setTheme('dark');
+    if (theme === 'light') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      setTheme('light');
+    }
   };
 
   // Render placeholder before hydrated to avoid mismatch
