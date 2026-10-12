@@ -52,6 +52,7 @@
   ],
   "exclude": [
     "node_modules",
-    "bentopdf-main"
+    "bentopdf-main",
+    "serve-static.ts"
   ]
 }
