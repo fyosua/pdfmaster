@@ -35,7 +35,7 @@
     }
   },
   "common": {
-    "brand": "PDFCraft",
+    "brand": "OfficeTools",
     "tagline": "Professional PDF Tools - Free & Private",
     "navigation": {
       "home": "Home",
@@ -84,7 +84,7 @@
     },
     "footer": {
       "footer": "© 2025 PDFCraft. All rights reserved.",
-      "copyright": "© {year} PDFCraft. All rights reserved.",
+      "copyright": "© {year} OfficeTools. All rights reserved.",
       "privacyBadge": "100% Private - Files never leave your device",
       "madeWith": "Made with <Heart /> and <Nextjs />"
     },
