@@ -43,6 +43,23 @@ pnpm-debug.log*
 # Vercel
 .vercel
 
+# --- SERVER-ONLY (project CONTRACT §security: never push creds/server data) ---
+# Contract, preservation runbook, and server layout docs carry server paths,
+# deploy layout and emails. Keep them on the server only, never in git.
+CONTRACT.md
+PRESERVATION.md
+scripts/renew.sh
+# Environment & secrets (any .env*)
+.env
+.env.*
+!.env.example
+# Gmail/API credential files (never commit even if they land in a working dir)
+*client_secret*.json
+*_token.json
+*credentials*.json
+processing/
+backups/
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts

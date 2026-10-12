@@ -11,7 +11,6 @@ import { RecentFilesDropdown } from '@/components/common/RecentFilesDropdown';
 import { searchTools, SearchResult } from '@/lib/utils/search';
 import { getToolContent } from '@/config/tool-content';
 import { getAllTools } from '@/config/tools';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { UpdateCheckButton } from '@/components/common/UpdateCheckButton';
 
 export interface HeaderProps {
@@ -31,6 +30,14 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
   const [localizedTools, setLocalizedTools] = useState<Record<string, { title: string; description: string }>>({});
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Platform-appropriate search shortcut label: ⌘K on mac, Ctrl K elsewhere (Windows).
+  const [searchShortcut, setSearchShortcut] = useState('Ctrl K');
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)) {
+      setSearchShortcut('⌘K');
+    }
+  }, []);
 
   // Load localized tool content on mount
   useEffect(() => {
@@ -309,7 +316,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                     className="relative text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]"
                   >
                     <Search className="h-5 w-5" aria-hidden="true" />
-                    <span className="ml-2 hidden lg:inline-block text-xs text-[hsl(var(--color-muted-foreground))/0.5] border border-[hsl(var(--color-border))] rounded px-1.5 py-0.5">⌘K</span>
+                    <span className="ml-2 hidden lg:inline-block text-xs text-[hsl(var(--color-muted-foreground))/0.5] border border-[hsl(var(--color-border))] rounded px-1.5 py-0.5">{searchShortcut}</span>
                   </Button>
                 )}
               </div>
@@ -339,9 +346,6 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
             >
               <Github className="h-5 w-5" aria-hidden="true" />
             </a>
-
-            {/* Theme Toggle */}
-            <ThemeToggle />
 
             {/* Language Selector placeholder */}
             <div id="language-selector-slot" />

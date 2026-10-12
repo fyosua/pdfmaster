@@ -593,15 +593,56 @@ export class OCRProcessor extends BasePDFProcessor {
   /**
    * Initialize Tesseract worker with progress reporting
    */
+
+  /**
+   * Resolve OCR asset paths — CDN-first, vendored-local fallback (per project
+   * contract: production stays on CDN; switch to local only if CDN is down).
+   * Probing is cached so we test the CDN at most once per session.
+   */
+  private static cdnStatus:
+    | { checked: boolean; local: boolean }
+    | undefined;
+
+  private static async resolveOcrAssets(): Promise<{
+    workerPath?: string;
+    corePath?: string;
+    langPath?: string;
+  }> {
+    if (this.cdnStatus === undefined) {
+      this.cdnStatus = { checked: false, local: false };
+      // Probe the jsDelivr CDN (used by tesseract.js) with a short timeout.
+      try {
+        const probe = await fetch("https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js", {
+          method: "HEAD",
+          signal: AbortSignal.timeout(4000),
+        });
+        this.cdnStatus.local = !(probe.ok || probe.type === "opaque");
+      } catch {
+        this.cdnStatus.local = true;
+      }
+      this.cdnStatus.checked = true;
+    }
+
+    if (this.cdnStatus.local) {
+      // CDN unavailable (down or repo taken down) — use vendored local assets.
+      return {
+        workerPath: withBasePath("/ocr/worker.min.js"),
+        corePath: withBasePath("/ocr/tesseract-core-simd-lstm.wasm.js"),
+        langPath: withBasePath("/ocr"),
+      };
+    }
+
+    // CDN is up — use tesseract.js native defaults (already served from
+    // jsDelivr CDN), per the contract: production stays on CDN when available.
+    return {};
+  }
   private async initializeTesseract(languages: OCRLanguage[]): Promise<void> {
     const Tesseract = await import('tesseract.js');
     const langString = languages && languages.length > 0 ? languages.join('+') : 'eng';
 
+    const assets = await OCRProcessor.resolveOcrAssets();
     this.tesseractWorker = await Tesseract.createWorker(langString, 1, {
-      // Self-hosted OCR assets — no CDN dependency, tools stay alive offline.
-      workerPath: withBasePath('/ocr/worker.min.js'),
-      corePath: withBasePath('/ocr/tesseract-core-simd-lstm.wasm.js'),
-      langPath: withBasePath('/ocr'),
+      ...assets,
       gzip: true,
       logger: (m: any) => {
         if (m && m.status) {
