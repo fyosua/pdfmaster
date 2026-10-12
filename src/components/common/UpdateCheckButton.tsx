@@ -132,13 +132,13 @@ export const UpdateCheckButton: React.FC<UpdateCheckButtonProps> = ({ className 
         <button
           type="button"
           onClick={handleManualCheck}
-          className={`relative inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 shadow-sm transition-all animate-in fade-in ${className}`}
+          className={`relative inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 shadow-sm transition-all animate-in fade-in max-w-full truncate ${className}`}
           aria-label={getMsg('available', 'New Version Available')}
           title={`${getMsg('available', 'New Version Available')}: ${result?.latestVersion}`}
         >
           <Sparkles className="h-3.5 w-3.5 text-amber-500 animate-pulse shrink-0" />
-          <span className="hidden sm:inline font-sans">{getMsg('newVersionBadge', '新版本')}</span>
-          <span className="font-mono text-[11px] font-bold">{result?.latestVersion}</span>
+          <span className="hidden sm:inline font-sans truncate">{getMsg('newVersionBadge', '新版本')}</span>
+          <span className="font-mono text-[11px] font-bold shrink-0">{result?.latestVersion}</span>
           <ArrowUpCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 ml-0.5" />
         </button>
       ) : (
