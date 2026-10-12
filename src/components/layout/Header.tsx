@@ -325,35 +325,37 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
             )}
 
             {/* Language Selector (between Update check and Recent Files) */}
-            <LanguageSelector currentLocale={locale} />
+            <div className="hidden md:flex items-center gap-3">
+              <LanguageSelector currentLocale={locale} />
 
-            {/* Recent Files Dropdown */}
-            <RecentFilesDropdown
-              locale={locale}
-              translations={{
-                title: t('recentFiles.title') || 'Recent Files',
-                empty: t('recentFiles.empty') || 'No recent files',
-                clearAll: t('recentFiles.clearAll') || 'Clear all',
-                processedWith: t('recentFiles.processedWith') || 'Processed with',
-              }}
-            />
+              {/* Recent Files Dropdown */}
+              <RecentFilesDropdown
+                locale={locale}
+                translations={{
+                  title: t('recentFiles.title') || 'Recent Files',
+                  empty: t('recentFiles.empty') || 'No recent files',
+                  clearAll: t('recentFiles.clearAll') || 'Clear all',
+                  processedWith: t('recentFiles.processedWith') || 'Processed with',
+                }}
+              />
 
-            {/* Update Check Button */}
-            <UpdateCheckButton />
+              {/* Update Check Button */}
+              <UpdateCheckButton />
 
-            {/* GitHub Repository Link */}
-            <a
-              href="https://github.com/PDFCraftTool/pdfcraft"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center justify-center h-9 w-9 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))/0.5] transition-all"
-              aria-label="GitHub Repository"
-            >
-              <Github className="h-5 w-5" aria-hidden="true" />
-            </a>
+              {/* GitHub Repository Link */}
+              <a
+                href="https://github.com/PDFCraftTool/pdfcraft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:flex items-center justify-center h-9 w-9 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))/0.5] transition-all"
+                aria-label="GitHub Repository"
+              >
+                <Github className="h-5 w-5" aria-hidden="true" />
+              </a>
 
-            {/* Theme Toggle: day/night, system-detected by default */}
-            <ThemeToggle />
+              {/* Theme Toggle: day/night, system-detected by default */}
+              <ThemeToggle />
+            </div>
 
             {/* Mobile Menu Toggle */}
             <Button
@@ -418,6 +420,42 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                   <Github className="h-5 w-5" aria-hidden="true" />
                   GitHub
                 </a>
+              </li>
+
+              {/* Secondary controls (theme, language, recent files, update) in the mobile menu */}
+              <li className="mt-2 px-2">
+                <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-muted))/0.4]">
+                  <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
+                    Theme
+                  </span>
+                  <ThemeToggle />
+                </div>
+              </li>
+              <li className="flex items-center justify-between gap-3 px-4 py-3">
+                <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
+                  {t('buttons.selectLanguage') || 'Language'}
+                </span>
+                <LanguageSelector currentLocale={locale} />
+              </li>
+              <li className="flex items-center justify-between gap-3 px-4 py-3">
+                <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
+                  {t('recentFiles.title') || 'Recent Files'}
+                </span>
+                <RecentFilesDropdown
+                  locale={locale}
+                  translations={{
+                    title: t('recentFiles.title') || 'Recent Files',
+                    empty: t('recentFiles.empty') || 'No recent files',
+                    clearAll: t('recentFiles.clearAll') || 'Clear all',
+                    processedWith: t('recentFiles.processedWith') || 'Processed with',
+                  }}
+                />
+              </li>
+              <li className="flex items-center justify-between gap-3 px-4 py-3">
+                <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
+                  {t('updater.checkBtn') || 'Check updates'}
+                </span>
+                <UpdateCheckButton />
               </li>
             </ul>
           </nav>

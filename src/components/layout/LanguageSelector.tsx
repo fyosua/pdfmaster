@@ -174,7 +174,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="absolute top-full right-0 mt-1 w-48 py-1 bg-[hsl(var(--color-background))] border border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] shadow-lg z-50"
+          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(20rem,calc(100vw-2rem))] max-h-[65vh] overflow-y-auto py-1 bg-[hsl(var(--color-background))] border border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] shadow-xl z-[60] md:absolute md:left-auto md:right-0 md:top-full md:mt-1 md:translate-x-0 md:translate-y-0 md:w-48"
           role="listbox"
           aria-label={t('selectLanguage')}
           aria-activedescendant={focusedIndex >= 0 ? `language-option-${locales[focusedIndex]}` : undefined}
