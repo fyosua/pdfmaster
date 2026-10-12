@@ -2,36 +2,36 @@
 
 /* PDFCraft Design System - CSS Variables for Theming */
 :root {
-  /* Primary Colors - OfficeTools Orange (#ff4d00) accent */
-  --color-primary: 16 100% 50%; /* #ff4d00 - officetools accent */
-  --color-primary-foreground: 0 0% 100%;
-  --color-primary-hover: 16 90% 42%;
+  /* Primary Colors - Officetools Neon Cyan (#00fff5) accent */
+  --color-primary: 178 100% 50%; /* #00fff5 - officetools neon cyan */
+  --color-primary-foreground: 240 20% 5%;
+  --color-primary-hover: 178 90% 42%;
   
-  /* Secondary Colors - Slate for neutral elements */
-  --color-secondary: 215 20% 90%;
-  --color-secondary-foreground: 215 25% 15%;
-  --color-secondary-hover: 215 20% 80%;
+  /* Secondary Colors - Deep slate for neutral elements */
+  --color-secondary: 240 20% 16%;
+  --color-secondary-foreground: 0 0% 88%;
+  --color-secondary-hover: 240 20% 24%;
   
-  /* Accent Colors - Teal/Cyan for highlights */
-  --color-accent: 172 66% 50%;
+  /* Accent Colors - Neon Magenta (#ff00ff) for highlights */
+  --color-accent: 300 100% 50%;
   --color-accent-foreground: 0 0% 100%;
   
-  /* Background Colors */
-  --color-background: 210 40% 98%; /* Slightly off-white for depth */
-  --color-foreground: 222 47% 11%;
+  /* Background Colors - Cyberpunk dark #0a0a0f */
+  --color-background: 240 20% 5%; /* #0a0a0f */
+  --color-foreground: 0 0% 88%;  /* #e0e0e0 */
   
   /* Muted Colors */
-  --color-muted: 210 40% 96%;
-  --color-muted-foreground: 215 16% 47%;
+  --color-muted: 240 15% 10%;
+  --color-muted-foreground: 0 0% 40%;
   
   /* Card Colors */
-  --color-card: 0 0% 100%;
-  --color-card-foreground: 222 47% 11%;
+  --color-card: 240 28% 14%; /* #1a1a2e */
+  --color-card-foreground: 0 0% 88%;
   
   /* Border Colors */
-  --color-border: 214 32% 91%;
-  --color-input: 214 32% 91%;
-  --color-ring: 226 71% 55%;
+  --color-border: 240 25% 20%;
+  --color-input: 240 25% 20%;
+  --color-ring: 178 100% 50%;
   
   /* Destructive Colors */
   --color-destructive: 0 84% 60%;
@@ -81,29 +81,29 @@
 /* Dark Mode Theme */
 .dark {
   color-scheme: dark;
-  --color-primary: 16 95% 55%;
-  --color-primary-foreground: 222 47% 11%;
-  --color-primary-hover: 16 90% 62%;
+  --color-primary: 178 100% 50%;
+  --color-primary-foreground: 240 20% 5%;
+  --color-primary-hover: 178 90% 58%;
   
-  --color-secondary: 215 20% 20%;
-  --color-secondary-foreground: 210 40% 98%;
-  --color-secondary-hover: 215 20% 30%;
+  --color-secondary: 240 20% 16%;
+  --color-secondary-foreground: 0 0% 88%;
+  --color-secondary-hover: 240 20% 26%;
   
-  --color-accent: 172 66% 50%;
-  --color-accent-foreground: 222 47% 11%;
+  --color-accent: 300 100% 50%;
+  --color-accent-foreground: 0 0% 100%;
   
-  --color-background: 222 47% 7%; /* Darker background for more contrast */
-  --color-foreground: 210 40% 98%;
+  --color-background: 240 20% 5%; /* #0a0a0f */
+  --color-foreground: 0 0% 88%;
   
-  --color-muted: 217 33% 13%;
-  --color-muted-foreground: 215 20% 65%;
+  --color-muted: 240 15% 10%;
+  --color-muted-foreground: 0 0% 40%;
   
-  --color-card: 222 47% 10%;
-  --color-card-foreground: 210 40% 98%;
+  --color-card: 240 28% 14%; /* #1a1a2e */
+  --color-card-foreground: 0 0% 88%;
   
-  --color-border: 217 33% 15%;
-  --color-input: 217 33% 15%;
-  --color-ring: 226 71% 60%;
+  --color-border: 240 25% 18%;
+  --color-input: 240 25% 18%;
+  --color-ring: 178 100% 50%;
 }
 
 /* Base Styles */
