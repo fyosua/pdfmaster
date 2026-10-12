@@ -28,11 +28,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
-                } else {
-                  document.documentElement.classList.remove('dark')
-                }
+                // Officetools is dark-themed only, always force dark mode.
+                document.documentElement.classList.add('dark')
+                localStorage.setItem('theme', 'dark')
               } catch (_) {}
             `,
           }}

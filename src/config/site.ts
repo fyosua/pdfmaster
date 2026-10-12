@@ -7,10 +7,9 @@ export const siteConfig = {
   url: 'https://officetools.yosuaf.com',
   ogImage: '/images/og-image.png',
   links: {
-    github: 'https://github.com/PDFCraftTool/pdfcraft',
-    twitter: 'https://twitter.com/pdfcraft',
+    github: 'https://github.com/fyosua/officetools-pdfcraft',
   },
-  creator: 'PDFCraft Team',
+  creator: 'OfficeTools',
   keywords: [
     'PDF tools',
     'PDF editor',
@@ -25,9 +24,8 @@ export const siteConfig = {
   ],
   // SEO-related settings
   seo: {
-    titleTemplate: '%s | PDFCraft',
-    defaultTitle: 'PDFCraft - Professional PDF Tools',
-    twitterHandle: '@pdfcraft',
+    titleTemplate: '%s | OfficeTools',
+    defaultTitle: 'OfficeTools - Professional PDF Tools',
     locale: 'en_US',
   },
 };

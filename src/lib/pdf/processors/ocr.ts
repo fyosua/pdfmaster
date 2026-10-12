@@ -598,6 +598,11 @@ export class OCRProcessor extends BasePDFProcessor {
     const langString = languages && languages.length > 0 ? languages.join('+') : 'eng';
 
     this.tesseractWorker = await Tesseract.createWorker(langString, 1, {
+      // Self-hosted OCR assets — no CDN dependency, tools stay alive offline.
+      workerPath: withBasePath('/ocr/worker.min.js'),
+      corePath: withBasePath('/ocr/tesseract-core-simd-lstm.wasm.js'),
+      langPath: withBasePath('/ocr'),
+      gzip: true,
       logger: (m: any) => {
         if (m && m.status) {
           const percent = typeof m.progress === 'number' ? Math.round(m.progress * 100) : 0;
