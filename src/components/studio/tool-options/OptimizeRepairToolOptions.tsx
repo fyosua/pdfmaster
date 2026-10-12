@@ -13,6 +13,8 @@ import {
   PenTool,
   Wrench,
 } from 'lucide-react';
+import { getStudioText } from '@/lib/i18n/studio';
+import type { Locale } from '@/lib/i18n/config';
 
 interface OptimizeRepairToolOptionsProps {
   toolId: string;
@@ -29,7 +31,6 @@ export function OptimizeRepairToolOptions({
   totalPages = 1,
   locale = 'zh',
 }: OptimizeRepairToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
 
   switch (toolId) {
     case 'linearize-pdf': {
@@ -39,10 +40,10 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '线性化 Fast Web View 选项' : 'Linearization Options'}
+              {getStudioText(locale as Locale, 'k0394')}
             </label>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-foreground">{isZh ? '启用 Cross-Reference 对象流高效压缩' : 'Enable Object Stream Compression'}</span>
+              <span className="font-medium text-foreground">{getStudioText(locale as Locale, 'k0395')}</span>
               <input
                 type="checkbox"
                 checked={useObjectStreams}
@@ -51,7 +52,7 @@ export function OptimizeRepairToolOptions({
               />
             </div>
             <p className="text-[11px] text-muted-foreground">
-              {isZh ? '重组 PDF 内部结构，支持在网页浏览器中按需首屏秒开，无需等待下载完整大文件。' : 'Optimizes PDF for byte-serving fast web view streaming.'}
+              {getStudioText(locale as Locale, 'k0396')}
             </p>
           </div>
         </div>
@@ -67,11 +68,11 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '扫描件倾斜校正与纠偏' : 'Deskew & Align'}
+              {getStudioText(locale as Locale, 'k0397')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '霍夫变换灵敏度阈值' : 'Hough Sensitivity Threshold'}</span>
+                <span>{getStudioText(locale as Locale, 'k0398')}</span>
                 <span className="font-semibold text-primary">{threshold}</span>
               </div>
               <input
@@ -84,15 +85,15 @@ export function OptimizeRepairToolOptions({
               />
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '检测分析分辨率 (DPI)' : 'Analysis DPI'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0399')}</label>
               <select
                 value={dpi}
                 onChange={(e) => onChange('dpi', parseInt(e.target.value) || 150)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value={96}>96 DPI (快速分析)</option>
-                <option value={150}>150 DPI (平衡标准)</option>
-                <option value={300}>300 DPI (高精微校正)</option>
+                <option value={96}>{getStudioText(locale as Locale, 'k0400')}</option>
+                <option value={150}>{getStudioText(locale as Locale, 'k0401')}</option>
+                <option value={300}>{getStudioText(locale as Locale, 'k0402')}</option>
               </select>
             </div>
           </div>
@@ -109,15 +110,15 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '转换为 PDF/A 归档规范' : 'PDF/A Compliance'}
+              {getStudioText(locale as Locale, 'k0403')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? 'ISO 归档合规级别' : 'Archival Level'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0404')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: '1b', label: 'PDF/A-1b', desc: isZh ? '基础视觉' : 'Basic' },
-                  { id: '2b', label: 'PDF/A-2b', desc: isZh ? '推荐标准' : 'Standard' },
-                  { id: '3b', label: 'PDF/A-3b', desc: isZh ? '支持附件' : 'Extensible' },
+                  { id: '1b', label: 'PDF/A-1b', desc: getStudioText(locale as Locale, 'k0405') },
+                  { id: '2b', label: 'PDF/A-2b', desc: getStudioText(locale, 'k0334') },
+                  { id: '3b', label: 'PDF/A-3b', desc: getStudioText(locale as Locale, 'k0406') },
                 ].map((l) => (
                   <button
                     key={l.id}
@@ -137,7 +138,7 @@ export function OptimizeRepairToolOptions({
             </div>
             <div className="space-y-2 pt-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '全量嵌入所有字体 (Embed Fonts)' : 'Embed All Fonts'}</span>
+                <span>{getStudioText(locale as Locale, 'k0407')}</span>
                 <input
                   type="checkbox"
                   checked={embedFonts}
@@ -146,7 +147,7 @@ export function OptimizeRepairToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '透明度展平合规化' : 'Flatten Transparencies'}</span>
+                <span>{getStudioText(locale as Locale, 'k0408')}</span>
                 <input
                   type="checkbox"
                   checked={flattenTransparency}
@@ -168,22 +169,22 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '字体转曲 / 矢量轮廓化' : 'Font to Outlines'}
+              {getStudioText(locale as Locale, 'k0409')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '轮廓渲染解析度 (DPI)' : 'Rendering DPI'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0410')}</label>
               <select
                 value={dpi}
                 onChange={(e) => onChange('dpi', parseInt(e.target.value) || 300)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value={150}>150 DPI (屏幕预览)</option>
-                <option value={300}>300 DPI (标准印刷转曲)</option>
-                <option value={600}>600 DPI (超高清印前)</option>
+                <option value={150}>{getStudioText(locale as Locale, 'k0411')}</option>
+                <option value={300}>{getStudioText(locale as Locale, 'k0412')}</option>
+                <option value={600}>{getStudioText(locale as Locale, 'k0413')}</option>
               </select>
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '保留底层不可见可选文本' : 'Preserve Selectable Text Layer'}</span>
+              <span>{getStudioText(locale as Locale, 'k0414')}</span>
               <input
                 type="checkbox"
                 checked={preserveSelectableText}
@@ -203,14 +204,14 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '图层 (OCG) 管理' : 'Layer Management'}
+              {getStudioText(locale as Locale, 'k0415')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '处理方式' : 'Action'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0416')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: 'remove-hidden', label: isZh ? '清理不可见隐藏图层' : 'Purge Hidden Layers' },
-                  { id: 'flatten-all', label: isZh ? '合并全部图层' : 'Flatten All Layers' },
+                  { id: 'remove-hidden', label: getStudioText(locale as Locale, 'k0417') },
+                  { id: 'flatten-all', label: getStudioText(locale as Locale, 'k0418') },
                 ].map((a) => (
                   <button
                     key={a.id}
@@ -240,11 +241,11 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '墨水屏电子书阅读优化' : 'E-Ink Optimizer'}
+              {getStudioText(locale as Locale, 'k0419')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '黑度对比度提升' : 'Black Contrast Boost'}</span>
+                <span>{getStudioText(locale as Locale, 'k0420')}</span>
                 <span className="font-semibold text-primary">+{contrastOffset}%</span>
               </div>
               <input
@@ -258,7 +259,7 @@ export function OptimizeRepairToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '笔画文字加粗膨胀' : 'Stroke Dilation'}</span>
+                <span>{getStudioText(locale as Locale, 'k0421')}</span>
                 <span className="font-semibold text-primary">{dilationAmount} px</span>
               </div>
               <input
@@ -276,17 +277,17 @@ export function OptimizeRepairToolOptions({
     }
 
     case 'batch-watermark-remover': {
-      const watermarkText = options.watermarkText || (isZh ? '机密' : 'CONFIDENTIAL');
+      const watermarkText = options.watermarkText || getStudioText(locale, 'k0092');
       const removeImages = options.removeImages ?? true;
 
       return (
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '批量去水印参数' : 'Batch Watermark Remover'}
+              {getStudioText(locale as Locale, 'k0422')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-foreground font-medium">{isZh ? '要消除的水印文字关键词' : 'Watermark Keyword'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale as Locale, 'k0423')}</label>
               <input
                 type="text"
                 value={watermarkText}
@@ -295,7 +296,7 @@ export function OptimizeRepairToolOptions({
               />
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '同时尝试识别并剔除浅色背景图水印' : 'Remove Background Image Watermarks'}</span>
+              <span>{getStudioText(locale as Locale, 'k0424')}</span>
               <input
                 type="checkbox"
                 checked={removeImages}
@@ -315,14 +316,14 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '死链检测与自动修复' : 'Dead Link Debugger'}
+              {getStudioText(locale as Locale, 'k0425')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '失效链接处理策略' : 'Action'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0426')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: 'remove-broken', label: isZh ? '移除失效超链接' : 'Purge Broken Links' },
-                  { id: 'redirect-https', label: isZh ? '自动升级 HTTP 到 HTTPS' : 'Upgrade to HTTPS' },
+                  { id: 'remove-broken', label: getStudioText(locale as Locale, 'k0427') },
+                  { id: 'redirect-https', label: getStudioText(locale as Locale, 'k0428') },
                 ].map((a) => (
                   <button
                     key={a.id}
@@ -353,15 +354,15 @@ export function OptimizeRepairToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '手写笔记与墨水增强' : 'Handwriting Ink Booster'}
+              {getStudioText(locale as Locale, 'k0429')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '笔迹滤镜类型' : 'Ink Mode'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0430')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'pen', label: isZh ? '钢笔/签字笔' : 'Pen' },
-                  { id: 'pencil', label: isZh ? '铅笔浅印' : 'Pencil' },
-                  { id: 'marker', label: isZh ? '过滤荧光笔' : 'No Marker' },
+                  { id: 'pen', label: getStudioText(locale as Locale, 'k0431') },
+                  { id: 'pencil', label: getStudioText(locale as Locale, 'k0432') },
+                  { id: 'marker', label: getStudioText(locale as Locale, 'k0433') },
                 ].map((k) => (
                   <button
                     key={k.id}
@@ -380,7 +381,7 @@ export function OptimizeRepairToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '二值化阈值' : 'Threshold'}</span>
+                <span>{getStudioText(locale as Locale, 'k0434')}</span>
                 <span className="font-semibold text-primary">{threshold}</span>
               </div>
               <input
@@ -394,7 +395,7 @@ export function OptimizeRepairToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '黑度加深' : 'Contrast'}</span>
+                <span>{getStudioText(locale as Locale, 'k0435')}</span>
                 <span className="font-semibold text-primary">{contrast}x</span>
               </div>
               <input

@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import { getStudioText } from '@/lib/i18n/studio';
+import type { Locale } from '@/lib/i18n/config';
 import {
   Scissors,
   Split,
@@ -35,7 +37,6 @@ export function OrganizeToolOptions({
   totalPages = 1,
   locale = 'zh',
 }: OrganizeToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
 
   switch (toolId) {
     case 'split-pdf': {
@@ -48,14 +49,14 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '拆分模式' : 'Split Mode'}
+              {getStudioText(locale as Locale, 'k0436')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { id: 'ranges', label: isZh ? '自定义区间' : 'Custom Ranges', desc: isZh ? '如 1-3, 5-8' : 'e.g. 1-3, 5-8' },
-                { id: 'everyN', label: isZh ? '每隔 N 页' : 'Every N Pages', desc: isZh ? '均匀切分' : 'Even split' },
-                { id: 'all', label: isZh ? '提取所有单页' : 'All Single Pages', desc: isZh ? '每页独立' : 'Each page separate' },
-                { id: 'evenOdd', label: isZh ? '奇偶页拆分' : 'Even / Odd', desc: isZh ? '分离奇偶' : 'Odd / Even' },
+                { id: 'ranges', label: getStudioText(locale as Locale, 'k0437'), desc: getStudioText(locale as Locale, 'k0438') },
+                { id: 'everyN', label: getStudioText(locale as Locale, 'k0439'), desc: getStudioText(locale as Locale, 'k0440') },
+                { id: 'all', label: getStudioText(locale as Locale, 'k0441'), desc: getStudioText(locale as Locale, 'k0442') },
+                { id: 'evenOdd', label: getStudioText(locale as Locale, 'k0443'), desc: getStudioText(locale as Locale, 'k0444') },
               ].map((m) => (
                 <button
                   key={m.id}
@@ -76,17 +77,17 @@ export function OrganizeToolOptions({
             {splitMode === 'ranges' && (
               <div className="space-y-1.5 pt-2">
                 <label className="text-xs font-medium text-foreground">
-                  {isZh ? '页码区间表达式' : 'Page Range Expression'}
+                  {getStudioText(locale as Locale, 'k0445')}
                 </label>
                 <input
                   type="text"
                   value={rangeInput}
                   onChange={(e) => onChange('rangeInput', e.target.value)}
-                  placeholder={isZh ? '例如: 1-3, 5, 7-10' : 'e.g. 1-3, 5, 7-10'}
+                  placeholder={getStudioText(locale as Locale, 'k0446')}
                   className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
                 <p className="text-[11px] text-muted-foreground">
-                  {isZh ? `文档共 ${totalPages} 页，用逗号分隔多个区间` : `Total ${totalPages} pages. Separate with commas`}
+                  {getStudioText(locale as Locale, 'k0447', { totalPages })}
                 </p>
               </div>
             )}
@@ -94,8 +95,8 @@ export function OrganizeToolOptions({
             {splitMode === 'everyN' && (
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-xs">
-                  <span className="font-medium text-foreground">{isZh ? '每隔几页拆为一个文档' : 'Pages Per Chunk'}</span>
-                  <span className="font-semibold text-primary">{splitCount} {isZh ? '页' : 'pages'}</span>
+                  <span className="font-medium text-foreground">{getStudioText(locale as Locale, 'k0448')}</span>
+                  <span className="font-semibold text-primary">{splitCount} {getStudioText(locale as Locale, 'k0449')}</span>
                 </div>
                 <input
                   type="range"
@@ -110,12 +111,12 @@ export function OrganizeToolOptions({
 
             {splitMode === 'evenOdd' && (
               <div className="space-y-1.5 pt-2">
-                <label className="text-xs font-medium text-foreground">{isZh ? '输出范围' : 'Output Target'}</label>
+                <label className="text-xs font-medium text-foreground">{getStudioText(locale as Locale, 'k0450')}</label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: 'both', label: isZh ? '两者都导出' : 'Both' },
-                    { id: 'odd', label: isZh ? '仅奇数页' : 'Odd Only' },
-                    { id: 'even', label: isZh ? '仅偶数页' : 'Even Only' },
+                    { id: 'both', label: getStudioText(locale as Locale, 'k0451') },
+                    { id: 'odd', label: getStudioText(locale, 'k0288') },
+                    { id: 'even', label: getStudioText(locale as Locale, 'k0452') },
                   ].map((o) => (
                     <button
                       key={o.id}
@@ -146,7 +147,7 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '分割方向与比例' : 'Divide Direction & Ratio'}
+              {getStudioText(locale as Locale, 'k0453')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -158,7 +159,7 @@ export function OrganizeToolOptions({
                     : 'border-border/60 hover:bg-muted/50'
                 }`}
               >
-                {isZh ? '垂直左右对半' : 'Vertical (Left / Right)'}
+                {getStudioText(locale as Locale, 'k0454')}
               </button>
               <button
                 type="button"
@@ -169,12 +170,12 @@ export function OrganizeToolOptions({
                     : 'border-border/60 hover:bg-muted/50'
                 }`}
               >
-                {isZh ? '水平上下对半' : 'Horizontal (Top / Bottom)'}
+                {getStudioText(locale as Locale, 'k0455')}
               </button>
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '分割线位置' : 'Split Ratio'}</span>
+                <span>{getStudioText(locale as Locale, 'k0456')}</span>
                 <span className="font-semibold text-primary">{Math.round(splitRatio * 100)}%</span>
               </div>
               <input
@@ -201,7 +202,7 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '单页拼接排列' : 'Combine Direction'}
+              {getStudioText(locale as Locale, 'k0457')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -213,7 +214,7 @@ export function OrganizeToolOptions({
                     : 'border-border/60 hover:bg-muted/50'
                 }`}
               >
-                {isZh ? '垂直纵向长图' : 'Vertical Stack'}
+                {getStudioText(locale as Locale, 'k0458')}
               </button>
               <button
                 type="button"
@@ -224,12 +225,12 @@ export function OrganizeToolOptions({
                     : 'border-border/60 hover:bg-muted/50'
                 }`}
               >
-                {isZh ? '水平横向长图' : 'Horizontal Strip'}
+                {getStudioText(locale as Locale, 'k0459')}
               </button>
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '页面间距' : 'Page Spacing'}</span>
+                <span>{getStudioText(locale as Locale, 'k0460')}</span>
                 <span className="font-semibold text-primary">{spacing} pt</span>
               </div>
               <input
@@ -242,7 +243,7 @@ export function OrganizeToolOptions({
               />
             </div>
             <div className="flex items-center justify-between pt-2 text-xs">
-              <span>{isZh ? '画板底色' : 'Background Color'}</span>
+              <span>{getStudioText(locale as Locale, 'k0461')}</span>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -268,11 +269,11 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '网格行列设置' : 'Grid Dimensions'}
+              {getStudioText(locale as Locale, 'k0462')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-muted-foreground block mb-1">{isZh ? '行数 (Rows)' : 'Rows'}</label>
+                <label className="text-xs text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0463')}</label>
                 <input
                   type="number"
                   min="1"
@@ -283,7 +284,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground block mb-1">{isZh ? '列数 (Cols)' : 'Cols'}</label>
+                <label className="text-xs text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0464')}</label>
                 <input
                   type="number"
                   min="1"
@@ -296,7 +297,7 @@ export function OrganizeToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '页边距' : 'Page Margin'}</span>
+                <span>{getStudioText(locale as Locale, 'k0465')}</span>
                 <span className="font-semibold text-primary">{margin} pt</span>
               </div>
               <input
@@ -310,7 +311,7 @@ export function OrganizeToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '单元格间距' : 'Grid Spacing'}</span>
+                <span>{getStudioText(locale as Locale, 'k0466')}</span>
                 <span className="font-semibold text-primary">{spacing} pt</span>
               </div>
               <input
@@ -338,14 +339,14 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '小册子装订拼版' : 'Booklet Layout'}
+              {getStudioText(locale as Locale, 'k0467')}
             </label>
             <div className="space-y-2">
-              <label className="text-xs text-muted-foreground block">{isZh ? '拼版格式' : 'Grid Mode'}</label>
+              <label className="text-xs text-muted-foreground block">{getStudioText(locale as Locale, 'k0468')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: '1x2', label: isZh ? '1x2 骑马订 (双页并排)' : '1x2 Saddle Stitch' },
-                  { id: '2x2', label: isZh ? '2x2 四联微型折页' : '2x2 Mini Folio' },
+                  { id: '1x2', label: getStudioText(locale as Locale, 'k0469') },
+                  { id: '2x2', label: getStudioText(locale as Locale, 'k0470') },
                 ].map((m) => (
                   <button
                     key={m.id}
@@ -364,7 +365,7 @@ export function OrganizeToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div>
-                <label className="text-xs text-muted-foreground block mb-1">{isZh ? '纸张尺寸' : 'Paper Size'}</label>
+                <label className="text-xs text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0471')}</label>
                 <select
                   value={paperSize}
                   onChange={(e) => onChange('paperSize', e.target.value)}
@@ -376,20 +377,20 @@ export function OrganizeToolOptions({
                 </select>
               </div>
               <div>
-                <label className="text-xs text-muted-foreground block mb-1">{isZh ? '装订纸张方向' : 'Orientation'}</label>
+                <label className="text-xs text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0472')}</label>
                 <select
                   value={orientation}
                   onChange={(e) => onChange('orientation', e.target.value)}
                   className="w-full px-2 py-1.5 text-xs rounded-lg border border-border bg-background"
                 >
-                  <option value="landscape">{isZh ? '横向 (推荐)' : 'Landscape'}</option>
-                  <option value="portrait">{isZh ? '纵向' : 'Portrait'}</option>
+                  <option value="landscape">{getStudioText(locale as Locale, 'k0473')}</option>
+                  <option value="portrait">{getStudioText(locale, 'kPortrait')}</option>
                 </select>
               </div>
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '装订缝留白 (Padding)' : 'Gutter Padding'}</span>
+                <span>{getStudioText(locale as Locale, 'k0474')}</span>
                 <span className="font-semibold text-primary">{padding} pt</span>
               </div>
               <input
@@ -415,34 +416,34 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '证件照平铺冲印拼版' : 'Photo Prepress Tiling'}
+              {getStudioText(locale as Locale, 'k0475')}
             </label>
             <div className="space-y-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '照片规格' : 'Photo Spec'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0476')}</label>
               <select
                 value={photoSpec}
                 onChange={(e) => onChange('photoSpec', e.target.value)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value="1-inch">{isZh ? '1寸证件照 (25×35mm)' : '1 Inch (25×35mm)'}</option>
-                <option value="2-inch">{isZh ? '2寸证件照 (35×49mm)' : '2 Inch (35×49mm)'}</option>
-                <option value="passport">{isZh ? '护照/签证标准 (33×48mm)' : 'Passport (33×48mm)'}</option>
+                <option value="1-inch">{getStudioText(locale as Locale, 'k0477')}</option>
+                <option value="2-inch">{getStudioText(locale as Locale, 'k0478')}</option>
+                <option value="passport">{getStudioText(locale as Locale, 'k0479')}</option>
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '冲印相纸规格' : 'Photo Paper'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0480')}</label>
               <select
                 value={paperSize}
                 onChange={(e) => onChange('paperSize', e.target.value)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value="6-inch">{isZh ? '6寸相纸 (102×152mm)' : '6 Inch Paper'}</option>
-                <option value="a4">{isZh ? 'A4 照片纸' : 'A4 Photo Paper'}</option>
+                <option value="6-inch">{getStudioText(locale as Locale, 'k0481')}</option>
+                <option value="a4">{getStudioText(locale as Locale, 'k0482')}</option>
               </select>
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '裁切线间距' : 'Cutting Gap'}</span>
+                <span>{getStudioText(locale as Locale, 'k0483')}</span>
                 <span className="font-semibold text-primary">{gapPt} pt</span>
               </div>
               <input
@@ -470,11 +471,11 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '无损切片裁剪范围' : 'Lossless Slicer Area'}
+              {getStudioText(locale as Locale, 'k0484')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '水平起点 (X)' : 'Slice X'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0485')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -486,7 +487,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '垂直起点 (Y)' : 'Slice Y'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0486')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -498,7 +499,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '切片宽度比例' : 'Slice Width'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0487')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -510,7 +511,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '切片高度比例' : 'Slice Height'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0488')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -528,27 +529,27 @@ export function OrganizeToolOptions({
     }
 
     case 'passport-id-composer': {
-      const watermark = options.watermark || '仅供业务办理';
+      const watermark = options.watermark || getStudioText(locale, 'k0087');
       const layout = options.layout || 'single-page';
 
       return (
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '证件拼排参数' : 'ID Composer Options'}
+              {getStudioText(locale as Locale, 'k0489')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-foreground font-medium">{isZh ? '防滥用专属水印' : 'Watermark Text'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale as Locale, 'k0490')}</label>
               <input
                 type="text"
                 value={watermark}
                 onChange={(e) => onChange('watermark', e.target.value)}
-                placeholder={isZh ? '如: 仅供办理XX业务使用' : 'e.g. FOR COPY ONLY'}
+                placeholder={getStudioText(locale as Locale, 'k0491')}
                 className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background"
               />
             </div>
             <div className="space-y-1.5 pt-1">
-              <label className="text-xs text-muted-foreground">{isZh ? '排版版面' : 'Layout Mode'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0492')}</label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
@@ -559,7 +560,7 @@ export function OrganizeToolOptions({
                       : 'border-border/60 hover:bg-muted/50'
                   }`}
                 >
-                  {isZh ? '单页正反面同页' : 'Front & Back (1 Page)'}
+                  {getStudioText(locale as Locale, 'k0493')}
                 </button>
                 <button
                   type="button"
@@ -570,7 +571,7 @@ export function OrganizeToolOptions({
                       : 'border-border/60 hover:bg-muted/50'
                   }`}
                 >
-                  {isZh ? '多卡片标准排列' : 'Multi-Cards Grid'}
+                  {getStudioText(locale as Locale, 'k0494')}
                 </button>
               </div>
             </div>
@@ -587,11 +588,11 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '双栏文献重排参数' : 'Two-Column Reflow'}
+              {getStudioText(locale as Locale, 'k0495')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '中缝分栏位置' : 'Middle Gap Ratio'}</span>
+                <span>{getStudioText(locale as Locale, 'k0496')}</span>
                 <span className="font-semibold text-primary">{Math.round(middleGapRatio * 100)}%</span>
               </div>
               <input
@@ -605,7 +606,7 @@ export function OrganizeToolOptions({
               />
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '横向优先阅读流' : 'Horizontal Reading Flow'}</span>
+              <span>{getStudioText(locale as Locale, 'k0497')}</span>
               <input
                 type="checkbox"
                 checked={horizontalReading}
@@ -630,14 +631,14 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '书脊厚度装订计算器' : 'Spine Bookbinder'}
+              {getStudioText(locale as Locale, 'k0498')}
             </label>
             <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 flex justify-between items-center text-xs">
-              <span className="font-medium text-primary">{isZh ? '预计书脊厚度' : 'Estimated Spine Width'}:</span>
+              <span className="font-medium text-primary">{getStudioText(locale as Locale, 'k0499')}:</span>
               <span className="font-mono text-base font-bold text-primary">{spineThicknessMm} mm</span>
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs text-foreground font-medium">{isZh ? '书名 (印于书脊)' : 'Book Title'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale as Locale, 'k0500')}</label>
               <input
                 type="text"
                 value={bookTitle}
@@ -647,7 +648,7 @@ export function OrganizeToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '内页总页数' : 'Page Count'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0501')}</label>
                 <input
                   type="number"
                   min="4"
@@ -657,16 +658,16 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '纸张克重 (GSM)' : 'Paper GSM'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0502')}</label>
                 <select
                   value={paperGsm}
                   onChange={(e) => onChange('paperGsm', parseInt(e.target.value) || 80)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value={70}>70g 普通道林纸</option>
-                  <option value={80}>80g 标准复印纸</option>
-                  <option value={100}>100g 加厚纸</option>
-                  <option value={120}>120g 铜版纸</option>
+                  <option value={70}>{getStudioText(locale as Locale, 'k0503')}</option>
+                  <option value={80}>{getStudioText(locale as Locale, 'k0504')}</option>
+                  <option value={100}>{getStudioText(locale as Locale, 'k0505')}</option>
+                  <option value={120}>{getStudioText(locale as Locale, 'k0506')}</option>
                 </select>
               </div>
             </div>
@@ -683,10 +684,10 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '统一页面尺寸参数' : 'Uniform Page Resizer'}
+              {getStudioText(locale as Locale, 'k0507')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '目标标准尺寸' : 'Target Size'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0508')}</label>
               <select
                 value={targetSize}
                 onChange={(e) => onChange('targetSize', e.target.value)}
@@ -699,12 +700,12 @@ export function OrganizeToolOptions({
               </select>
             </div>
             <div className="space-y-1.5 pt-1">
-              <label className="text-xs text-muted-foreground">{isZh ? '缩放适配模式' : 'Scale Mode'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0509')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'fit', label: isZh ? '保持比例居中' : 'Fit (Preserve)' },
-                  { id: 'fill', label: isZh ? '裁剪填满' : 'Fill' },
-                  { id: 'stretch', label: isZh ? '直接拉伸' : 'Stretch' },
+                  { id: 'fit', label: getStudioText(locale as Locale, 'k0510') },
+                  { id: 'fill', label: getStudioText(locale as Locale, 'k0511') },
+                  { id: 'stretch', label: getStudioText(locale as Locale, 'k0512') },
                 ].map((s) => (
                   <button
                     key={s.id}
@@ -735,15 +736,15 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '随笔画板扩展区' : 'Scratchpad Extension'}
+              {getStudioText(locale as Locale, 'k0513')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '附加位置' : 'Position'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0514')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'right', label: isZh ? '右侧附加' : 'Right' },
-                  { id: 'left', label: isZh ? '左侧附加' : 'Left' },
-                  { id: 'bottom', label: isZh ? '底部附加' : 'Bottom' },
+                  { id: 'right', label: getStudioText(locale as Locale, 'k0515') },
+                  { id: 'left', label: getStudioText(locale as Locale, 'k0516') },
+                  { id: 'bottom', label: getStudioText(locale as Locale, 'k0517') },
                 ].map((p) => (
                   <button
                     key={p.id}
@@ -761,13 +762,13 @@ export function OrganizeToolOptions({
               </div>
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '底纹网格类型' : 'Grid Type'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0518')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: 'grid', label: isZh ? '方格纸' : 'Square Grid' },
-                  { id: 'dots', label: isZh ? '点阵纸' : 'Dot Matrix' },
-                  { id: 'lines', label: isZh ? '横线纸' : 'Ruled Lines' },
-                  { id: 'blank', label: isZh ? '纯白空白' : 'Blank' },
+                  { id: 'grid', label: getStudioText(locale as Locale, 'k0519') },
+                  { id: 'dots', label: getStudioText(locale as Locale, 'k0520') },
+                  { id: 'lines', label: getStudioText(locale as Locale, 'k0521') },
+                  { id: 'blank', label: getStudioText(locale as Locale, 'k0522') },
                 ].map((g) => (
                   <button
                     key={g.id}
@@ -786,7 +787,7 @@ export function OrganizeToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '扩展区宽度 (pt)' : 'Pad Width (pt)'}</span>
+                <span>{getStudioText(locale as Locale, 'k0523')}</span>
                 <span className="font-semibold text-primary">{padSize} pt</span>
               </div>
               <input
@@ -804,7 +805,7 @@ export function OrganizeToolOptions({
     }
 
     case 'table-of-contents': {
-      const title = options.title || (isZh ? '目 录' : 'Table of Contents');
+      const title = options.title || getStudioText(locale, 'k0088');
       const fontSize = options.fontSize ?? 12;
       const fontFamily = options.fontFamily || 'helv';
       const addBookmark = options.addBookmark ?? true;
@@ -813,10 +814,10 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '目录生成选项' : 'Table of Contents'}
+              {getStudioText(locale as Locale, 'k0524')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">{isZh ? '目录标题' : 'TOC Title'}</label>
+              <label className="text-xs font-medium text-foreground">{getStudioText(locale as Locale, 'k0525')}</label>
               <input
                 type="text"
                 value={title}
@@ -826,19 +827,19 @@ export function OrganizeToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '字体系列' : 'Font'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0526')}</label>
                 <select
                   value={fontFamily}
                   onChange={(e) => onChange('fontFamily', e.target.value)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value="helv">Helvetica / 微软雅黑</option>
-                  <option value="times">Times New Roman / 宋体</option>
-                  <option value="courier">Courier 等宽</option>
+                  <option value="helv">{getStudioText(locale as Locale, 'k0527')}</option>
+                  <option value="times">{getStudioText(locale as Locale, 'k0528')}</option>
+                  <option value="courier">{getStudioText(locale as Locale, 'k0529')}</option>
                 </select>
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '正文字号' : 'Font Size'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0530')}</label>
                 <input
                   type="number"
                   min="9"
@@ -850,7 +851,7 @@ export function OrganizeToolOptions({
               </div>
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '同步生成 PDF 侧边栏书签' : 'Generate PDF Outline Bookmark'}</span>
+              <span>{getStudioText(locale as Locale, 'k0531')}</span>
               <input
                 type="checkbox"
                 checked={addBookmark}
@@ -872,21 +873,21 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '添加书签/大纲项' : 'Add Bookmark'}
+              {getStudioText(locale as Locale, 'k0532')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">{isZh ? '书签名称' : 'Bookmark Title'}</label>
+              <label className="text-xs font-medium text-foreground">{getStudioText(locale as Locale, 'k0533')}</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => onChange('title', e.target.value)}
-                placeholder={isZh ? '例如: 第一章 绪论' : 'e.g. Chapter 1'}
+                placeholder={getStudioText(locale as Locale, 'k0534')}
                 className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background"
               />
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '目标页码' : 'Target Page'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0535')}</label>
                 <input
                   type="number"
                   min="1"
@@ -897,15 +898,15 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '层级深度' : 'Level'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0536')}</label>
                 <select
                   value={level}
                   onChange={(e) => onChange('level', parseInt(e.target.value) || 1)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value={1}>{isZh ? '1级大纲 (章)' : 'Level 1'}</option>
-                  <option value={2}>{isZh ? '2级大纲 (节)' : 'Level 2'}</option>
-                  <option value={3}>{isZh ? '3级大纲 (小节)' : 'Level 3'}</option>
+                  <option value={1}>{getStudioText(locale as Locale, 'k0537')}</option>
+                  <option value={2}>{getStudioText(locale as Locale, 'k0538')}</option>
+                  <option value={3}>{getStudioText(locale as Locale, 'k0539')}</option>
                 </select>
               </div>
             </div>
@@ -925,11 +926,11 @@ export function OrganizeToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '编辑 PDF 元数据' : 'Edit PDF Metadata'}
+              {getStudioText(locale as Locale, 'k0540')}
             </label>
             <div className="space-y-2 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '文档标题 (Title)' : 'Title'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0541')}</label>
                 <input
                   type="text"
                   value={title}
@@ -938,7 +939,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '作者 (Author)' : 'Author'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0542')}</label>
                 <input
                   type="text"
                   value={author}
@@ -947,7 +948,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '主题描述 (Subject)' : 'Subject'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0543')}</label>
                 <input
                   type="text"
                   value={subject}
@@ -956,7 +957,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '关键词 (Keywords, 逗号分隔)' : 'Keywords'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0544')}</label>
                 <input
                   type="text"
                   value={keywords}
@@ -965,7 +966,7 @@ export function OrganizeToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '创建工具 (Creator)' : 'Creator'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0545')}</label>
                 <input
                   type="text"
                   value={creator}

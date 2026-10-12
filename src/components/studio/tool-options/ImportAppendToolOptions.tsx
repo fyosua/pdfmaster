@@ -9,6 +9,8 @@ import {
   Image,
   Palette,
 } from 'lucide-react';
+import { getStudioText } from '@/lib/i18n/studio';
+import type { Locale } from '@/lib/i18n/config';
 
 interface ImportAppendToolOptionsProps {
   toolId: string;
@@ -23,8 +25,6 @@ export function ImportAppendToolOptions({
   onChange,
   locale = 'zh',
 }: ImportAppendToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
-
   switch (toolId) {
     case 'markdown-to-pdf': {
       const pageSize = options.pageSize || 'a4';
@@ -36,11 +36,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'Markdown 转 PDF 排版参数' : 'Markdown to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0361')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '纸张规格' : 'Page Size'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0362')}</label>
                 <select
                   value={pageSize}
                   onChange={(e) => onChange('pageSize', e.target.value)}
@@ -51,21 +51,21 @@ export function ImportAppendToolOptions({
                 </select>
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '排版主题' : 'Theme'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0363')}</label>
                 <select
                   value={theme}
                   onChange={(e) => onChange('theme', e.target.value)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value="github">GitHub 风格</option>
-                  <option value="light">极简白 (Minimal)</option>
-                  <option value="dark">暗夜黑 (Dark)</option>
+                  <option value="github">{getStudioText(locale as Locale, 'k0364')}</option>
+                  <option value="light">{getStudioText(locale as Locale, 'k0365')}</option>
+                  <option value="dark">{getStudioText(locale as Locale, 'k0366')}</option>
                 </select>
               </div>
             </div>
             <div className="space-y-2 pt-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '启用 GitHub Flavored 语法 (表格/任务列表)' : 'GFM Flavor'}</span>
+                <span>{getStudioText(locale as Locale, 'k0367')}</span>
                 <input
                   type="checkbox"
                   checked={gfm}
@@ -74,7 +74,7 @@ export function ImportAppendToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '代码块多语言彩色高亮' : 'Code Syntax Highlighting'}</span>
+                <span>{getStudioText(locale as Locale, 'k0368')}</span>
                 <input
                   type="checkbox"
                   checked={syntaxHighlight}
@@ -98,11 +98,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'JSON 结构体转 PDF 参数' : 'JSON to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0369')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '字号 (pt)' : 'Font Size'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0370')}</label>
                 <input
                   type="number"
                   min="8"
@@ -113,19 +113,19 @@ export function ImportAppendToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '缩进空格数' : 'Indent Spaces'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0371')}</label>
                 <select
                   value={indentSpaces}
                   onChange={(e) => onChange('indentSpaces', parseInt(e.target.value) || 2)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value={2}>2 空格</option>
-                  <option value={4}>4 空格</option>
+                  <option value={2}>{getStudioText(locale as Locale, 'k0372')}</option>
+                  <option value={4}>{getStudioText(locale as Locale, 'k0373')}</option>
                 </select>
               </div>
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '在左侧显示行号' : 'Show Line Numbers'}</span>
+              <span>{getStudioText(locale as Locale, 'k0374')}</span>
               <input
                 type="checkbox"
                 checked={showLineNumbers}
@@ -147,11 +147,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '纯文本 TXT 排版参数' : 'Text to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0375')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '字号 (pt)' : 'Font Size'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0370')}</label>
                 <input
                   type="number"
                   min="9"
@@ -162,15 +162,15 @@ export function ImportAppendToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '行间距倍率' : 'Line Height'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0376')}</label>
                 <select
                   value={lineHeight}
                   onChange={(e) => onChange('lineHeight', parseFloat(e.target.value) || 1.5)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value={1.2}>1.2 倍紧凑</option>
-                  <option value={1.5}>1.5 倍标准</option>
-                  <option value={1.8}>1.8 倍宽松</option>
+                  <option value={1.2}>{getStudioText(locale as Locale, 'k0377')}</option>
+                  <option value={1.5}>{getStudioText(locale as Locale, 'k0378')}</option>
+                  <option value={1.8}>{getStudioText(locale as Locale, 'k0379')}</option>
                 </select>
               </div>
             </div>
@@ -187,11 +187,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '电子邮件 EML 转 PDF 参数' : 'Email to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0380')}
             </label>
             <div className="space-y-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '在表头包含抄送 (CC) 与密送 (BCC)' : 'Include CC & BCC Headers'}</span>
+                <span>{getStudioText(locale as Locale, 'k0381')}</span>
                 <input
                   type="checkbox"
                   checked={includeCcBcc}
@@ -200,7 +200,7 @@ export function ImportAppendToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '列出邮件附件清单明细' : 'List Attachments Table'}</span>
+                <span>{getStudioText(locale as Locale, 'k0382')}</span>
                 <input
                   type="checkbox"
                   checked={includeAttachments}
@@ -222,11 +222,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '漫画归档 CBZ 转 PDF' : 'CBZ to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0383')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '图片压缩画质' : 'Image Quality'}</span>
+                <span>{getStudioText(locale as Locale, 'k0384')}</span>
                 <span className="font-semibold text-primary">{Math.round(quality * 100)}%</span>
               </div>
               <input
@@ -240,7 +240,7 @@ export function ImportAppendToolOptions({
               />
             </div>
             <div className="pt-2 flex items-center justify-between text-xs">
-              <span>{isZh ? '保持原始漫画页面纵横比' : 'Maintain Aspect Ratio'}</span>
+              <span>{getStudioText(locale as Locale, 'k0385')}</span>
               <input
                 type="checkbox"
                 checked={maintainAspectRatio}
@@ -260,17 +260,17 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'DJVU 古籍扫描转 PDF' : 'DJVU to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0386')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '解码清晰度 (DPI)' : 'DPI'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0387')}</label>
               <select
                 value={dpi}
                 onChange={(e) => onChange('dpi', parseInt(e.target.value) || 150)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value={150}>150 DPI (标准平衡)</option>
-                <option value={300}>300 DPI (高清字迹)</option>
+                <option value={150}>{getStudioText(locale as Locale, 'k0388')}</option>
+                <option value={300}>{getStudioText(locale as Locale, 'k0389')}</option>
               </select>
             </div>
           </div>
@@ -287,11 +287,11 @@ export function ImportAppendToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'Photoshop PSD 转 PDF' : 'PSD to PDF Settings'}
+              {getStudioText(locale as Locale, 'k0390')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '页边距留白' : 'Margin'}</span>
+                <span>{getStudioText(locale as Locale, 'k0391')}</span>
                 <span className="font-semibold text-primary">{margin} pt</span>
               </div>
               <input
@@ -305,7 +305,7 @@ export function ImportAppendToolOptions({
             </div>
             <div className="space-y-2 pt-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '画板内容居中对齐' : 'Center Image'}</span>
+                <span>{getStudioText(locale as Locale, 'k0392')}</span>
                 <input
                   type="checkbox"
                   checked={centerImage}
@@ -314,7 +314,7 @@ export function ImportAppendToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '自动缩放适应纸张大小' : 'Scale to Fit'}</span>
+                <span>{getStudioText(locale as Locale, 'k0393')}</span>
                 <input
                   type="checkbox"
                   checked={scaleToFit}

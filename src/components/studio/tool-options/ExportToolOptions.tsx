@@ -1,5 +1,6 @@
 'use client';
 
+import { getStudioText } from '@/lib/i18n/studio';
 import React from 'react';
 import {
   FileText,
@@ -29,7 +30,6 @@ export function ExportToolOptions({
   totalPages = 1,
   locale = 'zh',
 }: ExportToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
 
   switch (toolId) {
     case 'pdf-to-markdown': {
@@ -41,11 +41,11 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '导出 Markdown 结构化选项' : 'Markdown Export Options'}
+              {getStudioText(locale, 'k0294')}
             </label>
             <div className="space-y-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '在各节标注页码来源注释' : 'Include Page Number Headers'}</span>
+                <span>{getStudioText(locale, 'k0295')}</span>
                 <input
                   type="checkbox"
                   checked={includePageNumbers}
@@ -54,7 +54,7 @@ export function ExportToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '忠实保留原文物理硬换行' : 'Preserve Physical Line Breaks'}</span>
+                <span>{getStudioText(locale, 'k0296')}</span>
                 <input
                   type="checkbox"
                   checked={preserveLineBreaks}
@@ -64,12 +64,12 @@ export function ExportToolOptions({
               </label>
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '导出页码范围 (留空全本)' : 'Page Range'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0297')}</label>
               <input
                 type="text"
                 value={pageRange}
                 onChange={(e) => onChange('pageRange', e.target.value)}
-                placeholder={isZh ? '例如: 1-5, 8' : 'e.g. 1-5, 8'}
+                placeholder={getStudioText(locale, 'k0298')}
                 className="w-full px-3 py-1.5 text-xs rounded-lg border border-border bg-background"
               />
             </div>
@@ -89,15 +89,15 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '导出 JSON 字段选择' : 'JSON Export Fields'}
+              {getStudioText(locale, 'k0299')}
             </label>
             <div className="space-y-2 text-xs">
               {[
-                { key: 'includeText', label: isZh ? '包含各页完整文本块与坐标' : 'Full Page Text Blocks', val: includeText },
-                { key: 'includeMetadata', label: isZh ? '包含文档基础元数据 (Title/Author)' : 'Document Metadata', val: includeMetadata },
-                { key: 'includePageInfo', label: isZh ? '包含页面尺寸与方向 (Width/Height)' : 'Page Dimensions & Layout', val: includePageInfo },
-                { key: 'includeOutline', label: isZh ? '包含大纲层级与目录书签树' : 'Outline & Bookmark Tree', val: includeOutline },
-                { key: 'prettyPrint', label: isZh ? '缩进格式化美化输出 (2 空格)' : 'Pretty Print (Indented)', val: prettyPrint },
+                { key: 'includeText', label: getStudioText(locale, 'k0300'), val: includeText },
+                { key: 'includeMetadata', label: getStudioText(locale, 'k0301'), val: includeMetadata },
+                { key: 'includePageInfo', label: getStudioText(locale, 'k0302'), val: includePageInfo },
+                { key: 'includeOutline', label: getStudioText(locale, 'k0303'), val: includeOutline },
+                { key: 'prettyPrint', label: getStudioText(locale, 'k0304'), val: prettyPrint },
               ].map((item) => (
                 <label key={item.key} className="flex items-center justify-between p-1.5 rounded hover:bg-muted/40 cursor-pointer">
                   <span>{item.label}</span>
@@ -124,15 +124,15 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '导出 TIFF 传真/印刷参数' : 'TIFF Export Settings'}
+              {getStudioText(locale, 'k0305')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '色彩模式' : 'Color Mode'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0306')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'color', label: isZh ? '全彩 RGB' : 'RGB Color' },
-                  { id: 'grayscale', label: isZh ? '灰度' : 'Grayscale' },
-                  { id: 'mono', label: isZh ? '黑白单色' : 'Monochrome' },
+                  { id: 'color', label: getStudioText(locale, 'k0307') },
+                  { id: 'grayscale', label: getStudioText(locale, 'k0308') },
+                  { id: 'mono', label: getStudioText(locale, 'k0309') },
                 ].map((c) => (
                   <button
                     key={c.id}
@@ -151,27 +151,27 @@ export function ExportToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs pt-2">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '压缩算法' : 'Compression'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0310')}</label>
                 <select
                   value={compression}
                   onChange={(e) => onChange('compression', e.target.value)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value="packbits">PackBits (兼容性佳)</option>
-                  <option value="lzw">LZW (无损高压)</option>
-                  <option value="none">无压缩 (RAW)</option>
+                  <option value="packbits">{getStudioText(locale, 'k0311')}</option>
+                  <option value="lzw">{getStudioText(locale, 'k0312')}</option>
+                  <option value="none">{getStudioText(locale, 'k0313')}</option>
                 </select>
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '图像解析度 (DPI)' : 'Resolution'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0314')}</label>
                 <select
                   value={dpi}
                   onChange={(e) => onChange('dpi', parseInt(e.target.value) || 150)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value={96}>96 DPI (屏幕)</option>
-                  <option value={150}>150 DPI (普通)</option>
-                  <option value={300}>300 DPI (高清)</option>
+                  <option value={96}>{getStudioText(locale, 'k0315')}</option>
+                  <option value={150}>{getStudioText(locale, 'k0316')}</option>
+                  <option value={300}>{getStudioText(locale, 'k0317')}</option>
                 </select>
               </div>
             </div>
@@ -188,11 +188,11 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '导出矢量 SVG 选项' : 'Vector SVG Options'}
+              {getStudioText(locale, 'k0318')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '矢量渲染缩放倍率' : 'Scale Factor'}</span>
+                <span>{getStudioText(locale, 'k0319')}</span>
                 <span className="font-semibold text-primary">{scale}x</span>
               </div>
               <input
@@ -206,7 +206,7 @@ export function ExportToolOptions({
               />
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '页码范围 (留空全本)' : 'Page Range'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0320')}</label>
               <input
                 type="text"
                 value={pageRange}
@@ -231,11 +231,11 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '导出漫画电子书 (CBZ)' : 'CBZ Comic Archive'}
+              {getStudioText(locale, 'k0321')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '漫画作品名' : 'Title'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0322')}</label>
                 <input
                   type="text"
                   value={title}
@@ -244,7 +244,7 @@ export function ExportToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '系列/卷号' : 'Series'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0323')}</label>
                 <input
                   type="text"
                   value={series}
@@ -255,26 +255,26 @@ export function ExportToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs pt-1">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '内嵌图片格式' : 'Image Format'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0324')}</label>
                 <select
                   value={format}
                   onChange={(e) => onChange('format', e.target.value)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value="jpg">JPG (高兼容)</option>
-                  <option value="webp">WebP (超轻量)</option>
-                  <option value="png">PNG (无损)</option>
+                  <option value="jpg">{getStudioText(locale, 'k0325')}</option>
+                  <option value="webp">{getStudioText(locale, 'k0326')}</option>
+                  <option value="png">{getStudioText(locale, 'k0327')}</option>
                 </select>
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '日漫翻页方向' : 'Manga Reading Flow'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0328')}</label>
                 <select
                   value={manga}
                   onChange={(e) => onChange('manga', e.target.value)}
                   className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
                 >
-                  <option value="No">{isZh ? '从左到右 (常规)' : 'Left to Right'}</option>
-                  <option value="Yes">{isZh ? '从右向左 (日漫标准)' : 'Right to Left (Manga)'}</option>
+                  <option value="No">{getStudioText(locale, 'k0329')}</option>
+                  <option value="Yes">{getStudioText(locale, 'k0330')}</option>
                 </select>
               </div>
             </div>
@@ -290,15 +290,15 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '转换为 PowerPoint (PPTX) 参数' : 'PPTX Conversion Settings'}
+              {getStudioText(locale, 'k0331')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '幻灯片底图清晰度 (DPI)' : 'Slide Resolution (DPI)'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0332')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 96, label: '96 DPI', desc: isZh ? '小体积' : 'Compact' },
-                  { id: 150, label: '150 DPI', desc: isZh ? '推荐标准' : 'Standard' },
-                  { id: 300, label: '300 DPI', desc: isZh ? '高清演讲' : 'Ultra HD' },
+                  { id: 96, label: '96 DPI', desc: getStudioText(locale, 'k0333') },
+                  { id: 150, label: '150 DPI', desc: getStudioText(locale, 'k0334') },
+                  { id: 300, label: '300 DPI', desc: getStudioText(locale, 'k0335') },
                 ].map((d) => (
                   <button
                     key={d.id}
@@ -329,11 +329,11 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '图片提取过滤规则' : 'Image Extraction Filter'}
+              {getStudioText(locale, 'k0336')}
             </label>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '最小宽度 (px)' : 'Min Width (px)'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0337')}</label>
                 <input
                   type="number"
                   min="0"
@@ -344,7 +344,7 @@ export function ExportToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '最小高度 (px)' : 'Min Height (px)'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0338')}</label>
                 <input
                   type="number"
                   min="0"
@@ -356,7 +356,7 @@ export function ExportToolOptions({
               </div>
             </div>
             <p className="text-[11px] text-muted-foreground">
-              {isZh ? '自动过滤网页图标、小点或装饰性微小底图。' : 'Filters out tiny icons and decorative fragments.'}
+              {getStudioText(locale, 'k0339')}
             </p>
           </div>
         </div>
@@ -373,14 +373,14 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '表格提取参数' : 'Table Extraction Settings'}
+              {getStudioText(locale, 'k0340')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '导出表格格式' : 'Export Format'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0341')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: 'xlsx', label: 'Excel 工作簿 (.xlsx)' },
-                  { id: 'csv', label: '通用 CSV 逗号分隔' },
+                  { id: 'xlsx', label: getStudioText(locale, 'k0342') },
+                  { id: 'csv', label: getStudioText(locale, 'k0343') },
                 ].map((f) => (
                   <button
                     key={f.id}
@@ -399,7 +399,7 @@ export function ExportToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs pt-1">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '最小列数' : 'Min Columns'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0344')}</label>
                 <input
                   type="number"
                   min="1"
@@ -410,7 +410,7 @@ export function ExportToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '最小行数' : 'Min Rows'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0345')}</label>
                 <input
                   type="number"
                   min="1"
@@ -436,10 +436,10 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '批注与笔记导出选项' : 'Annotation Exporter'}
+              {getStudioText(locale, 'k0346')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '导出报告格式' : 'Report Format'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0347')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {['markdown', 'json', 'txt'].map((fmt) => (
                   <button
@@ -459,7 +459,7 @@ export function ExportToolOptions({
             </div>
             <div className="space-y-2 pt-2 text-xs">
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '包含高亮选中文本' : 'Include Highlights'}</span>
+                <span>{getStudioText(locale, 'k0348')}</span>
                 <input
                   type="checkbox"
                   checked={incHighlights}
@@ -468,7 +468,7 @@ export function ExportToolOptions({
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>{isZh ? '包含便签注释与留言' : 'Include Sticky Notes'}</span>
+                <span>{getStudioText(locale, 'k0349')}</span>
                 <input
                   type="checkbox"
                   checked={incNotes}
@@ -490,20 +490,20 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '全球发票智能解析与汇率转换' : 'Invoice Parser'}
+              {getStudioText(locale, 'k0350')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '统一结算目标币种' : 'Target Currency'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0351')}</label>
               <select
                 value={targetCurrency}
                 onChange={(e) => onChange('targetCurrency', e.target.value)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value="CNY">人民币 (CNY ¥)</option>
-                <option value="USD">美元 (USD $)</option>
-                <option value="EUR">欧元 (EUR €)</option>
-                <option value="GBP">英镑 (GBP £)</option>
-                <option value="JPY">日元 (JPY ¥)</option>
+                <option value="CNY">{getStudioText(locale, 'k0352')}</option>
+                <option value="USD">{getStudioText(locale, 'k0353')}</option>
+                <option value="EUR">{getStudioText(locale, 'k0354')}</option>
+                <option value="GBP">{getStudioText(locale, 'k0355')}</option>
+                <option value="JPY">{getStudioText(locale, 'k0356')}</option>
               </select>
             </div>
           </div>
@@ -518,10 +518,10 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '网页全屏幻灯片放映模式' : 'Web Slide Show Presentation'}
+              {getStudioText(locale, 'k0357')}
             </label>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-foreground">{isZh ? '演讲台主题配色' : 'Theme Accent Color'}</span>
+              <span className="font-medium text-foreground">{getStudioText(locale, 'k0358')}</span>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -544,11 +544,11 @@ export function ExportToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '打包为 ZIP 归档' : 'ZIP Compression'}
+              {getStudioText(locale, 'k0359')}
             </label>
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '压缩等级' : 'Compression Level'}</span>
+                <span>{getStudioText(locale, 'k0360')}</span>
                 <span className="font-semibold text-primary">{compressionLevel}</span>
               </div>
               <input

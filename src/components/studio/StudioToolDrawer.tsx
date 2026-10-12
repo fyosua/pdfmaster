@@ -39,6 +39,7 @@ import {
 } from './studio-processors';
 import { getToolContent } from '@/config/tool-content';
 import type { Locale } from '@/lib/i18n/config';
+import { getStudioText } from '@/lib/i18n/studio';
 import { OrganizeToolOptions } from './tool-options/OrganizeToolOptions';
 import { EditAnnotateToolOptions } from './tool-options/EditAnnotateToolOptions';
 import { SecurityToolOptions } from './tool-options/SecurityToolOptions';
@@ -46,7 +47,7 @@ import { OptimizeRepairToolOptions } from './tool-options/OptimizeRepairToolOpti
 import { ExportToolOptions } from './tool-options/ExportToolOptions';
 import { ImportAppendToolOptions } from './tool-options/ImportAppendToolOptions';
 
-export const getToolDefaultOptions = (id: string): Record<string, any> => {
+export const getToolDefaultOptions = (id: string, locale: Locale): Record<string, any> => {
   switch (id) {
     case 'split-pdf':
       return { splitMode: 'ranges', rangeInput: '', splitCount: 2, evenOddMode: 'both' };
@@ -63,7 +64,7 @@ export const getToolDefaultOptions = (id: string): Record<string, any> => {
     case 'pdf-lossless-slicer':
       return { pageNumber: 1, sliceX: 0.1, sliceY: 0.1, sliceWidth: 0.8, sliceHeight: 0.8 };
     case 'passport-id-composer':
-      return { watermark: '仅供业务办理', layout: 'single-page' };
+      return { watermark: getStudioText(locale, 'k0087'), layout: 'single-page' };
     case 'pdf-two-column-reflower':
       return { middleGapRatio: 0.5, horizontalReading: false };
     case 'pdf-spine-bookbinder':
@@ -73,7 +74,7 @@ export const getToolDefaultOptions = (id: string): Record<string, any> => {
     case 'pdf-scratchpad-canvas':
       return { padPosition: 'right', padSize: 200, gridType: 'grid' };
     case 'table-of-contents':
-      return { title: '目 录', fontSize: 12, fontFamily: 'helv', addBookmark: true };
+      return { title: getStudioText(locale, 'k0088'), fontSize: 12, fontFamily: 'helv', addBookmark: true };
     case 'bookmark':
       return { title: '', pageNumber: 1, level: 1 };
     case 'edit-metadata':
@@ -83,7 +84,7 @@ export const getToolDefaultOptions = (id: string): Record<string, any> => {
     case 'background-color':
       return { color: '#fdf6e2', opacity: 0.8, mode: 'replace-white' };
     case 'interactive-toc-generator':
-      return { title: '交互式目录', insertIndex: 1 };
+      return { title: getStudioText(locale, 'k0089'), insertIndex: 1 };
     case 'bookmarks-auto-generator':
       return { strategy: 'font-size', minFontSize: 14 };
     case 'batch-barcode-injector':
@@ -112,11 +113,11 @@ export const getToolDefaultOptions = (id: string): Record<string, any> => {
     case 'change-permissions':
       return { allowPrinting: true, allowCopying: false, allowModifying: false, allowAnnotating: false, ownerPassword: '' };
     case 'digital-sign-pdf':
-      return { reason: '我已仔细审核并签署此文档', location: '', contactInfo: '', enableVisible: true, sigPage: 1 };
+      return { reason: getStudioText(locale, 'k0090'), location: '', contactInfo: '', enableVisible: true, sigPage: 1 };
     case 'cert-cryptor':
       return { sealPos: 'bottom-right', waxColor: 'red' };
     case 'pdf-signature-anchor-helper':
-      return { pageNumber: 1, anchorX: 0.8, anchorY: 0.8, anchorLabel: '签署人请在此处签名' };
+      return { pageNumber: 1, anchorX: 0.8, anchorY: 0.8, anchorLabel: getStudioText(locale, 'k0091') };
     case 'linearize-pdf':
       return { useObjectStreams: true };
     case 'deskew-pdf':
@@ -131,7 +132,7 @@ export const getToolDefaultOptions = (id: string): Record<string, any> => {
     case 'eink-optimizer':
       return { contrastOffset: 15, dilationAmount: 1 };
     case 'batch-watermark-remover':
-      return { watermarkText: '机密', removeImages: true };
+      return { watermarkText: getStudioText(locale, 'k0092'), removeImages: true };
     case 'dead-link-debugger':
       return { action: 'remove-broken' };
     case 'handwriting-ink-contrast-booster':
@@ -201,7 +202,6 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
   totalPages = 1,
 }) => {
   const validLocale = (locale as Locale) || 'zh';
-  const isZh = validLocale.startsWith('zh');
 
   // Dynamic tool-specific options (aligned across all 67+ tools)
   const [dynamicOptions, setDynamicOptions] = useState<Record<string, any>>({});
@@ -356,7 +356,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
   const currentToolConfig = findStudioToolConfig(toolId);
   const localizedContent = getToolContent(validLocale, normId);
 
-  const title = localizedContent?.title || currentToolConfig?.name || '配置选项';
+  const title = localizedContent?.title || currentToolConfig?.name || (getStudioText(validLocale, 'k0093'));
   const description = localizedContent?.metaDescription || currentToolConfig?.description || '';
   const executionType = getToolExecutionType(normId);
 
@@ -613,7 +613,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
         break;
       default:
         options = {
-          ...getToolDefaultOptions(normId),
+          ...getToolDefaultOptions(normId, validLocale),
           ...dynamicOptions,
         };
         break;
@@ -760,7 +760,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                       : 'text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]'
                   }`}
                 >
-                  {isZh ? '90° 步进旋转' : 'Preset 90°'}
+                  {getStudioText(validLocale, 'k0094')}
                 </button>
                 <button
                   type="button"
@@ -771,20 +771,20 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                       : 'text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]'
                   }`}
                 >
-                  {isZh ? '任意微调倾斜' : 'Stepless Angle'}
+                  {getStudioText(validLocale, 'k0095')}
                 </button>
               </div>
 
               {rotateMode === 'preset' ? (
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                    {isZh ? '旋转角度' : 'Rotation Angle'}
+                    {getStudioText(validLocale, 'k0096')}
                   </label>
                   <div className="grid grid-cols-4 gap-1.5">
                     {[
-                      { deg: 90, label: '90° 顺时针' },
-                      { deg: 180, label: '180° 倒转' },
-                      { deg: 270, label: '270° 逆时针' },
+                      { deg: 90, label: getStudioText(validLocale, 'k0097') },
+                      { deg: 180, label: getStudioText(validLocale, 'k0098') },
+                      { deg: 270, label: getStudioText(validLocale, 'k0099') },
                       { deg: -90, label: '-90°' },
                     ].map((item) => (
                       <button
@@ -805,7 +805,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               ) : (
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-xs">
-                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '微调角度' : 'Angle'}</span>
+                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0100')}</span>
                     <span className="text-[hsl(var(--color-primary))] font-bold">{steplessAngle > 0 ? `+${steplessAngle}°` : `${steplessAngle}°`}</span>
                   </div>
                   <input
@@ -827,14 +827,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
 
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '应用页面范围' : 'Page Range Scope'}
+                  {getStudioText(validLocale, 'k0101')}
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
                   {[
-                    { key: 'all', label: isZh ? '全部' : 'All' },
-                    { key: 'odd', label: isZh ? '仅奇数' : 'Odd' },
-                    { key: 'even', label: isZh ? '仅偶数' : 'Even' },
-                    { key: 'custom', label: isZh ? '指定页' : 'Custom' },
+                    { key: 'all', label: getStudioText(locale, 'k0054') },
+                    { key: 'odd', label: getStudioText(validLocale, 'k0102') },
+                    { key: 'even', label: getStudioText(validLocale, 'k0103') },
+                    { key: 'custom', label: getStudioText(validLocale, 'k0104') },
                   ].map((item) => (
                     <button
                       key={item.key}
@@ -857,7 +857,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   type="text"
                   value={rotateCustomPages}
                   onChange={(e) => setRotateCustomPages(e.target.value)}
-                  placeholder="如: 1, 3-5, 8"
+                  placeholder={getStudioText(validLocale, 'k0105')}
                   className="w-full px-3 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                 />
               )}
@@ -879,7 +879,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   }`}
                 >
                   <Type className="w-3.5 h-3.5" />
-                  <span>{isZh ? '文字水印' : 'Text Watermark'}</span>
+                  <span>{getStudioText(validLocale, 'k0106')}</span>
                 </button>
                 <button
                   type="button"
@@ -891,7 +891,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   }`}
                 >
                   <ImageIcon className="w-3.5 h-3.5" />
-                  <span>{isZh ? '图片水印' : 'Image Watermark'}</span>
+                  <span>{getStudioText(validLocale, 'k0107')}</span>
                 </button>
               </div>
 
@@ -899,7 +899,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 <>
                   <div>
                     <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                      {isZh ? '水印文字' : 'Watermark Text'}
+                      {getStudioText(validLocale, 'k0108')}
                     </label>
                     <input
                       type="text"
@@ -913,7 +913,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '字体大小' : 'Font Size'}</span>
+                        <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0109')}</span>
                         <span className="text-[hsl(var(--color-primary))] font-bold">{watermarkFontSize} pt</span>
                       </div>
                       <input
@@ -927,7 +927,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                        {isZh ? '水印颜色' : 'Color'}
+                        {getStudioText(validLocale, 'k0110')}
                       </label>
                       <div className="flex items-center gap-2">
                         <input
@@ -944,12 +944,12 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               ) : (
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '选择水印图片' : 'Select Watermark Image'}
+                    {getStudioText(validLocale, 'k0111')}
                   </label>
                   <label className="border-2 border-dashed border-[hsl(var(--color-border))] hover:border-[hsl(var(--color-primary))] rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[hsl(var(--color-muted)/0.2)]">
                     <ImageIcon className="w-5 h-5 text-[hsl(var(--color-muted-foreground))] mb-1" />
                     <span className="text-xs font-medium text-[hsl(var(--color-foreground))] truncate max-w-[180px]">
-                      {watermarkImageFile ? watermarkImageFile.name : (isZh ? '上传 PNG / JPG 印章图片' : 'Upload Image')}
+                      {watermarkImageFile ? watermarkImageFile.name : (getStudioText(validLocale, 'k0112'))}
                     </span>
                     <input
                       type="file"
@@ -967,7 +967,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '倾斜旋转' : 'Angle'}</span>
+                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0113')}</span>
                     <span className="text-[hsl(var(--color-primary))] font-bold">{watermarkAngle}°</span>
                   </div>
                   <input
@@ -982,7 +982,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '透明度' : 'Opacity'}</span>
+                    <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0114')}</span>
                     <span className="text-[hsl(var(--color-primary))] font-bold">{Math.round(watermarkOpacity * 100)}%</span>
                   </div>
                   <input
@@ -1000,16 +1000,16 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               {/* Position and Tile Repeat */}
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '位置排布' : 'Position Layout'}
+                  {getStudioText(validLocale, 'k0115')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { key: 'top-left', label: isZh ? '左上' : 'Top Left' },
-                    { key: 'top-center', label: isZh ? '正上' : 'Top C' },
-                    { key: 'top-right', label: isZh ? '右上' : 'Top Right' },
-                    { key: 'bottom-left', label: isZh ? '左下' : 'Bottom L' },
-                    { key: 'center', label: isZh ? '正中居中' : 'Center' },
-                    { key: 'bottom-right', label: isZh ? '右下' : 'Bottom R' },
+                    { key: 'top-left', label: getStudioText(validLocale, 'k0116') },
+                    { key: 'top-center', label: getStudioText(validLocale, 'k0117') },
+                    { key: 'top-right', label: getStudioText(validLocale, 'k0118') },
+                    { key: 'bottom-left', label: getStudioText(validLocale, 'k0119') },
+                    { key: 'center', label: getStudioText(validLocale, 'k0120') },
+                    { key: 'bottom-right', label: getStudioText(validLocale, 'k0121') },
                   ].map((pos) => (
                     <button
                       key={pos.key}
@@ -1034,7 +1034,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   onChange={(e) => setWatermarkTile(e.target.checked)}
                   className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                 />
-                <span>{isZh ? '全页面阵列密集平铺 (防盗水印)' : 'Repeat tile across entire page'}</span>
+                <span>{getStudioText(validLocale, 'k0122')}</span>
               </label>
             </div>
           )}
@@ -1044,13 +1044,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '压缩预设等级' : 'Compression Preset'}
+                  {getStudioText(validLocale, 'k0123')}
                 </label>
                 <div className="space-y-1.5">
                   {[
-                    { key: 'low', label: isZh ? '轻微压缩 (画质高清，体积稍减)' : 'Low (High Quality)' },
-                    { key: 'medium', label: isZh ? '推荐均衡 (默认通用最佳折衷)' : 'Medium (Balanced Recommended)' },
-                    { key: 'high', label: isZh ? '强力压缩 (极限小体积，邮件快传)' : 'High (Smallest Size)' },
+                    { key: 'low', label: getStudioText(validLocale, 'k0124') },
+                    { key: 'medium', label: getStudioText(validLocale, 'k0125') },
+                    { key: 'high', label: getStudioText(validLocale, 'k0126') },
                   ].map((item) => (
                     <button
                       key={item.key}
@@ -1077,7 +1077,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setCompressOptimizeImages(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '图像重采样与质量优化' : 'Optimize & resample images'}</span>
+                  <span>{getStudioText(validLocale, 'k0127')}</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-[hsl(var(--color-foreground))] cursor-pointer">
                   <input
@@ -1086,7 +1086,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setCompressRemoveMetadata(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '清除冗余元数据与编辑历史' : 'Strip redundant metadata'}</span>
+                  <span>{getStudioText(validLocale, 'k0128')}</span>
                 </label>
               </div>
             </div>
@@ -1097,16 +1097,16 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3.5">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '页码位置 (6 个方位)' : 'Page Number Position'}
+                  {getStudioText(validLocale, 'k0129')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { key: 'top-left', label: isZh ? '顶部靠左' : 'Top L' },
-                    { key: 'top-center', label: isZh ? '顶部居中' : 'Top C' },
-                    { key: 'top-right', label: isZh ? '顶部靠右' : 'Top R' },
-                    { key: 'bottom-left', label: isZh ? '底部靠左' : 'Bottom L' },
-                    { key: 'bottom-center', label: isZh ? '底部居中' : 'Bottom C' },
-                    { key: 'bottom-right', label: isZh ? '底部靠右' : 'Bottom R' },
+                    { key: 'top-left', label: getStudioText(validLocale, 'k0130') },
+                    { key: 'top-center', label: getStudioText(validLocale, 'k0131') },
+                    { key: 'top-right', label: getStudioText(validLocale, 'k0132') },
+                    { key: 'bottom-left', label: getStudioText(validLocale, 'k0133') },
+                    { key: 'bottom-center', label: getStudioText(validLocale, 'k0134') },
+                    { key: 'bottom-right', label: getStudioText(validLocale, 'k0135') },
                   ].map((pos) => (
                     <button
                       key={pos.key}
@@ -1126,7 +1126,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
 
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '展示格式' : 'Format Template'}
+                  {getStudioText(validLocale, 'k0136')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
@@ -1153,7 +1153,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '起始页码' : 'Start Number'}
+                    {getStudioText(validLocale, 'k0137')}
                   </label>
                   <input
                     type="number"
@@ -1165,7 +1165,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '字体字号' : 'Font Size'}
+                    {getStudioText(validLocale, 'k0138')}
                   </label>
                   <input
                     type="number"
@@ -1186,7 +1186,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setPageNumberSkipFirst(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '跳过首页（封面不显示页码）' : 'Skip first page (Cover page)'}</span>
+                  <span>{getStudioText(validLocale, 'k0139')}</span>
                 </label>
               </div>
             </div>
@@ -1196,7 +1196,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
           {normId === 'delete-pages' && (
             <div className="space-y-2.5">
               <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                {isZh ? '需要删除的页码 (逗号或短横线分隔)' : 'Pages to Delete (e.g. 1, 3-5)'}
+                {getStudioText(validLocale, 'k0140')}
               </label>
               <input
                 type="text"
@@ -1207,8 +1207,8 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               />
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {[
-                  { label: isZh ? '删除第 1 页' : 'Page 1', val: '1' },
-                  { label: isZh ? '删除末页' : 'Last Page', val: '99999' },
+                  { label: getStudioText(validLocale, 'k0141'), val: '1' },
+                  { label: getStudioText(validLocale, 'k0142'), val: '99999' },
                 ].map((item) => (
                   <button
                     key={item.label}
@@ -1221,7 +1221,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 ))}
               </div>
               <p className="text-[10px] text-[hsl(var(--color-muted-foreground))]">
-                {isZh ? '支持单页与范围，例如输入 1, 3-5 将删除第 1 页以及第 3 至 5 页' : 'Supports single or ranges, e.g. 1, 3-5'}
+                {getStudioText(validLocale, 'k0143')}
               </p>
             </div>
           )}
@@ -1231,7 +1231,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-2.5">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '提取页码范围 (如: 1-3, 5, 8)' : 'Pages to Extract (e.g. 1-3, 5)'}
+                  {getStudioText(validLocale, 'k0144')}
                 </label>
                 <input
                   type="text"
@@ -1243,10 +1243,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {[
-                  { label: isZh ? '前 3 页' : '1-3', val: '1-3' },
-                  { label: isZh ? '仅第 1 页' : 'Page 1', val: '1' },
-                  { label: isZh ? '奇数页' : 'Odd', val: '1, 3, 5, 7, 9' },
-                  { label: isZh ? '偶数页' : 'Even', val: '2, 4, 6, 8, 10' },
+                  { label: getStudioText(validLocale, 'k0145'), val: '1-3' },
+                  { label: getStudioText(validLocale, 'k0146'), val: '1' },
+                  { label: getStudioText(validLocale, 'k0147'), val: '1, 3, 5, 7, 9' },
+                  { label: getStudioText(validLocale, 'k0148'), val: '2, 4, 6, 8, 10' },
                 ].map((item) => (
                   <button
                     key={item.label}
@@ -1259,7 +1259,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 ))}
               </div>
               <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] leading-relaxed">
-                {isZh ? '选中的页面将组合成新的文档，其他未选择页面将被剔除。' : 'Selected pages will be preserved into a new document.'}
+                {getStudioText(validLocale, 'k0149')}
               </p>
             </div>
           )}
@@ -1269,12 +1269,12 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '插入空白页位置' : 'Insert Position'}
+                  {getStudioText(validLocale, 'k0150')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { key: 'first', label: isZh ? '文档最开头' : 'At Beginning' },
-                    { key: 'last', label: isZh ? '文档最末尾' : 'At End' },
+                    { key: 'first', label: getStudioText(validLocale, 'k0151') },
+                    { key: 'last', label: getStudioText(validLocale, 'k0152') },
                   ].map((pos) => (
                     <button
                       key={pos.key}
@@ -1293,7 +1293,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               </div>
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '插入页数' : 'Number of Pages'}
+                  {getStudioText(validLocale, 'k0153')}
                 </label>
                 <input
                   type="number"
@@ -1311,14 +1311,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
           {normId === 'crop-pdf' && (
             <div className="space-y-3">
               <div className="flex justify-between text-xs mb-1">
-                <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '四周边距裁剪量' : 'Margin Crop'}</span>
+                <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0154')}</span>
                 <span className="text-[hsl(var(--color-primary))] font-bold">{cropMarginTop} pt</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { label: isZh ? '轻微 (10pt)' : 'Light (10pt)', val: 10 },
-                  { label: isZh ? '标准 (20pt)' : 'Normal (20pt)', val: 20 },
-                  { label: isZh ? '深度 (40pt)' : 'Deep (40pt)', val: 40 },
+                  { label: getStudioText(validLocale, 'k0155'), val: 10 },
+                  { label: getStudioText(validLocale, 'k0156'), val: 20 },
+                  { label: getStudioText(validLocale, 'k0157'), val: 40 },
                 ].map((preset) => (
                   <button
                     key={preset.val}
@@ -1363,7 +1363,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setCropApplyToAll(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '将裁剪应用至文档所有页面' : 'Apply crop to all pages in document'}</span>
+                  <span>{getStudioText(validLocale, 'k0158')}</span>
                 </label>
               </div>
             </div>
@@ -1374,7 +1374,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '打开口令 (用户密码)' : 'User Password'}
+                  {getStudioText(validLocale, 'k0159')}
                 </label>
                 <input
                   type="password"
@@ -1387,7 +1387,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
 
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '权限口令 (所有者密码，可选)' : 'Owner Password (Optional)'}
+                  {getStudioText(validLocale, 'k0160')}
                 </label>
                 <input
                   type="password"
@@ -1406,7 +1406,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setAllowPrinting(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '允许打印文档' : 'Allow Printing'}</span>
+                  <span>{getStudioText(validLocale, 'k0161')}</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-[hsl(var(--color-foreground))] cursor-pointer">
                   <input
@@ -1415,7 +1415,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setAllowCopying(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '允许复制文字与图像' : 'Allow Copying Content'}</span>
+                  <span>{getStudioText(validLocale, 'k0162')}</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-[hsl(var(--color-foreground))] cursor-pointer">
                   <input
@@ -1424,7 +1424,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setAllowAnnotating(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '允许添加与修改注释' : 'Allow Annotating'}</span>
+                  <span>{getStudioText(validLocale, 'k0163')}</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-[hsl(var(--color-foreground))] cursor-pointer">
                   <input
@@ -1433,7 +1433,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setAllowFillingForms(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '允许填写表单字段' : 'Allow Form Filling'}</span>
+                  <span>{getStudioText(validLocale, 'k0164')}</span>
                 </label>
               </div>
             </div>
@@ -1444,14 +1444,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '文档密码 / 口令' : 'Document Password'}
+                  {getStudioText(validLocale, 'k0165')}
                 </label>
                 <div className="relative">
                   <input
                     type={showDecryptPassword ? 'text' : 'password'}
                     value={decryptPassword}
                     onChange={(e) => setDecryptPassword(e.target.value)}
-                    placeholder={isZh ? '若有打开密码请输入（无密码请留空）' : 'Enter password if protected'}
+                    placeholder={getStudioText(validLocale, 'k0166')}
                     className="w-full px-3 py-2 pr-9 text-xs rounded-xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                   />
                   <button
@@ -1466,12 +1466,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="p-3 rounded-xl bg-[hsl(var(--color-muted)/0.3)] border border-[hsl(var(--color-border))] space-y-1">
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-[hsl(var(--color-foreground))]">
                   <Unlock className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>{isZh ? '解锁说明' : 'Unlock Note'}</span>
+                  <span>{getStudioText(validLocale, 'k0167')}</span>
                 </div>
                 <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] leading-relaxed">
-                  {isZh
-                    ? '用于解除禁止打印、禁止复制、禁止修改等权限限制。若文档仅限制权限，直接点击解密即可；若文档需密码才能打开，请输入对应密码。'
-                    : 'Removes printing, editing, and copying restrictions. Enter user password if document requires open authorization.'}
+                  {getStudioText(validLocale, 'k0168')}
                 </p>
               </div>
             </div>
@@ -1482,56 +1480,56 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '页眉内容 (左 / 中 / 右)' : 'Header Text (L / C / R)'}
+                  {getStudioText(validLocale, 'k0169')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   <input
                     type="text"
                     value={headerLeft}
                     onChange={(e) => setHeaderLeft(e.target.value)}
-                    placeholder={isZh ? '页眉左' : 'Left'}
+                    placeholder={getStudioText(validLocale, 'k0170')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                   <input
                     type="text"
                     value={headerCenter}
                     onChange={(e) => setHeaderCenter(e.target.value)}
-                    placeholder={isZh ? '页眉中' : 'Center'}
+                    placeholder={getStudioText(validLocale, 'k0171')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                   <input
                     type="text"
                     value={headerRight}
                     onChange={(e) => setHeaderRight(e.target.value)}
-                    placeholder={isZh ? '页眉右' : 'Right'}
+                    placeholder={getStudioText(validLocale, 'k0172')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                 </div>
               </div>
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '页脚内容 (左 / 中 / 右)' : 'Footer Text (L / C / R)'}
+                  {getStudioText(validLocale, 'k0173')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   <input
                     type="text"
                     value={footerLeft}
                     onChange={(e) => setFooterLeft(e.target.value)}
-                    placeholder={isZh ? '页脚左' : 'Left'}
+                    placeholder={getStudioText(validLocale, 'k0174')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                   <input
                     type="text"
                     value={footerCenter}
                     onChange={(e) => setFooterCenter(e.target.value)}
-                    placeholder={isZh ? '页脚中' : 'Center'}
+                    placeholder={getStudioText(validLocale, 'k0175')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                   <input
                     type="text"
                     value={footerRight}
                     onChange={(e) => setFooterRight(e.target.value)}
-                    placeholder={isZh ? '页脚右' : 'Right'}
+                    placeholder={getStudioText(validLocale, 'k0176')}
                     className="w-full px-2 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                   />
                 </div>
@@ -1544,10 +1542,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                     onChange={(e) => setHfSkipFirstPage(e.target.checked)}
                     className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                   />
-                  <span>{isZh ? '首页跳过' : 'Skip cover page'}</span>
+                  <span>{getStudioText(validLocale, 'k0177')}</span>
                 </label>
                 <div className="flex items-center gap-1.5 text-xs">
-                  <span className="text-[hsl(var(--color-muted-foreground))]">{isZh ? '字号:' : 'Size:'}</span>
+                  <span className="text-[hsl(var(--color-muted-foreground))]">{getStudioText(validLocale, 'k0178')}</span>
                   <input
                     type="number"
                     min="8"
@@ -1566,7 +1564,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-2">
-                  {isZh ? '选择预设印章' : 'Select Preset Stamp'}
+                  {getStudioText(validLocale, 'k0179')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {['CONFIDENTIAL', 'APPROVED', 'DRAFT', 'URGENT', 'FINAL', 'VOID'].map((stamp) => (
@@ -1587,13 +1585,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               </div>
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '盖印位置' : 'Position'}
+                  {getStudioText(validLocale, 'k0180')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { key: 'center', label: isZh ? '居中' : 'Center' },
-                    { key: 'top-right', label: isZh ? '右上角' : 'Top Right' },
-                    { key: 'bottom-right', label: isZh ? '右下角' : 'Bottom Right' },
+                    { key: 'center', label: getStudioText(validLocale, 'k0181') },
+                    { key: 'top-right', label: getStudioText(validLocale, 'k0182') },
+                    { key: 'bottom-right', label: getStudioText(validLocale, 'k0183') },
                   ].map((item) => (
                     <button
                       key={item.key}
@@ -1618,7 +1616,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '每张纸拼排页数' : 'Pages per Sheet'}
+                  {getStudioText(validLocale, 'k0184')}
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
@@ -1645,21 +1643,21 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '拼版方向' : 'Orientation'}
+                    {getStudioText(validLocale, 'k0185')}
                   </label>
                   <select
                     value={nUpOrientation}
                     onChange={(e) => setNUpOrientation(e.target.value as any)}
                     className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))]"
                   >
-                    <option value="auto">{isZh ? '自适应' : 'Auto'}</option>
-                    <option value="portrait">{isZh ? '纵向' : 'Portrait'}</option>
-                    <option value="landscape">{isZh ? '横向' : 'Landscape'}</option>
+                    <option value="auto">{getStudioText(validLocale, 'k0186')}</option>
+                    <option value="portrait">{getStudioText(validLocale, 'k0187')}</option>
+                    <option value="landscape">{getStudioText(validLocale, 'k0188')}</option>
                   </select>
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '输出纸张' : 'Sheet Size'}
+                    {getStudioText(validLocale, 'k0189')}
                   </label>
                   <select
                     value={nUpPageSize}
@@ -1679,7 +1677,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   onChange={(e) => setNUpBorder(e.target.checked)}
                   className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                 />
-                <span>{isZh ? '为每页添加细线分割边框' : 'Add separator border around pages'}</span>
+                <span>{getStudioText(validLocale, 'k0190')}</span>
               </label>
             </div>
           )}
@@ -1689,14 +1687,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '海报分割网格' : 'Poster Tiling Grid'}
+                  {getStudioText(validLocale, 'k0191')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { key: '2x2', label: isZh ? '2×2 (4 页拼接)' : '2×2 (4 Sheets)' },
-                    { key: '3x3', label: isZh ? '3×3 (9 页巨幅)' : '3×3 (9 Sheets)' },
-                    { key: '2x1', label: isZh ? '2×1 (横向二折)' : '2×1 (Horizontal)' },
-                    { key: '1x2', label: isZh ? '1×2 (纵向二折)' : '1×2 (Vertical)' },
+                    { key: '2x2', label: getStudioText(validLocale, 'k0192') },
+                    { key: '3x3', label: getStudioText(validLocale, 'k0193') },
+                    { key: '2x1', label: getStudioText(validLocale, 'k0194') },
+                    { key: '1x2', label: getStudioText(validLocale, 'k0195') },
                   ].map((grid) => (
                     <button
                       key={grid.key}
@@ -1715,13 +1713,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               </div>
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '粘合重叠边距' : 'Tile Overlap Margin'}
+                  {getStudioText(validLocale, 'k0196')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { label: isZh ? '无重叠' : '0 pt', val: 0 },
-                    { label: isZh ? '标准 (15pt)' : '15 pt', val: 15 },
-                    { label: isZh ? '宽边 (30pt)' : '30 pt', val: 30 },
+                    { label: getStudioText(validLocale, 'k0197'), val: 0 },
+                    { label: getStudioText(validLocale, 'k0198'), val: 15 },
+                    { label: getStudioText(validLocale, 'k0199'), val: 30 },
                   ].map((item) => (
                     <button
                       key={item.val}
@@ -1746,7 +1744,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '目标标准纸张规格' : 'Target Page Size'}
+                  {getStudioText(validLocale, 'k0200')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
@@ -1772,13 +1770,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               </div>
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                  {isZh ? '内容排版适应模式' : 'Content Scaling Mode'}
+                  {getStudioText(validLocale, 'k0201')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { key: 'fit', label: isZh ? '等比居中' : 'Fit' },
-                    { key: 'fill', label: isZh ? '填满页面' : 'Fill' },
-                    { key: 'stretch', label: isZh ? '拉伸全屏' : 'Stretch' },
+                    { key: 'fit', label: getStudioText(validLocale, 'k0202') },
+                    { key: 'fill', label: getStudioText(validLocale, 'k0203') },
+                    { key: 'stretch', label: getStudioText(validLocale, 'k0204') },
                   ].map((m) => (
                     <button
                       key={m.key}
@@ -1803,7 +1801,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1.5">
-                  {isZh ? '编号样式' : 'Numbering Style'}
+                  {getStudioText(validLocale, 'k0205')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
@@ -1831,7 +1829,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '前缀 (如: Page-)' : 'Prefix'}
+                    {getStudioText(validLocale, 'k0206')}
                   </label>
                   <input
                     type="text"
@@ -1843,7 +1841,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                    {isZh ? '起始编号' : 'Start Value'}
+                    {getStudioText(validLocale, 'k0207')}
                   </label>
                   <input
                     type="number"
@@ -1861,14 +1859,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
           {normId === 'timestamp-pdf' && (
             <div className="space-y-3">
               <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                {isZh ? '选择权威 TSA 时间戳服务器' : 'TSA Authority Server'}
+                {getStudioText(validLocale, 'k0208')}
               </label>
               <div className="space-y-1.5">
                 {[
-                  { id: 'MeSign', desc: isZh ? 'MeSign TSA (推荐，秒级高速)' : 'MeSign (Fastest)' },
-                  { id: 'DigiCert', desc: isZh ? 'DigiCert TSA (全球公信顶级)' : 'DigiCert (Global)' },
-                  { id: 'Sectigo', desc: isZh ? 'Sectigo TSA (国际公信合规)' : 'Sectigo (Standard)' },
-                  { id: 'FreeTSA', desc: isZh ? 'FreeTSA.org (开放免许可)' : 'FreeTSA.org' },
+                  { id: 'MeSign', desc: getStudioText(validLocale, 'k0209') },
+                  { id: 'DigiCert', desc: getStudioText(validLocale, 'k0210') },
+                  { id: 'Sectigo', desc: getStudioText(validLocale, 'k0211') },
+                  { id: 'FreeTSA', desc: getStudioText(validLocale, 'k0212') },
                 ].map((item) => (
                   <button
                     key={item.id}
@@ -1891,13 +1889,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
           {normId === 'rasterize-pdf' && (
             <div className="space-y-3">
               <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                {isZh ? '输出分辨率 (DPI 清晰度)' : 'Output DPI'}
+                {getStudioText(validLocale, 'k0213')}
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { dpi: 96, label: isZh ? '96 (极小体积)' : '96 DPI' },
-                  { dpi: 150, label: isZh ? '150 (推荐标准)' : '150 DPI' },
-                  { dpi: 300, label: isZh ? '300 (高清印刷)' : '300 DPI' },
+                  { dpi: 96, label: getStudioText(validLocale, 'k0214') },
+                  { dpi: 150, label: getStudioText(validLocale, 'k0215') },
+                  { dpi: 300, label: getStudioText(validLocale, 'k0216') },
                 ].map((item) => (
                   <button
                     key={item.dpi}
@@ -1920,7 +1918,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   onChange={(e) => setRasterizeGrayscale(e.target.checked)}
                   className="rounded text-[hsl(var(--color-primary))] accent-[hsl(var(--color-primary))]"
                 />
-                <span>{isZh ? '同时转为黑白灰度图像' : 'Convert to grayscale raster'}</span>
+                <span>{getStudioText(validLocale, 'k0217')}</span>
               </label>
             </div>
           )}
@@ -1959,12 +1957,12 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
           {executionType === 'append' && (
             <div className="space-y-3">
               <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block">
-                {isZh ? '选择要并入的文件' : 'Select Files to Append'}
+                {getStudioText(validLocale, 'k0218')}
               </label>
               <label className="border-2 border-dashed border-[hsl(var(--color-border))] hover:border-[hsl(var(--color-primary))] rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[hsl(var(--color-muted)/0.3)]">
                 <Upload className="w-5 h-5 text-[hsl(var(--color-muted-foreground))] mb-1" />
                 <span className="text-xs font-medium text-[hsl(var(--color-foreground))]">
-                  {isZh ? '点击或拖拽添加外部文件' : 'Click or drop files'}
+                  {getStudioText(validLocale, 'k0219')}
                 </span>
                 <input
                   type="file"
@@ -1981,7 +1979,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               {availableDocuments && availableDocuments.length > 0 && (
                 <div className="space-y-1.5 pt-1 border-t border-[hsl(var(--color-border)/0.6)]">
                   <span className="text-[11px] font-semibold text-[hsl(var(--color-foreground))] block">
-                    {isZh ? '快捷并入工作台中已打开的文档：' : 'Or quick-add other open documents:'}
+                    {getStudioText(validLocale, 'k0220')}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {availableDocuments.map((doc) => {
@@ -2033,7 +2031,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 <div className="space-y-3 p-3 rounded-xl bg-[hsl(var(--color-muted)/0.3)] border border-[hsl(var(--color-border))]">
                   <div>
                     <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                      {isZh ? '导出图片格式' : 'Image Format'}
+                      {getStudioText(validLocale, 'k0221')}
                     </label>
                     <div className="grid grid-cols-3 gap-1.5">
                       {[
@@ -2058,13 +2056,13 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                      {isZh ? '渲染分辨率 (DPI)' : 'Rendering DPI'}
+                      {getStudioText(validLocale, 'k0222')}
                     </label>
                     <div className="grid grid-cols-3 gap-1.5">
                       {[
-                        { dpi: 72, label: '72 (屏幕)' },
-                        { dpi: 150, label: '150 (标准)' },
-                        { dpi: 300, label: '300 (高清)' },
+                        { dpi: 72, label: getStudioText(validLocale, 'k0223') },
+                        { dpi: 150, label: getStudioText(validLocale, 'k0224') },
+                        { dpi: 300, label: getStudioText(validLocale, 'k0225') },
                       ].map((item) => (
                         <button
                           key={item.dpi}
@@ -2083,7 +2081,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold text-[hsl(var(--color-foreground))]">{isZh ? '压缩质量' : 'Quality'}</span>
+                      <span className="font-semibold text-[hsl(var(--color-foreground))]">{getStudioText(validLocale, 'k0226')}</span>
                       <span className="text-[hsl(var(--color-primary))] font-bold">{exportImageQuality}%</span>
                     </div>
                     <input
@@ -2104,14 +2102,14 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                 <div className="space-y-3 p-3 rounded-xl bg-[hsl(var(--color-muted)/0.3)] border border-[hsl(var(--color-border))]">
                   <div>
                     <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                      {isZh ? 'OCR 识别语言' : 'OCR Language'}
+                      {getStudioText(validLocale, 'k0227')}
                     </label>
                     <div className="space-y-1">
                       {[
-                        { key: 'chi_sim', label: isZh ? '简体中文 + 英文 (推荐)' : 'Simplified Chinese + English' },
-                        { key: 'eng', label: isZh ? '仅英文 (English)' : 'English Only' },
-                        { key: 'chi_tra', label: isZh ? '繁体中文 + 英文' : 'Traditional Chinese' },
-                        { key: 'jpn', label: isZh ? '日文 + 英文' : 'Japanese' },
+                        { key: 'chi_sim', label: getStudioText(validLocale, 'k0228') },
+                        { key: 'eng', label: getStudioText(validLocale, 'k0229') },
+                        { key: 'chi_tra', label: getStudioText(validLocale, 'k0230') },
+                        { key: 'jpn', label: getStudioText(validLocale, 'k0231') },
                       ].map((item) => (
                         <button
                           key={item.key}
@@ -2130,12 +2128,12 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-[hsl(var(--color-foreground))] block mb-1">
-                      {isZh ? '输出成果类型' : 'Output Type'}
+                      {getStudioText(validLocale, 'k0232')}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { key: 'searchable-pdf', label: isZh ? '双层可搜索 PDF' : 'Searchable PDF' },
-                        { key: 'text', label: isZh ? '提取为 TXT 文本' : 'Text (.txt)' },
+                        { key: 'searchable-pdf', label: getStudioText(validLocale, 'k0233') },
+                        { key: 'text', label: getStudioText(validLocale, 'k0234') },
                       ].map((out) => (
                         <button
                           key={out.key}
@@ -2167,12 +2165,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               {/* General Export Notice */}
               <div className="p-3 rounded-xl bg-[hsl(var(--color-muted)/0.3)] border border-[hsl(var(--color-border))] space-y-1">
                 <span className="text-xs font-semibold text-[hsl(var(--color-foreground))] block">
-                  {isZh ? '导出提示' : 'Export Notice'}
+                  {getStudioText(validLocale, 'k0235')}
                 </span>
                 <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] leading-relaxed">
-                  {isZh
-                    ? '处理完成后将自动触发文件下载。当前主文档将保持在工作台中打开，可继续编辑。'
-                    : 'Converted output will download directly. Your main PDF remains open for further editing.'}
+                  {getStudioText(validLocale, 'k0236')}
                 </p>
               </div>
             </div>
@@ -2184,12 +2180,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
               <div className="p-3.5 rounded-2xl bg-[hsl(var(--color-muted)/0.4)] border border-[hsl(var(--color-border))] space-y-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-[hsl(var(--color-foreground))]">
                   <Check className="w-4 h-4 text-emerald-500" />
-                  <span>{isZh ? '一键即刻处理' : 'Instant In-Place Action'}</span>
+                  <span>{getStudioText(validLocale, 'k0237')}</span>
                 </div>
                 <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] leading-relaxed">
-                  {isZh
-                    ? '该操作属于确定性批处理（如页面倒序、删除纯空白页、转为标准灰度等），无需繁琐参数，点击下方按钮将在纯内存中直接执行并实时刷新预览。若需还原可随时按 Ctrl+Z 撤销。'
-                    : 'This action is deterministic (e.g. reversing page sequence, stripping blank pages). No extra parameters needed.'}
+                  {getStudioText(validLocale, 'k0238')}
                 </p>
               </div>
             )}
@@ -2199,12 +2193,10 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             <div className="p-3.5 rounded-2xl bg-[hsl(var(--color-muted)/0.4)] border border-[hsl(var(--color-border))] space-y-2">
               <div className="flex items-center gap-2 text-xs font-bold text-[hsl(var(--color-foreground))]">
                 <ExternalLink className="w-4 h-4 text-[hsl(var(--color-primary))]" />
-                <span>{isZh ? '大画布专属交互工具' : 'Full Canvas Tool'}</span>
+                <span>{getStudioText(validLocale, 'k0239')}</span>
               </div>
               <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] leading-relaxed">
-                {isZh
-                  ? '该工具包含复杂的拖拽网格、矢量画板或多文档对照排版，建议点击下方按钮在专属大视图中操作。'
-                  : 'This tool features a rich interactive canvas. We recommend opening the full-screen view.'}
+                {getStudioText(validLocale, 'k0240')}
               </p>
             </div>
           )}
@@ -2220,7 +2212,7 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             disabled={isApplying}
             className="flex-1 text-xs"
           >
-            {isZh ? '取消' : 'Cancel'}
+            {getStudioText(validLocale, 'k0241')}
           </Button>
           <Button
             type="submit"
@@ -2232,27 +2224,27 @@ export const StudioToolDrawer: React.FC<StudioToolDrawerProps> = ({
             {isApplying ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
-                <span>{isZh ? '处理中...' : 'Processing...'}</span>
+                <span>{getStudioText(validLocale, 'k0242')}</span>
               </>
             ) : executionType === 'export' ? (
               <>
                 <Download className="w-3.5 h-3.5 mr-1.5" />
-                <span>{isZh ? '开始导出' : 'Export & Save'}</span>
+                <span>{getStudioText(validLocale, 'k0243')}</span>
               </>
             ) : executionType === 'append' ? (
               <>
                 <Files className="w-3.5 h-3.5 mr-1.5" />
-                <span>{isZh ? '合并追加' : 'Append'}</span>
+                <span>{getStudioText(validLocale, 'k0244')}</span>
               </>
             ) : executionType === 'navigate' ? (
               <>
                 <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
-                <span>{isZh ? '打开全屏' : 'Open View'}</span>
+                <span>{getStudioText(validLocale, 'k0245')}</span>
               </>
             ) : (
               <>
                 <Check className="w-3.5 h-3.5 mr-1.5" />
-                <span>{isZh ? '应用更改' : 'Apply Changes'}</span>
+                <span>{getStudioText(validLocale, 'k0246')}</span>
               </>
             )}
           </Button>

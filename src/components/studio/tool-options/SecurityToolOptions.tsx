@@ -11,6 +11,8 @@ import {
   Anchor,
   Sparkles,
 } from 'lucide-react';
+import { getStudioText } from '@/lib/i18n/studio';
+import type { Locale } from '@/lib/i18n/config';
 
 interface SecurityToolOptionsProps {
   toolId: string;
@@ -27,7 +29,6 @@ export function SecurityToolOptions({
   totalPages = 1,
   locale = 'zh',
 }: SecurityToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
 
   switch (toolId) {
     case 'sanitize-pdf':
@@ -43,16 +44,16 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '安全深度脱敏项勾选' : 'Sanitization Scope'}
+              {getStudioText(locale as Locale, 'k0546')}
             </label>
             <div className="space-y-2 text-xs">
               {[
-                { key: 'removeJavaScript', label: isZh ? '剔除所有可执行 JavaScript 脚本' : 'Remove JavaScript Scripts', val: removeJavaScript },
-                { key: 'removeAttachments', label: isZh ? '剥离嵌入的内嵌文件附件' : 'Remove Embedded Attachments', val: removeAttachments },
-                { key: 'removeLinks', label: isZh ? '清除所有外部跳转超链接' : 'Remove External Hyperlinks', val: removeLinks },
-                { key: 'flattenForms', label: isZh ? '展平交互式表单字段为静态文本' : 'Flatten Form Fields', val: flattenForms },
-                { key: 'removeMetadata', label: isZh ? '抹除隐藏的文档元数据与编辑历史' : 'Purge Metadata & History', val: removeMetadata },
-                { key: 'removeAnnotations', label: isZh ? '清除批注与隐藏图层' : 'Strip Annotations & Hidden OCG', val: removeAnnotations },
+                { key: 'removeJavaScript', label: getStudioText(locale as Locale, 'k0547'), val: removeJavaScript },
+                { key: 'removeAttachments', label: getStudioText(locale as Locale, 'k0548'), val: removeAttachments },
+                { key: 'removeLinks', label: getStudioText(locale as Locale, 'k0549'), val: removeLinks },
+                { key: 'flattenForms', label: getStudioText(locale as Locale, 'k0550'), val: flattenForms },
+                { key: 'removeMetadata', label: getStudioText(locale as Locale, 'k0551'), val: removeMetadata },
+                { key: 'removeAnnotations', label: getStudioText(locale as Locale, 'k0552'), val: removeAnnotations },
               ].map((item) => (
                 <label key={item.key} className="flex items-center justify-between p-2 rounded-lg border border-border/50 hover:bg-muted/40 cursor-pointer">
                   <span>{item.label}</span>
@@ -83,25 +84,25 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '搜索与永久遮盖 (脱敏)' : 'Search & Redact'}
+              {getStudioText(locale as Locale, 'k0553')}
             </label>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-foreground">
-                {isZh ? '要遮盖的关键词 (逗号分隔)' : 'Keywords to Redact'}
+                {getStudioText(locale as Locale, 'k0554')}
               </label>
               <input
                 type="text"
                 value={searchTermsInput}
                 onChange={(e) => onChange('searchTermsInput', e.target.value)}
-                placeholder={isZh ? '例如: 绝密, 密码, 身份证号' : 'e.g. Secret, Password, SSN'}
+                placeholder={getStudioText(locale as Locale, 'k0555')}
                 className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background"
               />
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs pt-1">
               {[
-                { key: 'caseSensitive', label: isZh ? '大小写敏感' : 'Match Case', val: caseSensitive },
-                { key: 'wholeWord', label: isZh ? '整词匹配' : 'Whole Word', val: wholeWord },
-                { key: 'useRegex', label: isZh ? '正则表达式' : 'Regex Mode', val: useRegex },
+                { key: 'caseSensitive', label: getStudioText(locale as Locale, 'k0556'), val: caseSensitive },
+                { key: 'wholeWord', label: getStudioText(locale as Locale, 'k0557'), val: wholeWord },
+                { key: 'useRegex', label: getStudioText(locale as Locale, 'k0558'), val: useRegex },
               ].map((m) => (
                 <label key={m.key} className="flex items-center gap-1.5 cursor-pointer">
                   <input
@@ -115,7 +116,7 @@ export function SecurityToolOptions({
               ))}
             </div>
             <div className="flex items-center justify-between text-xs pt-2">
-              <span>{isZh ? '遮盖色条颜色' : 'Redaction Color'}</span>
+              <span>{getStudioText(locale as Locale, 'k0559')}</span>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -127,12 +128,12 @@ export function SecurityToolOptions({
               </div>
             </div>
             <div className="space-y-1.5 pt-1">
-              <label className="text-xs text-muted-foreground">{isZh ? '覆盖印文字 (可选)' : 'Overlay Text (Optional)'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0560')}</label>
               <input
                 type="text"
                 value={replacementText}
                 onChange={(e) => onChange('replacementText', e.target.value)}
-                placeholder={isZh ? '留空为纯色遮挡，或填 [已脱敏]' : 'Leave blank or [REDACTED]'}
+                placeholder={getStudioText(locale as Locale, 'k0561')}
                 className="w-full px-3 py-1.5 text-xs rounded-lg border border-border bg-background"
               />
             </div>
@@ -151,13 +152,13 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '智能敏感隐私数据自动脱敏' : 'Smart Privacy Redactor'}
+              {getStudioText(locale as Locale, 'k0562')}
             </label>
             <div className="space-y-2 text-xs">
               {[
-                { key: 'idRedact', label: isZh ? '居民身份证号 / 驾照编号' : 'National ID / SSN', val: idRedact },
-                { key: 'phoneRedact', label: isZh ? '11 位手机号码及固话' : 'Phone Numbers', val: phoneRedact },
-                { key: 'emailRedact', label: isZh ? '电子邮箱地址 (Email)' : 'Email Addresses', val: emailRedact },
+                { key: 'idRedact', label: getStudioText(locale as Locale, 'k0563'), val: idRedact },
+                { key: 'phoneRedact', label: getStudioText(locale as Locale, 'k0564'), val: phoneRedact },
+                { key: 'emailRedact', label: getStudioText(locale as Locale, 'k0565'), val: emailRedact },
               ].map((item) => (
                 <label key={item.key} className="flex items-center justify-between p-2 rounded-lg border border-border/50 hover:bg-muted/40 cursor-pointer">
                   <span>{item.label}</span>
@@ -171,12 +172,12 @@ export function SecurityToolOptions({
               ))}
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '追加自定义脱敏词' : 'Additional Keywords'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0566')}</label>
               <input
                 type="text"
                 value={customKeywords}
                 onChange={(e) => onChange('customKeywords', e.target.value)}
-                placeholder={isZh ? '逗号分隔关键词' : 'Comma separated'}
+                placeholder={getStudioText(locale as Locale, 'k0567')}
                 className="w-full px-3 py-1.5 text-xs rounded-lg border border-border bg-background"
               />
             </div>
@@ -196,14 +197,14 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'PDF 权限细粒度配置' : 'Security Permissions'}
+              {getStudioText(locale as Locale, 'k0568')}
             </label>
             <div className="space-y-2 text-xs">
               {[
-                { key: 'allowPrinting', label: isZh ? '允许打印文档' : 'Allow Printing', val: allowPrinting },
-                { key: 'allowCopying', label: isZh ? '允许复制文本与图片' : 'Allow Copying Content', val: allowCopying },
-                { key: 'allowModifying', label: isZh ? '允许修改页面结构' : 'Allow Page Modifying', val: allowModifying },
-                { key: 'allowAnnotating', label: isZh ? '允许添加批注与图章' : 'Allow Annotating & Signing', val: allowAnnotating },
+                { key: 'allowPrinting', label: getStudioText(locale, 'k0161'), val: allowPrinting },
+                { key: 'allowCopying', label: getStudioText(locale as Locale, 'k0569'), val: allowCopying },
+                { key: 'allowModifying', label: getStudioText(locale as Locale, 'k0570'), val: allowModifying },
+                { key: 'allowAnnotating', label: getStudioText(locale as Locale, 'k0571'), val: allowAnnotating },
               ].map((p) => (
                 <label key={p.key} className="flex items-center justify-between p-2 rounded-lg border border-border/50 hover:bg-muted/40 cursor-pointer">
                   <span>{p.label}</span>
@@ -217,12 +218,12 @@ export function SecurityToolOptions({
               ))}
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs font-medium text-foreground">{isZh ? '所有者保护密码 (必须设置)' : 'Owner Master Password'}</label>
+              <label className="text-xs font-medium text-foreground">{getStudioText(locale as Locale, 'k0572')}</label>
               <input
                 type="password"
                 value={ownerPassword}
                 onChange={(e) => onChange('ownerPassword', e.target.value)}
-                placeholder={isZh ? '用于锁定上述权限的密码' : 'Password to enforce permissions'}
+                placeholder={getStudioText(locale as Locale, 'k0573')}
                 className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background"
               />
             </div>
@@ -232,7 +233,7 @@ export function SecurityToolOptions({
     }
 
     case 'digital-sign-pdf': {
-      const reason = options.reason || (isZh ? '我已仔细审核并签署此文档' : 'I have reviewed and approved');
+      const reason = options.reason || getStudioText(locale as Locale, 'k0574');
       const location = options.location || '';
       const contactInfo = options.contactInfo || '';
       const enableVisible = options.enableVisible ?? true;
@@ -242,11 +243,11 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '数字证书签署参数' : 'Digital Signature Parameters'}
+              {getStudioText(locale as Locale, 'k0575')}
             </label>
             <div className="space-y-2 text-xs">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '签署缘由 (Reason)' : 'Sign Reason'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0576')}</label>
                 <input
                   type="text"
                   value={reason}
@@ -255,17 +256,17 @@ export function SecurityToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '签署地点 (Location)' : 'Sign Location'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0577')}</label>
                 <input
                   type="text"
                   value={location}
                   onChange={(e) => onChange('location', e.target.value)}
-                  placeholder={isZh ? '例如: 深圳 / 线上签署' : 'e.g. London / Online'}
+                  placeholder={getStudioText(locale as Locale, 'k0578')}
                   className="w-full px-3 py-1.5 rounded-lg border border-border bg-background"
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '签署人联系方式' : 'Contact Info'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0579')}</label>
                 <input
                   type="text"
                   value={contactInfo}
@@ -275,7 +276,7 @@ export function SecurityToolOptions({
                 />
               </div>
               <div className="pt-2 flex items-center justify-between">
-                <span>{isZh ? '在页面生成可视化签名印戳' : 'Add Visible Signature Stamp'}</span>
+                <span>{getStudioText(locale as Locale, 'k0580')}</span>
                 <input
                   type="checkbox"
                   checked={enableVisible}
@@ -297,15 +298,15 @@ export function SecurityToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '电子火漆与证书加密' : 'Cert Cryptor & Wax Seal'}
+              {getStudioText(locale as Locale, 'k0581')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '火漆印章颜色' : 'Seal Color'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0582')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'red', label: isZh ? '朱砂红' : 'Vermilion' },
-                  { id: 'gold', label: isZh ? '烫金色' : 'Gold' },
-                  { id: 'blue', label: isZh ? '青黛蓝' : 'Sapphire' },
+                  { id: 'red', label: getStudioText(locale as Locale, 'k0583') },
+                  { id: 'gold', label: getStudioText(locale as Locale, 'k0584') },
+                  { id: 'blue', label: getStudioText(locale as Locale, 'k0585') },
                 ].map((w) => (
                   <button
                     key={w.id}
@@ -323,15 +324,15 @@ export function SecurityToolOptions({
               </div>
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '印章加盖位置' : 'Seal Position'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale as Locale, 'k0586')}</label>
               <select
                 value={sealPos}
                 onChange={(e) => onChange('sealPos', e.target.value)}
                 className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-border bg-background"
               >
-                <option value="bottom-right">{isZh ? '右下角' : 'Bottom Right'}</option>
-                <option value="top-right">{isZh ? '右上角' : 'Top Right'}</option>
-                <option value="center">{isZh ? '页面中央' : 'Center'}</option>
+                <option value="bottom-right">{getStudioText(locale, 'k0183')}</option>
+                <option value="top-right">{getStudioText(locale, 'k0182')}</option>
+                <option value="center">{getStudioText(locale as Locale, 'k0587')}</option>
               </select>
             </div>
           </div>
@@ -343,16 +344,16 @@ export function SecurityToolOptions({
       const pageNumber = options.pageNumber ?? 1;
       const anchorX = options.anchorX ?? 0.8;
       const anchorY = options.anchorY ?? 0.8;
-      const anchorLabel = options.anchorLabel || (isZh ? '签署人请在此处签名' : 'Sign Here');
+      const anchorLabel = options.anchorLabel || getStudioText(locale as Locale, 'k0588');
 
       return (
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '签名位置锚点提示框' : 'Signature Anchor Helper'}
+              {getStudioText(locale as Locale, 'k0589')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-foreground font-medium">{isZh ? '锚点引导提示语' : 'Anchor Label'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale as Locale, 'k0590')}</label>
               <input
                 type="text"
                 value={anchorLabel}
@@ -362,7 +363,7 @@ export function SecurityToolOptions({
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs pt-1">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '目标页码' : 'Page'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0591')}</label>
                 <input
                   type="number"
                   min="1"
@@ -373,7 +374,7 @@ export function SecurityToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '横向位置 X' : 'Anchor X'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0592')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -385,7 +386,7 @@ export function SecurityToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '纵向位置 Y' : 'Anchor Y'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale as Locale, 'k0593')}</label>
                 <input
                   type="number"
                   step="0.05"

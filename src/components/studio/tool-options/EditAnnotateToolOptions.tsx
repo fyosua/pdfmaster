@@ -1,5 +1,6 @@
 'use client';
 
+import { getStudioText } from '@/lib/i18n/studio';
 import React from 'react';
 import {
   Type,
@@ -28,7 +29,6 @@ export function EditAnnotateToolOptions({
   totalPages = 1,
   locale = 'zh',
 }: EditAnnotateToolOptionsProps) {
-  const isZh = locale.startsWith('zh');
 
   switch (toolId) {
     case 'text-color': {
@@ -40,10 +40,10 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '文本颜色替换与染色' : 'Text Color Settings'}
+              {getStudioText(locale, 'k0247')}
             </label>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-foreground">{isZh ? '目标替换颜色' : 'Target Color'}</span>
+              <span className="font-medium text-foreground">{getStudioText(locale, 'k0248')}</span>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -55,12 +55,12 @@ export function EditAnnotateToolOptions({
               </div>
             </div>
             <div className="space-y-1.5 pt-2">
-              <label className="text-xs text-muted-foreground">{isZh ? '染色应用模式' : 'Tint Mode'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0249')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'dark', label: isZh ? '深色字替换' : 'Dark Text' },
-                  { id: 'light', label: isZh ? '浅色字反白' : 'Light Text' },
-                  { id: 'custom', label: isZh ? '阈值替换' : 'Threshold' },
+                  { id: 'dark', label: getStudioText(locale, 'k0250') },
+                  { id: 'light', label: getStudioText(locale, 'k0251') },
+                  { id: 'custom', label: getStudioText(locale, 'k0252') },
                 ].map((m) => (
                   <button
                     key={m.id}
@@ -80,7 +80,7 @@ export function EditAnnotateToolOptions({
             {mode === 'custom' && (
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-xs">
-                  <span>{isZh ? '灰度识别阈值' : 'Luminance Threshold'}</span>
+                  <span>{getStudioText(locale, 'k0253')}</span>
                   <span className="font-semibold text-primary">{threshold}</span>
                 </div>
                 <input
@@ -107,10 +107,10 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '背景底色调整' : 'Background Tint'}
+              {getStudioText(locale, 'k0254')}
             </label>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-foreground">{isZh ? '页面底色 (护眼模式)' : 'Background Color'}</span>
+              <span className="font-medium text-foreground">{getStudioText(locale, 'k0255')}</span>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -123,10 +123,10 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="grid grid-cols-4 gap-1.5 pt-1">
               {[
-                { hex: '#fdf6e2', name: isZh ? '羊皮纸' : 'Parchment' },
-                { hex: '#e8f5e9', name: isZh ? '护眼绿' : 'Soft Green' },
-                { hex: '#e3f2fd', name: isZh ? '柔和蓝' : 'Soft Blue' },
-                { hex: '#ffffff', name: isZh ? '纯白' : 'White' },
+                { hex: '#fdf6e2', name: getStudioText(locale, 'k0256') },
+                { hex: '#e8f5e9', name: getStudioText(locale, 'k0257') },
+                { hex: '#e3f2fd', name: getStudioText(locale, 'k0258') },
+                { hex: '#ffffff', name: getStudioText(locale, 'k0259') },
               ].map((c) => (
                 <button
                   key={c.hex}
@@ -141,7 +141,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '底色不透明度' : 'Opacity'}</span>
+                <span>{getStudioText(locale, 'k0260')}</span>
                 <span className="font-semibold text-primary">{Math.round(opacity * 100)}%</span>
               </div>
               <input
@@ -160,17 +160,17 @@ export function EditAnnotateToolOptions({
     }
 
     case 'interactive-toc-generator': {
-      const title = options.title || (isZh ? '交互式目录' : 'Interactive Table of Contents');
+      const title = options.title || getStudioText(locale, 'k0089');
       const insertIndex = options.insertIndex ?? 1;
 
       return (
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '交互式带超链接目录生成器' : 'Interactive TOC Generator'}
+              {getStudioText(locale, 'k0261')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-foreground font-medium">{isZh ? '目录页大标题' : 'TOC Header Title'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale, 'k0262')}</label>
               <input
                 type="text"
                 value={title}
@@ -179,14 +179,14 @@ export function EditAnnotateToolOptions({
               />
             </div>
             <div className="space-y-1.5 pt-1 text-xs">
-              <label className="text-muted-foreground block mb-1">{isZh ? '目录插入到第几页前' : 'Insert Before Page'}</label>
+              <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0263')}</label>
               <select
                 value={insertIndex}
                 onChange={(e) => onChange('insertIndex', parseInt(e.target.value) || 1)}
                 className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background"
               >
-                <option value={1}>{isZh ? '在第 1 页最前面插入' : 'Insert at Page 1 (Beginning)'}</option>
-                <option value={2}>{isZh ? '在封面后插入 (第 2 页)' : 'Insert after Cover (Page 2)'}</option>
+                <option value={1}>{getStudioText(locale, 'k0264')}</option>
+                <option value={2}>{getStudioText(locale, 'k0265')}</option>
               </select>
             </div>
           </div>
@@ -202,15 +202,15 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? 'AI 启发式书签大纲自动生成' : 'Automatic Bookmarks Generator'}
+              {getStudioText(locale, 'k0266')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '标题检测识别策略' : 'Detection Strategy'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0267')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'font-size', label: isZh ? '依据大字号' : 'Font Size' },
-                  { id: 'bold', label: isZh ? '依据加粗文本' : 'Bold Text' },
-                  { id: 'numbered', label: isZh ? '依据章节目编号' : 'Numbered' },
+                  { id: 'font-size', label: getStudioText(locale, 'k0268') },
+                  { id: 'bold', label: getStudioText(locale, 'k0269') },
+                  { id: 'numbered', label: getStudioText(locale, 'k0270') },
                 ].map((s) => (
                   <button
                     key={s.id}
@@ -229,7 +229,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '最小标题字号判定 (pt)' : 'Min Header Size (pt)'}</span>
+                <span>{getStudioText(locale, 'k0271')}</span>
                 <span className="font-semibold text-primary">{minFontSize} pt</span>
               </div>
               <input
@@ -259,11 +259,11 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '批量条码/二维码注入参数' : 'Barcode Injector'}
+              {getStudioText(locale, 'k0272')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: 'qrcode', label: 'QR 二维码' },
+                { id: 'qrcode', label: getStudioText(locale, 'k0273') },
                 { id: 'code128', label: 'Code 128' },
                 { id: 'ean13', label: 'EAN-13' },
               ].map((b) => (
@@ -282,7 +282,7 @@ export function EditAnnotateToolOptions({
               ))}
             </div>
             <div className="space-y-1.5 pt-1">
-              <label className="text-xs text-foreground font-medium">{isZh ? '编码文本或网址' : 'Barcode Data'}</label>
+              <label className="text-xs text-foreground font-medium">{getStudioText(locale, 'k0274')}</label>
               <input
                 type="text"
                 value={value}
@@ -293,7 +293,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="grid grid-cols-2 gap-3 text-xs pt-1">
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '水平位置 X (0-1)' : 'X Pos (0-1)'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0275')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -305,7 +305,7 @@ export function EditAnnotateToolOptions({
                 />
               </div>
               <div>
-                <label className="text-muted-foreground block mb-1">{isZh ? '垂直位置 Y (0-1)' : 'Y Pos (0-1)'}</label>
+                <label className="text-muted-foreground block mb-1">{getStudioText(locale, 'k0276')}</label>
                 <input
                   type="number"
                   step="0.05"
@@ -331,15 +331,15 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '签名墨迹与印章画质优化' : 'Signature Ink Optimizer'}
+              {getStudioText(locale, 'k0277')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '墨水类型' : 'Ink Type'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0278')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'auto', label: isZh ? '智能自适应' : 'Auto' },
-                  { id: 'blue', label: isZh ? '蓝墨水笔迹' : 'Blue Ink' },
-                  { id: 'black', label: isZh ? '黑墨水印章' : 'Black Ink' },
+                  { id: 'auto', label: getStudioText(locale, 'k0279') },
+                  { id: 'blue', label: getStudioText(locale, 'k0280') },
+                  { id: 'black', label: getStudioText(locale, 'k0281') },
                 ].map((k) => (
                   <button
                     key={k.id}
@@ -358,7 +358,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '背景噪点过滤阈值' : 'Noise Filter Threshold'}</span>
+                <span>{getStudioText(locale, 'k0282')}</span>
                 <span className="font-semibold text-primary">{threshold}</span>
               </div>
               <input
@@ -372,7 +372,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '笔画对比度增益' : 'Contrast Booster'}</span>
+                <span>{getStudioText(locale, 'k0283')}</span>
                 <span className="font-semibold text-primary">{contrast}x</span>
               </div>
               <input
@@ -398,15 +398,15 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '空白页智能检测与移除' : 'Remove Blank Pages'}
+              {getStudioText(locale, 'k0284')}
             </label>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground">{isZh ? '扫描检测范围' : 'Scan Scope'}</label>
+              <label className="text-xs text-muted-foreground">{getStudioText(locale, 'k0285')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'all', label: isZh ? '全部页面' : 'All Pages' },
-                  { id: 'even', label: isZh ? '仅偶数背页' : 'Even Backs' },
-                  { id: 'odd', label: isZh ? '仅奇数页' : 'Odd Only' },
+                  { id: 'all', label: getStudioText(locale, 'k0286') },
+                  { id: 'even', label: getStudioText(locale, 'k0287') },
+                  { id: 'odd', label: getStudioText(locale, 'k0288') },
                 ].map((f) => (
                   <button
                     key={f.id}
@@ -425,7 +425,7 @@ export function EditAnnotateToolOptions({
             </div>
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs">
-                <span>{isZh ? '空白度敏感度阈值' : 'Blankness Threshold'}</span>
+                <span>{getStudioText(locale, 'k0289')}</span>
                 <span className="font-semibold text-primary">{threshold}%</span>
               </div>
               <input
@@ -438,7 +438,7 @@ export function EditAnnotateToolOptions({
                 className="w-full accent-primary"
               />
               <p className="text-[11px] text-muted-foreground">
-                {isZh ? '数值越高容忍的微小噪点越少，推荐 99%' : 'Higher value detects cleaner pages. 99% recommended.'}
+                {getStudioText(locale, 'k0290')}
               </p>
             </div>
           </div>
@@ -453,10 +453,10 @@ export function EditAnnotateToolOptions({
         <div className="space-y-4">
           <div className="rounded-xl border border-border/70 bg-card p-4 space-y-3">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-              {isZh ? '清除批注与高亮' : 'Remove Annotations'}
+              {getStudioText(locale, 'k0291')}
             </label>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-foreground">{isZh ? '彻底清除全部批注与高亮标记' : 'Remove All Annotations'}</span>
+              <span className="font-medium text-foreground">{getStudioText(locale, 'k0292')}</span>
               <input
                 type="checkbox"
                 checked={removeAll}
@@ -465,7 +465,7 @@ export function EditAnnotateToolOptions({
               />
             </div>
             <p className="text-[11px] text-muted-foreground">
-              {isZh ? '将清除高亮线、下划线、删除线、便签附注、自由画笔痕迹和图形注释。' : 'Removes highlights, underlines, sticky notes, and stamps.'}
+              {getStudioText(locale, 'k0293')}
             </p>
           </div>
         </div>

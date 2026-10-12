@@ -40,6 +40,8 @@ import {
 } from './studio-processors';
 import { saveBlobFile, isTauri, getSystemPrinters, printPdfFile } from '@/lib/tauri-bridge';
 import { withBasePath } from '@/lib/utils/path';
+import type { Locale } from '@/lib/i18n/config';
+import { getStudioText } from '@/lib/i18n/studio';
 
 interface PDFStudioProps {
   locale: string;
@@ -176,7 +178,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       );
 
       if (validPdfs.length === 0) {
-        notify('error', '请选择有效的 PDF 文件');
+        notify('error', getStudioText(locale as Locale, 'k0000'));
         return;
       }
 
@@ -192,7 +194,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       setDocuments((prev) => [...prev, ...newDocs]);
       setActiveDocId(newDocs[0].id);
       setActiveToolId(null);
-      notify('success', `已成功载入 ${newDocs.length} 个 PDF 文档`);
+      notify('success', getStudioText(locale as Locale, 'k0001', { 'newDocs.length': newDocs.length }));
     },
     [notify]
   );
@@ -215,7 +217,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       setDocuments((prev) => {
         const targetDoc = prev.find((d) => d.id === docId);
         if (targetDoc && targetDoc.historyStack.length > 0) {
-          if (!window.confirm(`文档「${targetDoc.name}」包含未保存的修改，确定要关闭吗？`)) {
+          if (!window.confirm(getStudioText(locale as Locale, 'k0002', { 'targetDoc.name': targetDoc.name }))) {
             return prev;
           }
         }
@@ -275,9 +277,9 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
 
         setActiveToolId(null); // Close drawer
         addStudioRecentTool(toolId);
-        notify('success', `已就地应用「${toolName}」，可在左侧继续选择下一项操作`);
+        notify('success', getStudioText(locale as Locale, 'k0003', { toolName }));
       } catch (err: any) {
-        notify('error', err?.message || '操作应用失败，请检查参数');
+        notify('error', err?.message || getStudioText(locale as Locale, 'k0004'));
       } finally {
         setIsApplying(false);
       }
@@ -298,9 +300,9 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
         await saveBlobFile(blob, filename);
         setActiveToolId(null);
         addStudioRecentTool(toolId);
-        notify('success', `转换导出完成，已触发下载「${filename}」`);
+        notify('success', getStudioText(locale as Locale, 'k0005', { filename }));
       } catch (err: any) {
-        notify('error', err?.message || '导出转换失败');
+        notify('error', err?.message || getStudioText(locale as Locale, 'k0006'));
       } finally {
         setIsApplying(false);
       }
@@ -331,7 +333,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
         return doc;
       })
     );
-    notify('success', `已撤销「${previousItem.action}」`);
+    notify('success', getStudioText(locale as Locale, 'k0007', { 'previousItem.action': previousItem.action }));
   }, [activeDoc, notify]);
 
   // Redo operation on active document
@@ -357,13 +359,13 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
         return doc;
       })
     );
-    notify('success', `已重做「${nextItem.action}」`);
+    notify('success', getStudioText(locale as Locale, 'k0008', { 'nextItem.action': nextItem.action }));
   }, [activeDoc, notify]);
 
   // Revert all changes on active document back to initial version
   const handleRevert = useCallback(() => {
     if (!activeDoc || activeDoc.historyStack.length === 0) return;
-    if (window.confirm(`确定要放弃文档「${activeDoc.name}」的所有更改，还原到最初上传的版本吗？`)) {
+    if (window.confirm(getStudioText(locale as Locale, 'k0009', { 'activeDoc.name': activeDoc.name }))) {
       setDocuments((prev) =>
         prev.map((doc) => {
           if (doc.id === activeDoc.id) {
@@ -379,7 +381,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       );
       setActiveToolId(null);
       setIsHistoryOpen(false);
-      notify('success', `已还原「${activeDoc.name}」至最初版本`);
+      notify('success', getStudioText(locale as Locale, 'k0010', { 'activeDoc.name': activeDoc.name }));
     }
   }, [activeDoc, notify]);
 
@@ -398,9 +400,9 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       const zipName = `pdfcraft_studio_batch_${Date.now()}.zip`;
       await saveBlobFile(zipBlob, zipName);
-      notify('success', `成功打包并导出全部 ${documents.length} 个文档`);
+      notify('success', getStudioText(locale as Locale, 'k0011', { 'documents.length': documents.length }));
     } catch (err: any) {
-      notify('error', err?.message || '打包导出失败');
+      notify('error', err?.message || getStudioText(locale as Locale, 'k0012'));
     } finally {
       setIsApplying(false);
       setIsExportMenuOpen(false);
@@ -415,10 +417,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
       const fileName = file.name.replace(/\.pdf$/i, '_crafted.pdf');
       const isDownloaded = await saveBlobFile(currentBlob, fileName);
       if (isDownloaded) {
-        notify('success', `文档已保存并导出「${fileName}」`);
+        notify('success', getStudioText(locale as Locale, 'k0013', { fileName }));
       }
     } catch (err: any) {
-      notify('error', err?.message || '保存导出失败');
+      notify('error', err?.message || getStudioText(locale as Locale, 'k0014'));
     }
   }, [currentBlob, file, notify]);
 
@@ -431,7 +433,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
         const printers = await getSystemPrinters();
         if (printers.length > 0) {
           await printPdfFile(currentBlob, printers[0].name);
-          notify('success', '已发送打印任务');
+          notify('success', getStudioText(locale as Locale, 'k0015'));
           return;
         }
       }
@@ -443,7 +445,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
         window.print();
       }
     } catch (err: any) {
-      notify('error', err?.message || '打印触发失败');
+      notify('error', err?.message || getStudioText(locale as Locale, 'k0016'));
     }
   }, [currentBlob, notify]);
 
@@ -497,7 +499,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
           <Link
             href={`/${locale}`}
             className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0"
-            title="返回首页"
+            title={getStudioText(locale as Locale, 'k0017')}
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[hsl(var(--color-primary))] to-[hsl(var(--color-accent))] shadow-sm">
               <Sparkles className="h-4 w-4 text-white" />
@@ -520,10 +522,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       ? 'bg-[hsl(var(--color-primary)/0.15)] text-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary)/0.25)]'
                       : 'bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))]'
                   }`}
-                  title="查看操作历史记录"
+                  title={getStudioText(locale as Locale, 'k0018')}
                 >
                   <History className="w-2.5 h-2.5" />
-                  <span>+{historyStack.length} 操作</span>
+                  <span>{getStudioText(locale, 'k0019', { 'historyStack.length': historyStack.length })}</span>
                 </button>
               </div>
             </>
@@ -537,7 +539,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
               onClick={handleUndo}
               disabled={historyStack.length === 0}
               className="p-1.5 rounded-lg text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-background))] disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-              title="撤销 (Ctrl+Z)"
+              title={getStudioText(locale as Locale, 'k0020')}
               aria-label="Undo"
             >
               <Undo2 className="w-4 h-4" />
@@ -546,7 +548,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
               onClick={handleRedo}
               disabled={redoStack.length === 0}
               className="p-1.5 rounded-lg text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-background))] disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-              title="重做 (Ctrl+Y)"
+              title={getStudioText(locale as Locale, 'k0021')}
               aria-label="Redo"
             >
               <Redo2 className="w-4 h-4" />
@@ -557,10 +559,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                 <button
                   onClick={handleRevert}
                   className="px-2 py-1 text-[11px] font-medium text-[hsl(var(--color-muted-foreground))] hover:text-red-500 rounded-lg hover:bg-[hsl(var(--color-background))] transition-all flex items-center gap-1"
-                  title="恢复至初始未编辑版本"
+                  title={getStudioText(locale as Locale, 'k0022')}
                 >
                   <RotateCcw className="w-3 h-3" />
-                  <span className="hidden md:inline">还原初始</span>
+                  <span className="hidden md:inline">{getStudioText(locale as Locale, 'k0023')}</span>
                 </button>
               </>
             )}
@@ -575,11 +577,11 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={handlePrint}
-                title="打印文档 (Ctrl+P)"
+                title={getStudioText(locale as Locale, 'k0024')}
                 className="h-8 px-2.5 text-xs gap-1.5"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">打印</span>
+                <span className="hidden sm:inline">{getStudioText(locale as Locale, 'k0025')}</span>
               </Button>
 
               {/* Split Export Button */}
@@ -588,17 +590,17 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   variant="primary"
                   size="sm"
                   onClick={handleExport}
-                  title="导出并保存最终 PDF (Ctrl+S)"
+                  title={getStudioText(locale as Locale, 'k0026')}
                   className="h-8 px-3 text-xs gap-1.5 rounded-r-none border-r border-white/20"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>保存导出</span>
+                  <span>{getStudioText(locale as Locale, 'k0027')}</span>
                 </Button>
                 <button
                   type="button"
                   onClick={() => setIsExportMenuOpen((prev) => !prev)}
                   className="h-8 px-1.5 rounded-r-lg bg-[hsl(var(--color-primary))] text-white hover:bg-[hsl(var(--color-primary-hover))] transition-colors flex items-center justify-center border-l border-white/20"
-                  title="更多导出格式"
+                  title={getStudioText(locale as Locale, 'k0028')}
                   aria-label="More export formats"
                 >
                   <ChevronDown className="w-3.5 h-3.5" />
@@ -615,7 +617,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-left rounded-lg hover:bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] font-medium transition-colors"
                     >
                       <Download className="w-3.5 h-3.5 text-[hsl(var(--color-primary))]" />
-                      <span>保存修改后 PDF (Ctrl+S)</span>
+                      <span>{getStudioText(locale as Locale, 'k0029')}</span>
                     </button>
                     <button
                       onClick={() => {
@@ -625,7 +627,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-left rounded-lg hover:bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] font-medium transition-colors"
                     >
                       <FileType className="w-3.5 h-3.5 text-blue-500" />
-                      <span>导出为 Word (.docx)</span>
+                      <span>{getStudioText(locale as Locale, 'k0030')}</span>
                     </button>
                     <button
                       onClick={() => {
@@ -635,7 +637,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-left rounded-lg hover:bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] font-medium transition-colors"
                     >
                       <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
-                      <span>导出为图片包 (.zip)</span>
+                      <span>{getStudioText(locale as Locale, 'k0031')}</span>
                     </button>
                     {documents.length > 1 && (
                       <>
@@ -645,7 +647,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                           className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-left rounded-lg hover:bg-[hsl(var(--color-muted))] text-emerald-600 dark:text-emerald-400 font-semibold transition-colors"
                         >
                           <Download className="w-3.5 h-3.5" />
-                          <span>打包导出全部文档 ({documents.length}篇 .zip)</span>
+                          <span>{getStudioText(locale as Locale, 'k0032', { 'documents.length': documents.length })}</span>
                         </button>
                       </>
                     )}
@@ -658,7 +660,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-left rounded-lg hover:bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] font-medium transition-colors"
                     >
                       <Printer className="w-3.5 h-3.5 text-zinc-400" />
-                      <span>原生打印 (Ctrl+P)</span>
+                      <span>{getStudioText(locale as Locale, 'k0033')}</span>
                     </button>
                   </div>
                 )}
@@ -671,7 +673,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   }
                 }}
                 className="p-1.5 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-red-500 hover:bg-[hsl(var(--color-muted))] transition-colors ml-1"
-                title="关闭文档"
+                title={getStudioText(locale as Locale, 'k0034')}
                 aria-label="Close file"
               >
                 <X className="w-4 h-4" />
@@ -681,10 +683,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
             <Link
               href={`/${locale}`}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[hsl(var(--color-border))] text-xs font-medium text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))] transition-all"
-              title="切换到经典工具网格模式"
+              title={getStudioText(locale as Locale, 'k0035')}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
-              <span>经典网格视图</span>
+              <span>{getStudioText(locale as Locale, 'k0036')}</span>
             </Link>
           )}
         </div>
@@ -695,7 +697,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-[hsl(var(--color-border))]">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[hsl(var(--color-foreground))]">
                 <History className="w-3.5 h-3.5 text-[hsl(var(--color-primary))]" />
-                <span>操作历史时间线</span>
+                <span>{getStudioText(locale as Locale, 'k0037')}</span>
               </div>
               <button
                 onClick={() => setIsHistoryOpen(false)}
@@ -708,14 +710,14 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
               <div className="flex items-center justify-between p-2 rounded-xl text-xs bg-[hsl(var(--color-muted)/0.3)]">
                 <div className="flex items-center gap-2 truncate">
                   <FileText className="w-3.5 h-3.5 text-[hsl(var(--color-muted-foreground))] shrink-0" />
-                  <span className="truncate font-medium">{file.name} (初始)</span>
+                  <span className="truncate font-medium">{file.name} {getStudioText(locale as Locale, 'k0038')}</span>
                 </div>
                 {historyStack.length > 0 && (
                   <button
                     onClick={handleRevert}
                     className="text-[10px] text-[hsl(var(--color-primary))] font-semibold hover:underline"
                   >
-                    还原
+                    {getStudioText(locale as Locale, 'k0039')}
                   </button>
                 )}
               </div>
@@ -756,7 +758,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                       ? 'bg-[hsl(var(--color-card))] text-[hsl(var(--color-primary))] border-[hsl(var(--color-border))] shadow-xs font-semibold'
                       : 'bg-transparent text-[hsl(var(--color-muted-foreground))] border-transparent hover:bg-[hsl(var(--color-card)/0.6)] hover:text-[hsl(var(--color-foreground))]'
                   }`}
-                  title={`文档: ${doc.name}${isModified ? ' (已修改)' : ''}`}
+                  title={`${getStudioText(locale, 'k0594')} ${doc.name}${isModified ? ` ${getStudioText(locale, 'kModified')}` : ''}`}
                 >
                   <FileText
                     className={`w-3.5 h-3.5 shrink-0 ${
@@ -767,14 +769,14 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   {isModified && (
                     <span
                       className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--color-primary))] shrink-0"
-                      title="有尚未保存的修改"
+                      title={getStudioText(locale as Locale, 'k0041')}
                     />
                   )}
                   <button
                     type="button"
                     onClick={(e) => handleCloseDocument(doc.id, e)}
                     className="p-0.5 rounded-md hover:bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:text-red-500 opacity-60 group-hover:opacity-100 transition-all ml-0.5"
-                    title="关闭文档"
+                    title={getStudioText(locale as Locale, 'k0034')}
                     aria-label={`Close ${doc.name}`}
                   >
                     <X className="w-3 h-3" />
@@ -790,10 +792,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
               type="button"
               onClick={() => multiFileInputRef.current?.click()}
               className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-[hsl(var(--color-border))] hover:border-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary)/0.08)] text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-primary))] text-xs font-medium transition-all"
-              title="打开或导入更多 PDF (支持多选)"
+              title={getStudioText(locale as Locale, 'k0042')}
             >
               <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">导入更多 PDF</span>
+              <span className="hidden sm:inline">{getStudioText(locale as Locale, 'k0043')}</span>
             </button>
             <input
               ref={multiFileInputRef}
@@ -810,7 +812,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
             />
             {documents.length > 1 && (
               <span className="text-[10px] font-medium text-[hsl(var(--color-muted-foreground))] px-1.5 py-0.5 rounded bg-[hsl(var(--color-muted))]">
-                共 {documents.length} 个文档
+                {getStudioText(locale as Locale, 'k0044', { 'documents.length': documents.length })}
               </span>
             )}
           </div>
@@ -847,8 +849,8 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-[hsl(var(--color-card)/0.95)] border border-[hsl(var(--color-border))] shadow-2xl">
                     <Loader2 className="w-8 h-8 text-[hsl(var(--color-primary))] animate-spin" />
                     <div className="text-center">
-                      <p className="text-xs font-bold text-[hsl(var(--color-foreground))]">正在就地处理文档...</p>
-                      <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] mt-0.5">100% 浏览器内存安全运行，零网络上传</p>
+                      <p className="text-xs font-bold text-[hsl(var(--color-foreground))]">{getStudioText(locale as Locale, 'k0045')}</p>
+                      <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] mt-0.5">{getStudioText(locale as Locale, 'k0046')}</p>
                     </div>
                   </div>
                 </div>
@@ -893,10 +895,10 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
               </div>
 
               <h2 className="text-xl font-bold text-[hsl(var(--color-foreground))] mb-2">
-                导入 PDF 开启 Studio 工作台
+                {getStudioText(locale as Locale, 'k0047')}
               </h2>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mb-6 leading-relaxed">
-                无需在不同工具页面反复跳转和重新上传。在单一视图中就地旋转、加水印、压缩、签名、提取页面，一气呵成。
+                {getStudioText(locale as Locale, 'k0048')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full">
@@ -907,7 +909,7 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   className="flex-1 gap-2 shadow-lg shadow-[hsl(var(--color-primary)/0.2)] text-xs font-semibold py-2.5"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>选择 PDF 文件 (支持多选)</span>
+                  <span>{getStudioText(locale as Locale, 'k0049')}</span>
                 </Button>
 
                 <Link
@@ -915,16 +917,16 @@ export const PDFStudio: React.FC<PDFStudioProps> = ({
                   className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-[hsl(var(--color-border))] text-xs font-semibold text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))] transition-all"
                 >
                   <LayoutGrid className="w-4 h-4" />
-                  <span>返回所有工具</span>
+                  <span>{getStudioText(locale as Locale, 'k0050')}</span>
                 </Link>
               </div>
 
               <div className="mt-6 flex items-center gap-4 text-[11px] text-[hsl(var(--color-muted-foreground)/0.7)]">
-                <span>支持拖拽多个 PDF 至此</span>
+                <span>{getStudioText(locale as Locale, 'k0051')}</span>
                 <span>•</span>
-                <span>全本地纯离线处理</span>
+                <span>{getStudioText(locale as Locale, 'k0052')}</span>
                 <span>•</span>
-                <span>多标签快速切换</span>
+                <span>{getStudioText(locale as Locale, 'k0053')}</span>
               </div>
             </div>
           </div>
