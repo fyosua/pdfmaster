@@ -19,20 +19,8 @@ function normalizeLocale(input: string): Locale | null {
 }
 
 export function getClientLocale(): Locale {
-  if (typeof window === 'undefined') {
-    return defaultLocale;
-  }
-
-  const savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY);
-  if (savedLocale) {
-    const normalizedSavedLocale = normalizeLocale(savedLocale);
-    if (normalizedSavedLocale) {
-      return normalizedSavedLocale;
-    }
-  }
-
-  const browserLocale = normalizeLocale(navigator.language);
-  return browserLocale ?? defaultLocale;
+  // Officetools UI is English-only — always return the default locale.
+  return defaultLocale;
 }
 
 export function setClientLocale(locale: string): Locale {

@@ -14,6 +14,7 @@ import type {
 import { PDFErrorCode } from '@/types/pdf';
 import { BasePDFProcessor } from '../processor';
 import { loadPdfjs, loadPdfLib } from '../loader';
+import { withBasePath } from '../../utils/path';
 
 /**
  * Supported OCR languages
@@ -721,7 +722,7 @@ export class OCRProcessor extends BasePDFProcessor {
       let fontBuffer: ArrayBuffer | null = null;
       if (typeof window !== 'undefined') {
         try {
-          const res = await fetch('/fonts/NotoSansSC-Regular.ttf');
+          const res = await fetch(withBasePath('/fonts/NotoSansSC-Regular.ttf'));
           if (res.ok) {
             fontBuffer = await res.arrayBuffer();
           }

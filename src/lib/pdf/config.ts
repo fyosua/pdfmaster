@@ -9,14 +9,16 @@
 /**The file at 'blob:http://pdfcrafts.test/7e5bc74f-8bb7-4280-8a23-96852ad1356f' was loaded over an insecure connection. This file should be served over HTTPS.
  * PDF.js configuration
  */
+import { withBasePath } from '../utils/path';
+
 export const PDFJS_CONFIG = {
-  // Worker source path - loaded from public directory
-  workerSrc: '/workers/pdf.worker.min.mjs',
+  // Worker source path - loaded from public directory (basePath-aware)
+  workerSrc: withBasePath('/workers/pdf.worker.min.mjs'),
   // CMap URL for character mapping
-  cMapUrl: '/pdfjs-viewer/cmaps/',
+  cMapUrl: withBasePath('/pdfjs-viewer/cmaps/'),
   cMapPacked: true,
   // Standard fonts URL
-  standardFontDataUrl: '/pdfjs-viewer/standard_fonts/',
+  standardFontDataUrl: withBasePath('/pdfjs-viewer/standard_fonts/'),
 } as const;
 
 /**

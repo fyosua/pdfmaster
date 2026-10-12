@@ -10,6 +10,7 @@ import {
   type ReplaceExistingTextDiagnostics,
   type TextFitMode,
 } from '@/lib/pdf/processors/replace-existing-text';
+import { withBasePath } from '@/lib/utils/path';
 
 export interface LegacyAnnotatorToolProps {
   className?: string;
@@ -742,7 +743,7 @@ export function LegacyAnnotatorTool({
                   if (hasChinese) {
                     try {
                       console.log('[PDFCraft Patch] Chinese text found. Embedding NotoSansSC-Regular font...');
-                      const fontBytes = await fetch('/fonts/NotoSansSC-Regular.ttf').then(res => res.arrayBuffer());
+                      const fontBytes = await fetch(withBasePath('/fonts/NotoSansSC-Regular.ttf')).then(res => res.arrayBuffer());
                       const customFont = await this.embedFont(fontBytes, { subset: true });
                       
                       // Intercept subsequent font loading requests for Helvetica inside pdf-lib
@@ -1340,7 +1341,7 @@ export function LegacyAnnotatorTool({
           <div className="relative border border-[hsl(var(--color-border))] rounded-[var(--radius-md)] overflow-hidden bg-gray-100">
             <iframe
               ref={iframeRef}
-              src={`/pdfjs-annotation-viewer/web/viewer.html?file=${encodeURIComponent(pdfUrl)}`}
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/pdfjs-annotation-viewer/web/viewer.html?file=${encodeURIComponent(pdfUrl)}`}
               className="w-full h-[700px] border-0"
               title="PDF Editor"
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"

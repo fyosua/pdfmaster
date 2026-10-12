@@ -11,13 +11,16 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 export function withBasePath(path: string): string {
   if (!basePath) return path;
   if (path.startsWith('http') || path.startsWith('//')) return path;
-  
+
   // Ensure path starts with a slash
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  
-  // Prevent double slashes
+
+  // Prevent double prefixes (idempotent)
   const cleanBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
-  
+  if (!cleanBasePath || normalizedPath === cleanBasePath || normalizedPath.startsWith(`${cleanBasePath}/`)) {
+    return normalizedPath;
+  }
+
   return `${cleanBasePath}${normalizedPath}`;
 }
 
