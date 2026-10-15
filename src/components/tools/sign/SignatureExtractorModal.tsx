@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -37,6 +38,7 @@ export function SignatureExtractorModal({
   onSignatureExtracted,
   viewerWindow,
 }: SignatureExtractorModalProps) {
+  const tTools = useTranslations('tools');
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +63,7 @@ export function SignatureExtractorModal({
   const [threshold, setThreshold] = useState<number>(215);
   const [smoothness, setSmoothness] = useState<number>(25);
   const [colorMode, setColorMode] = useState<InkColorMode>('original');
-  const [signatureName, setSignatureName] = useState<string>('Extracted Signature');
+  const [signatureName, setSignatureName] = useState<string>(tTools('signExtractor.defaultName'));
 
   // Extracted preview result
   const [extractedResult, setExtractedResult] = useState<ExtractedSignatureResult | null>(null);
@@ -100,7 +102,7 @@ export function SignatureExtractorModal({
       setIsLoading(true);
       setError(null);
       setFile(selectedFile);
-      setSignatureName(selectedFile.name.replace(/\.[^/.]+$/, '') + ' - 签名');
+      setSignatureName(selectedFile.name.replace(/\.[^/.]+$/, '') + tTools('signExtractor.nameSuffix'));
 
       const arrayBuffer = await selectedFile.arrayBuffer();
       const pdfjs = await loadPdfjs();
@@ -127,7 +129,7 @@ export function SignatureExtractorModal({
       }
     } catch (err) {
       console.error('Failed to parse signed PDF:', err);
-      setError(err instanceof Error ? err.message : '无法解析所选 PDF 文件');
+      setError(err instanceof Error ? err.message : tTools('signExtractor.parseError'));
     } finally {
       setIsLoading(false);
     }
@@ -181,7 +183,7 @@ export function SignatureExtractorModal({
       }
     } catch (err) {
       console.error('Failed to render PDF page:', err);
-      setError('渲染页面失败，请重试');
+      setError(tTools('signExtractor.renderError'));
     } finally {
       setIsLoading(false);
     }
@@ -290,7 +292,7 @@ export function SignatureExtractorModal({
     if (!extractedResult) return;
 
     try {
-      const name = signatureName.trim() || 'Extracted Signature';
+      const name = signatureName.trim() || tTools('signExtractor.defaultName');
       saveSignature({
         name,
         dataUrl: extractedResult.dataUrl,
@@ -312,13 +314,13 @@ export function SignatureExtractorModal({
         });
       }
 
-      setStatusMessage('已成功存入签名库！当前签名工具已准备就绪。');
+      setStatusMessage(tTools('signExtractor.savedStatus'));
       setTimeout(() => {
         handleModalClose();
       }, 1200);
     } catch (err) {
       console.error('Failed to save signature:', err);
-      setError('保存签名失败，请重试');
+      setError(tTools('signExtractor.saveError'));
     }
   };
 
@@ -330,10 +332,10 @@ export function SignatureExtractorModal({
     try {
       const filename = `${signatureName.trim() || 'signature'}_transparent.png`;
       await saveBlobFile(extractedResult.blob, filename);
-      setStatusMessage('透明签名 PNG 已开始下载！');
+      setStatusMessage(tTools('signExtractor.downloadStatus'));
     } catch (err) {
       console.error('Failed to download PNG:', err);
-      setError('下载签名图片失败');
+      setError(tTools('signExtractor.downloadError'));
     }
   };
 
@@ -349,13 +351,13 @@ export function SignatureExtractorModal({
             'image/png': extractedResult.blob,
           }),
         ]);
-        setStatusMessage('透明签名已成功复制到剪贴板！');
+        setStatusMessage(tTools('signExtractor.copyStatus'));
       } else {
-        setError('当前浏览器环境不支持直接复制图片到剪贴板，请使用下载功能');
+        setError(tTools('signExtractor.copyUnsupported'));
       }
     } catch (err) {
       console.error('Clipboard copy error:', err);
-      setError('复制到剪贴板失败');
+      setError(tTools('signExtractor.copyError'));
     }
   };
 
@@ -363,7 +365,7 @@ export function SignatureExtractorModal({
     <Modal
       isOpen={isOpen}
       onClose={handleModalClose}
-      title="从已签署 PDF 提取签名 / 印章"
+      title={tTools('signExtractor.title')}
       size="xl"
       className="!max-w-5xl"
     >
@@ -382,10 +384,10 @@ export function SignatureExtractorModal({
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-[hsl(var(--color-foreground))] mb-1">
-              上传已签署的 PDF 文件
+              {tTools('signExtractor.uploadTitle')}
             </h3>
             <p className="text-sm text-[hsl(var(--color-muted-foreground))] max-w-md mx-auto mb-5">
-              支持自动提取 Adobe Acrobat 等各类工具签署的数字签名、电子印章与手写签名，自动剔除纸张白底，生成高精透明签名并存入签名库。
+              {tTools('signExtractor.uploadDescription')}
             </p>
 
             <label className="inline-flex">
@@ -402,7 +404,7 @@ export function SignatureExtractorModal({
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
-                选择已签署 PDF 文件
+                {tTools('signExtractor.chooseFileButton')}
               </span>
             </label>
           </div>
@@ -433,7 +435,7 @@ export function SignatureExtractorModal({
                   📄 {file.name}
                 </span>
                 <span className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  (共 {pageCount} 页)
+                  ({tTools('signExtractor.pageCount', { pageCount })})
                 </span>
               </div>
 
@@ -445,7 +447,7 @@ export function SignatureExtractorModal({
                   disabled={currentPage <= 1 || isLoading}
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 >
-                  ◀ 上一页
+                  {tTools('signExtractor.prevPage')}
                 </Button>
                 <span className="text-xs font-medium px-2 py-1 bg-[hsl(var(--color-card))] border border-[hsl(var(--color-border))] rounded">
                   {currentPage} / {pageCount}
@@ -456,7 +458,7 @@ export function SignatureExtractorModal({
                   disabled={currentPage >= pageCount || isLoading}
                   onClick={() => setCurrentPage(p => Math.min(pageCount, p + 1))}
                 >
-                  下一页 ▶
+                  {tTools('signExtractor.nextPage')}
                 </Button>
                 <Button
                   variant="outline"
@@ -464,7 +466,7 @@ export function SignatureExtractorModal({
                   onClick={handleReset}
                   className="text-xs ml-2"
                 >
-                  更换文件
+                  {tTools('signExtractor.changeFile')}
                 </Button>
               </div>
             </div>
@@ -476,7 +478,7 @@ export function SignatureExtractorModal({
                   <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>检测到 {detectedZones.length} 处签名/印章区域，点击可快速定位：</span>
+                  <span>{tTools('signExtractor.detectedZones', { count: detectedZones.length })}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {detectedZones.map((z) => (
@@ -503,9 +505,9 @@ export function SignatureExtractorModal({
               {/* Left Column: Canvas & Crop selection (8 cols) */}
               <div className="lg:col-span-7 flex flex-col space-y-2">
                 <div className="flex items-center justify-between text-xs text-[hsl(var(--color-muted-foreground))]">
-                  <span>拖拽鼠标拉框选择要提取的签名区域：</span>
+                  <span>{tTools('signExtractor.dragHint')}</span>
                   <span className="text-[11px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">
-                    💡 提示：选框尽量紧贴笔迹或印章
+                    {tTools('signExtractor.dragTip')}
                   </span>
                 </div>
 
@@ -521,7 +523,7 @@ export function SignatureExtractorModal({
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                         </svg>
-                        <span>正在渲染页面...</span>
+                        <span>{tTools('signExtractor.rendering')}</span>
                       </div>
                     </div>
                   )}
@@ -547,7 +549,7 @@ export function SignatureExtractorModal({
                         }}
                       >
                         <span className="absolute -top-5 left-0 text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded shadow">
-                          签名选区
+                          {tTools('signExtractor.selectionLabel')}
                         </span>
                       </div>
                     )}
@@ -561,10 +563,10 @@ export function SignatureExtractorModal({
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-[hsl(var(--color-foreground))]">
-                        透明化提取预览
+                        {tTools('signExtractor.previewTitle')}
                       </h4>
                       {isExtracting && (
-                        <span className="text-[11px] text-blue-600 animate-pulse">正在处理...</span>
+                        <span className="text-[11px] text-blue-600 animate-pulse">{tTools('signExtractor.processing')}</span>
                       )}
                     </div>
 
@@ -588,20 +590,20 @@ export function SignatureExtractorModal({
                           className="max-h-full max-w-full object-contain drop-shadow-sm select-none"
                         />
                       ) : (
-                        <span className="text-xs text-gray-400">请在左侧框选签名</span>
+                        <span className="text-xs text-gray-400">{tTools('signExtractor.selectPrompt')}</span>
                       )}
                     </div>
 
                     {/* Name Input */}
                     <div>
                       <label className="block text-xs font-medium text-[hsl(var(--color-muted-foreground))] mb-1">
-                        签名名称：
+                        {tTools('signExtractor.nameLabel')}
                       </label>
                       <input
                         type="text"
                         value={signatureName}
                         onChange={(e) => setSignatureName(e.target.value)}
-                        placeholder="例如：张三签名 / 财务专用章"
+                        placeholder="{tTools('signExtractor.namePlaceholder')}"
                         className="w-full text-xs px-3 py-1.5 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-card))] text-[hsl(var(--color-foreground))]"
                       />
                     </div>
@@ -609,7 +611,7 @@ export function SignatureExtractorModal({
                     {/* Color Modes */}
                     <div>
                       <label className="block text-xs font-medium text-[hsl(var(--color-muted-foreground))] mb-1.5">
-                        笔迹色彩增强：
+                        {tTools('signExtractor.colorModeLabel')}
                       </label>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <button
@@ -622,7 +624,7 @@ export function SignatureExtractorModal({
                           }`}
                         >
                           <span className="w-3 h-3 rounded-full bg-gradient-to-tr from-blue-500 to-red-500 inline-block" />
-                          <span>保持原色</span>
+                          <span>{tTools('signExtractor.colorOriginal')}</span>
                         </button>
 
                         <button
@@ -635,7 +637,7 @@ export function SignatureExtractorModal({
                           }`}
                         >
                           <span className="w-3 h-3 rounded-full bg-gray-900 inline-block" />
-                          <span>纯黑墨水</span>
+                          <span>{tTools('signExtractor.colorBlack')}</span>
                         </button>
 
                         <button
@@ -648,7 +650,7 @@ export function SignatureExtractorModal({
                           }`}
                         >
                           <span className="w-3 h-3 rounded-full bg-blue-800 inline-block" />
-                          <span>公文深蓝</span>
+                          <span>{tTools('signExtractor.colorBlue')}</span>
                         </button>
 
                         <button
@@ -661,7 +663,7 @@ export function SignatureExtractorModal({
                           }`}
                         >
                           <span className="w-3 h-3 rounded-full bg-red-600 inline-block" />
-                          <span>公章朱红</span>
+                          <span>{tTools('signExtractor.colorSealRed')}</span>
                         </button>
                       </div>
                     </div>
@@ -670,7 +672,7 @@ export function SignatureExtractorModal({
                     <div className="space-y-2 pt-1 border-t border-[hsl(var(--color-border))]">
                       <div>
                         <div className="flex justify-between text-xs text-[hsl(var(--color-muted-foreground))] mb-1">
-                          <span>去白底灵敏度：</span>
+                          <span>{tTools('signExtractor.thresholdLabel')}</span>
                           <span className="font-mono text-gray-700">{threshold}</span>
                         </div>
                         <input
@@ -686,7 +688,7 @@ export function SignatureExtractorModal({
 
                       <div>
                         <div className="flex justify-between text-xs text-[hsl(var(--color-muted-foreground))] mb-1">
-                          <span>边缘抗锯齿平滑：</span>
+                          <span>{tTools('signExtractor.smoothnessLabel')}</span>
                           <span className="font-mono text-gray-700">{smoothness}</span>
                         </div>
                         <input
@@ -713,7 +715,7 @@ export function SignatureExtractorModal({
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span>一键存入签名库</span>
+                      <span>{tTools('signExtractor.saveToLibrary')}</span>
                     </Button>
 
                     <div className="grid grid-cols-2 gap-2">
@@ -723,7 +725,7 @@ export function SignatureExtractorModal({
                         disabled={!extractedResult || isExtracting}
                         onClick={handleDownloadPng}
                       >
-                        下载透明 PNG
+                        {tTools('signExtractor.downloadPng')}
                       </Button>
                       <Button
                         variant="ghost"
@@ -731,7 +733,7 @@ export function SignatureExtractorModal({
                         disabled={!extractedResult || isExtracting}
                         onClick={handleCopyToClipboard}
                       >
-                        复制到剪贴板
+                        {tTools('signExtractor.copyClipboard')}
                       </Button>
                     </div>
                   </div>

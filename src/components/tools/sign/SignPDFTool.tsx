@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { FileUploader } from '../FileUploader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -10,6 +10,7 @@ import { saveBlobFile } from '@/lib/tauri-bridge';
 import { SignatureExtractorModal } from './SignatureExtractorModal';
 import { SignatureLibraryModal } from './SignatureLibraryModal';
 import { getSavedSignatures, saveSignature, dataUrlToBlob } from '@/lib/pdf/signature-storage';
+import { buildViewerUrl, toPdfjsLocale } from '@/lib/pdf/viewer-locale';
 
 export interface SignPDFToolProps {
   className?: string;
@@ -48,6 +49,9 @@ type PdfViewerWindow = Window & {
 
 const VIEWER_HTML = withBasePath('/pdfjs-viewer/viewer.html');
 
+/** Map app locale to PDF.js locale for embed */
+const pdfjsLocale = toPdfjsLocale;
+
 /**
  * SignPDFTool Component
  * Uses PDF.js viewer with native signature editor for comprehensive signing support.
@@ -56,6 +60,10 @@ const VIEWER_HTML = withBasePath('/pdfjs-viewer/viewer.html');
 export function SignPDFTool({ className = '' }: SignPDFToolProps) {
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
+  const locale = useLocale();
+
+  // Viewer follows the app's selected language (not the browser's)
+  const viewerSrc = buildViewerUrl(VIEWER_HTML, locale);
 
   const [signState, setSignState] = useState<SignState>({
     file: null,
@@ -76,9 +84,9 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
 
   const handleSignatureExtracted = useCallback((res: { blob: Blob; dataUrl: string; name: string }) => {
     setSavedSignatureCount(getSavedSignatures().length);
-    setToastMessage(`签名“${res.name}”已成功存入签名库！您可以在工具栏的签名笔或签名库中直接使用。`);
+    setToastMessage(tTools('signPdf.savedToLibraryToast', { name: res.name }));
     setTimeout(() => setToastMessage(null), 6000);
-  }, []);
+  }, [tTools]);
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const fileRef = useRef<File | null>(null);
@@ -89,26 +97,32 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       const dataUrl = reader.result as string;
       const img = new Image();
       img.onload = async () => {
-        const name = file.name.replace(/\.[^/.]+$/, '');
+        const name = file.name.replace(/\.[^/.]+$/, '') || tTools('signPdf.defaultSignatureName');
         const saved = saveSignature({
-          name: name || '签名图片',
+          name,
           dataUrl,
           width: img.width || 300,
           height: img.height || 150,
-          sourceDoc: '本地图片导入',
+          sourceDoc: tTools('signPdf.sourceLocalImage'),
         });
         setSavedSignatureCount(getSavedSignatures().length);
 
+        let imported = false;
         if (iframeRef.current?.contentWindow && (iframeRef.current.contentWindow as any).pdfcraftImportSignature) {
           const blob = dataUrlToBlob(dataUrl);
-          await (iframeRef.current.contentWindow as any).pdfcraftImportSignature(blob, saved.name);
-          setToastMessage(`签名“${saved.name}”已成功导入并在当前文档激活！可在页面点击放置并拖动边角自由缩放。`);
+          imported = await (iframeRef.current.contentWindow as any).pdfcraftImportSignature(blob, saved.name);
+        }
+
+        if (imported) {
+          setToastMessage(tTools('signPdf.importedAndActiveToast', { name: saved.name }));
+        } else if (iframeRef.current?.contentWindow && (iframeRef.current.contentWindow as any).pdfcraftImportSignature) {
+          setToastMessage(tTools('signPdf.importFailedToast', { name: saved.name }));
         } else {
-          setToastMessage(`签名“${saved.name}”已存入签名库！打开 PDF 后即可随时选用盖章。`);
+          setToastMessage(tTools('signPdf.savedOnlyToast', { name: saved.name }));
         }
         setTimeout(() => setToastMessage(null), 6000);
       };
@@ -116,7 +130,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
     };
     reader.readAsDataURL(file);
     e.target.value = '';
-  }, []);
+  }, [tTools]);
 
   /**
    * Handle file selected
@@ -224,7 +238,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       }
     } catch (e) {
       console.error('Could not load PDF in viewer:', e);
-      setError('Failed to load PDF in the viewer. Please try again.');
+      setError(tTools('signPdf.loadError'));
     }
   }, [enableSignatureTools]);
 
@@ -233,7 +247,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
    */
   const handleSave = useCallback(async () => {
     if (!signState.viewerReady || !iframeRef.current) {
-      setError('Viewer not ready. Please wait for the PDF to load.');
+      setError(tTools('signPdf.viewerNotReady'));
       return;
     }
 
@@ -245,7 +259,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       const app = viewerWindow.PDFViewerApplication;
 
       if (!app?.pdfDocument) {
-        setError('PDF viewer not initialized.');
+        setError(tTools('signPdf.viewerNotInitialized'));
         setIsProcessing(false);
         return;
       }
@@ -262,9 +276,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       }
 
       if (pdfDocument.annotationStorage.size === 0) {
-        setError(
-          'No signature found. Add a signature using the pen tool in the toolbar, then try again.'
-        );
+        setError(tTools('signPdf.noSignatureFound'));
         setIsProcessing(false);
         return;
       }
@@ -282,11 +294,11 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       setIsProcessing(false);
     } catch (err) {
       console.error('Failed to save signed PDF:', err);
-      const msg = err instanceof Error ? err.message : 'Please try again.';
-      setError(`Failed to save signed PDF: ${msg}`);
+      const msg = err instanceof Error ? err.message : tTools('signPdf.tryAgain');
+      setError(tTools('signPdf.saveFailed', { msg }));
       setIsProcessing(false);
     }
-  }, [signState.viewerReady, signState.file]);
+  }, [signState.viewerReady, signState.file, tTools]);
 
   /**
    * Clear and start over
@@ -312,13 +324,13 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-              <span>从已签署 PDF 提取签名 / 印章</span>
+              <span>{tTools('signPdf.extractHeader')}</span>
               <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
-                支持 Adobe Acrobat
+                {tTools('signPdf.supportsAcrobat')}
               </span>
             </h3>
             <p className="text-xs text-gray-600 mt-0.5">
-              上传已签名的 PDF，智能识别笔迹或印章并剥离纸张白底，一键存入签名库随时使用。
+              {tTools('signPdf.extractHeaderDesc')}
             </p>
           </div>
         </div>
@@ -338,7 +350,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             onClick={() => setIsLibraryOpen(true)}
             className="text-xs bg-white hover:bg-gray-50 flex items-center gap-1.5"
           >
-            <span>📂 签名库</span>
+            <span>{tTools('signPdf.libraryButton')}</span>
             {savedSignatureCount > 0 && (
               <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-blue-700 font-medium">
                 {savedSignatureCount}
@@ -352,7 +364,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             onClick={() => imageInputRef.current?.click()}
             className="text-xs bg-white hover:bg-gray-50 flex items-center gap-1.5 border-blue-300 text-blue-700"
           >
-            <span>🖼️ 导入图片签名</span>
+            <span>{tTools('signPdf.importImageButton')}</span>
           </Button>
 
           <Button
@@ -364,7 +376,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
-            <span>从 PDF 提取</span>
+            <span>{tTools('signPdf.extractButton')}</span>
           </Button>
         </div>
       </div>
@@ -452,10 +464,10 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
               <div className="text-sm text-blue-700">
                 <p className="font-medium mb-1">{tTools('signPdf.instructionsTitle') || 'How to Sign'}</p>
                 <ol className="list-decimal list-inside space-y-1 text-blue-600">
-                  <li>{tTools('signPdf.instruction1') || '点击工具栏中的签名笔工具（或使用上方快捷导入图片/从 PDF 提取）'}</li>
-                  <li>{tTools('signPdf.instruction2') || '选择手写绘制、输入文本，或直接上传现成的透明 PNG 图片签名'}</li>
-                  <li>{tTools('signPdf.instruction3') || '在页面点击放置签名，可随意拖拽四角自由调整大小（Resize）与旋转'}</li>
-                  <li>{tTools('signPdf.instruction4') || '完成签署后，点击下方的“保存已签署 PDF”'}</li>
+                  <li>{tTools('signPdf.instruction1') || 'Click the Signature tool (pen icon) in the toolbar'}</li>
+                  <li>{tTools('signPdf.instruction2') || 'Draw, type, or upload your signature, or scan a photo of it'}</li>
+                  <li>{tTools('signPdf.instruction3') || 'Click where you want to place the signature'}</li>
+                  <li>{tTools('signPdf.instruction4') || 'Click "Save Signed PDF" below when done'}</li>
                 </ol>
               </div>
             </div>
@@ -464,9 +476,9 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
           {/* PDF.js Viewer Iframe */}
           <div className="border border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] overflow-hidden">
             <iframe
-              key={signState.file.name + signState.file.lastModified}
+              key={signState.file.name + signState.file.lastModified + viewerSrc}
               ref={iframeRef}
-              src={VIEWER_HTML}
+              src={viewerSrc}
               onLoad={handleIframeLoad}
               className="w-full bg-gray-100"
               style={{ height: '600px', border: 'none' }}

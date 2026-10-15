@@ -27,6 +27,30 @@ See https://github.com/adobe-type-tools/cmap-resources
     <meta name="google" content="notranslate">
     <title>PDF.js viewer</title>
 
+<script>
+  // PDFCraft: forward the app's ?locale= query param into the viewer's language
+  // detection. This build reads navigator.language at module init (AppOptions
+  // localeProperties default), so override it before the modules load. The
+  // viewer's own #locale hash-param parsing only runs with pdfBugEnabled and
+  // is dead code in production.
+  (function () {
+    try {
+      var m = (location.search.match(/[?&]locale=([^&]+)/) || [])[1];
+      if (m) {
+        var lang = decodeURIComponent(m);
+        Object.defineProperty(Navigator.prototype, 'language', {
+          get: function () { return lang; },
+          configurable: true
+        });
+        Object.defineProperty(Navigator.prototype, 'languages', {
+          get: function () { return [lang]; },
+          configurable: true
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+
 <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n" href="locale/locale.json">
 <script src="pdf.js" type="module"></script>
@@ -848,10 +872,14 @@ See https://github.com/adobe-type-tools/cmap-resources
             const imgTabBtn = document.getElementById('addSignatureImageButton');
             if (imgTabBtn) imgTabBtn.click();
 
+            // Give the image tab a tick to bind its change listener
+            await new Promise(r => setTimeout(r, 150));
+
             const filePicker = document.getElementById('addSignatureFilePicker');
             const descInput = document.getElementById('addSignatureDescInput');
             const saveCheckbox = document.getElementById('addSignatureSaveCheckbox');
             const addBtn = document.getElementById('addSignatureAddButton');
+            const errBar = document.getElementById('addSignatureError');
 
             if (filePicker) {
               const dt = new DataTransfer();
@@ -868,10 +896,16 @@ See https://github.com/adobe-type-tools/cmap-resources
                 saveCheckbox.checked = true;
               }
 
+              // Check whether the file was accepted (error bar visible = rejected)
+              if (errBar && !errBar.hidden) return false;
+
               let count = 0;
-              while (addBtn && addBtn.disabled && count < 35) {
-                await new Promise(r => setTimeout(r, 80));
+              const maxRetries = 60;
+              while (addBtn && addBtn.disabled && count < maxRetries) {
+                await new Promise(r => setTimeout(r, 100));
                 count++;
+                // Bail early if the viewer showed an error about the file
+                if (errBar && !errBar.hidden) return false;
               }
 
               if (addBtn && !addBtn.disabled) {
