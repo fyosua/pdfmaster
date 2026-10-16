@@ -1124,19 +1124,16 @@
     },
     "methods": {
       "email": {
-        "title": "이메일 주소",
-        "description": "이메일을 보내주시면 24~48시간 이내에 답변해 드리겠습니다.",
-        "action": "contact@pdfcraft.app"
+        "title": "이메일",
+        "description": "이메일을 보내주시면 최대한 빨리 답변드리겠습니다."
       },
-      "github": {
-        "title": "GitHub",
-        "description": "버그 보고, 기능 요청 또는 프로젝트에 기여하세요.",
-        "action": "GitHub에서 보기"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "LinkedIn에서 전문적인 인맥을 맺어보세요."
       },
-      "twitter": {
-        "title": "트위터",
-        "description": "업데이트 및 공지 사항을 확인하려면 팔로우하세요.",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "WhatsApp으로 직접 채팅하세요."
       }
     },
     "form": {

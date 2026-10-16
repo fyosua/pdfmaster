@@ -1124,19 +1124,16 @@
     },
     "methods": {
       "email": {
-        "title": "E-Mail-Adresse",
-        "description": "Senden Sie uns eine E-Mail und wir antworten innerhalb von 24-48 Stunden.",
-        "action": "contact@pdfcraft.app"
+        "title": "E-Mail",
+        "description": "Schreiben Sie mir eine E-Mail und ich antworte so schnell wie möglich."
       },
-      "github": {
-        "title": "GitHub",
-        "description": "Fehler melden, Funktionen anfragen oder zum Projekt beitragen.",
-        "action": "Auf GitHub ansehen"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "Vernetzen Sie sich professionell mit mir auf LinkedIn."
       },
-      "twitter": {
-        "title": "Twitter",
-        "description": "Folgen Sie uns für Updates und Ankündigungen.",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Chatten Sie direkt mit mir über WhatsApp."
       }
     },
     "form": {

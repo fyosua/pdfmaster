@@ -1124,19 +1124,16 @@
     },
     "methods": {
       "email": {
-        "title": "メールアドレス",
-        "description": "メールをお送りください。24〜48時間以内に返信いたします。",
-        "action": "contact@pdfcraft.app"
+        "title": "メール",
+        "description": "メールを送っていただければ、できるだけ早く返信します。"
       },
-      "github": {
-        "title": "GitHub",
-        "description": "バグの報告、機能のリクエスト、またはプロジェクトへの貢献を行えます。",
-        "action": "GitHubで表示"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "LinkedInでプロフェッショナルなつながりを持ちましょう。"
       },
-      "twitter": {
-        "title": "ツイッター",
-        "description": "アップデートや告知については、こちらをフォローしてください。",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "WhatsAppで直接チャットできます。"
       }
     },
     "form": {

@@ -11,7 +11,7 @@ export default function NoticePage() {
       <h1 className="text-3xl font-bold mb-6">NOTICE</h1>
       <p className="text-[hsl(var(--color-muted-foreground))] text-sm mb-8">
         This OfficeTools PDF toolkit is a white-labeled fork of the open-source project{' '}
-        <a className="underline" href="https://github.com/PDFCraftTool/pdfcraft">PDFCraft</a>{' '}
+        <a className="underline" href="https://github.com/PDFCraftTool/pdfcraft" target="_blank" rel="noopener noreferrer">PDFCraft</a>{' '}
         (by PDFCraftTool), which is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
       </p>
 
@@ -21,7 +21,7 @@ export default function NoticePage() {
         toolkit, including all white-label/branding modifications, is publicly available at:
       </p>
       <p className="mb-6">
-        <a className="underline text-[hsl(var(--color-primary))]" href="https://github.com/fyosua/officetools-pdfcraft">
+        <a className="underline text-[hsl(var(--color-primary))]" href="https://github.com/fyosua/officetools-pdfcraft" target="_blank" rel="noopener noreferrer">
           https://github.com/fyosua/officetools-pdfcraft
         </a>
       </p>
@@ -38,7 +38,7 @@ export default function NoticePage() {
 
       <h2 className="text-xl font-semibold mb-3">Attribution</h2>
       <p className="text-sm leading-relaxed text-[hsl(var(--color-muted-foreground))]">
-        Original project: <a className="underline" href="https://github.com/PDFCraftTool/pdfcraft">PDFCraftTool/pdfcraft</a>{' '}
+        Original project: <a className="underline" href="https://github.com/PDFCraftTool/pdfcraft" target="_blank" rel="noopener noreferrer">PDFCraftTool/pdfcraft</a>{' '}
         — Copyright (c) PDFCraftTool contributors. Used under AGPL-3.0.
       </p>
     </div>

@@ -1125,18 +1125,15 @@
     "methods": {
       "email": {
         "title": "Email",
-        "description": "Kirimkan email kepada kami dan kami akan membalas dalam 24-48 jam.",
-        "action": "contact@pdfcraft.app"
+        "description": "Kirim email kepada saya dan saya akan merespons secepat mungkin."
       },
-      "github": {
-        "title": "GitHub",
-        "description": "Laporkan bug, minta fitur, atau berkontribusi pada proyek.",
-        "action": "Lihat di GitHub"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "Terhubung dengan saya secara profesional di LinkedIn."
       },
-      "twitter": {
-        "title": "Twitter",
-        "description": "Ikuti kami untuk pembaruan dan pengumuman.",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Ngobrol langsung dengan saya di WhatsApp."
       }
     },
     "form": {

@@ -1125,18 +1125,15 @@
     "methods": {
       "email": {
         "title": "E-mail",
-        "description": "Trimite-ne un e-mail și îți vom răspunde în 24-48 de ore.",
-        "action": "contact@pdfcraft.app"
+        "description": "Trimiteți-mi un e-mail și voi răspunde cât mai curând posibil."
       },
-      "github": {
-        "title": "GitHub",
-        "description": "Raportează erori, solicită funcționalități sau contribuie la proiect.",
-        "action": "Vezi pe GitHub"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "Conectați-vă cu mine profesional pe LinkedIn."
       },
-      "twitter": {
-        "title": "Twitter",
-        "description": "Urmărește-ne pentru noutăți și anunțuri.",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Discutați cu mine direct pe WhatsApp."
       }
     },
     "form": {

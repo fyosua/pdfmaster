@@ -62,10 +62,19 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
             </p>
 
             <div className="flex gap-4">
-              <a href="https://github.com/fyosua/officetools-pdfcraft" className="p-2 rounded-full bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:bg-[hsl(var(--color-primary))] hover:text-white transition-all">
+              <a
+                href="https://github.com/fyosua/officetools-pdfcraft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:bg-[hsl(var(--color-primary))] hover:text-white transition-all"
+              >
                 <Github className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:bg-[hsl(var(--color-primary))] hover:text-white transition-all">
+              <a
+                href="mailto:ferdianyosua@gmail.com"
+                className="p-2 rounded-full bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:bg-[hsl(var(--color-primary))] hover:text-white transition-all"
+                aria-label="Email"
+              >
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -175,7 +184,8 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
             &copy; {currentYear} {t('brand')}. {t('footer.copyright', { year: '' }).replace(/^\d{4}\s*/, '')}
           </p>
           <div className="flex items-center gap-6">
-            <Link href="https://github.com/fyosua/officetools-pdfcraft" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">AGPL open-source components — source</Link>
+            <Link href="https://github.com/fyosua/officetools-pdfcraft" target="_blank" rel="noopener noreferrer" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">AGPL open-source components — source</Link>
+            <a href="https://github.com/PDFCraftTool/pdfcraft" target="_blank" rel="noopener noreferrer" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">PDFCraft (original)</a>
             <Link href={`/${locale}/notice`} className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">NOTICE</Link>
             <Link href={`/${locale}/terms`} className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">Terms</Link>
             <Link href={`/${locale}/privacy`} className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">Privacy</Link>

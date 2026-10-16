@@ -1125,18 +1125,15 @@
     "methods": {
       "email": {
         "title": "電子郵件",
-        "description": "傳送電子郵件給我們，我們將在 24-48 小時內回覆。",
-        "action": "contact@pdfcraft.app"
+        "description": "寄電子郵件給我，我會盡快回覆。"
       },
-      "github": {
-        "title": "GitHub",
-        "description": "報告錯誤、請求功能或為專案做貢獻。",
-        "action": "在 GitHub 上檢視"
+      "linkedin": {
+        "title": "LinkedIn",
+        "description": "在 LinkedIn 上與我建立專業聯繫。"
       },
-      "twitter": {
-        "title": "推特",
-        "description": "關注我們要獲取更新和公告。",
-        "action": "@pdfcraft"
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "透過 WhatsApp 直接與我聊天。"
       }
     },
     "form": {
