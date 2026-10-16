@@ -107,7 +107,9 @@ export function SignatureExtractorModal({
       const arrayBuffer = await selectedFile.arrayBuffer();
       const pdfjs = await loadPdfjs();
       const doc = await pdfjs.getDocument({
-        data: arrayBuffer,
+        // Copy: getDocument transfers (detaches) the buffer to its worker,
+        // so the original must stay intact for scanPdfForSignatures below.
+        data: arrayBuffer.slice(0),
         cMapUrl: withBasePath('/pdfjs-viewer/cmaps/'),
         cMapPacked: true,
         standardFontDataUrl: withBasePath('/pdfjs-viewer/standard_fonts/'),
@@ -129,7 +131,7 @@ export function SignatureExtractorModal({
       }
     } catch (err) {
       console.error('Failed to parse signed PDF:', err);
-      setError(err instanceof Error ? err.message : tTools('signExtractor.parseError'));
+      setError(tTools('signExtractor.parseError'));
     } finally {
       setIsLoading(false);
     }

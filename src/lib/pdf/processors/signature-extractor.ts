@@ -48,7 +48,9 @@ export async function scanPdfForSignatures(
 ): Promise<{ pageCount: number; zones: DetectedSignatureZone[] }> {
   const pdfjs = await loadPdfjs();
   const pdfDoc = await pdfjs.getDocument({
-    data: pdfBuffer,
+    // Copy: getDocument transfers (detaches) the ArrayBuffer to its worker;
+    // callers may reuse the same buffer afterwards.
+    data: pdfBuffer.slice(0),
     cMapUrl: withBasePath('/pdfjs-viewer/cmaps/'),
     cMapPacked: true,
     standardFontDataUrl: withBasePath('/pdfjs-viewer/standard_fonts/'),
