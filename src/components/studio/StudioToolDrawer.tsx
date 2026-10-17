@@ -88,7 +88,7 @@ export const getToolDefaultOptions = (id: string, locale: Locale): Record<string
     case 'bookmarks-auto-generator':
       return { strategy: 'font-size', minFontSize: 14 };
     case 'batch-barcode-injector':
-      return { barcodeType: 'qrcode', value: 'https://officetools.yosuaf.com', xPos: 0.8, yPos: 0.8, width: 80, height: 80, pageRange: 'all' };
+      return { barcodeType: 'qrcode', value: 'https://pdfmaster.yosuaf.com', xPos: 0.8, yPos: 0.8, width: 80, height: 80, pageRange: 'all' };
     case 'signature-ink-optimizer':
       return { threshold: 200, inkType: 'auto', contrast: 1.5 };
     case 'remove-blank-pages':

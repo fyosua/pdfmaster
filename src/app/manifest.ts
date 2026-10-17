@@ -14,12 +14,12 @@ export const dynamic = 'force-static';
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: siteConfig.name,
-    short_name: 'OfficeTools',
+    short_name: 'PDFMaster',
     description: siteConfig.description,
     start_url: '/',
     display: 'standalone',
     background_color: '#0a0a0f',
-    theme_color: '#00fff5',
+    theme_color: '#FF1744',
     orientation: 'portrait-primary',
     categories: ['productivity', 'utilities'],
     icons: [

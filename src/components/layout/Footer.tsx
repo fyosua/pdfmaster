@@ -46,13 +46,26 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
               aria-label={`${t('brand')} - ${t('navigation.home')}`}
             >
               <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-[hsl(var(--color-primary))] text-white shadow-md transition-transform group-hover:scale-105">
-                {/* Officetools lightning bolt */}
-                <svg
+                {/* PDFMaster mark */}
+                                <svg
                   className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
+                  viewBox="0 0 120 120"
+                  fill="none"
                 >
-                  <path d="M13 2 4.5 14H11l-1 8 8.5-12H12Z" />
+                  <defs>
+                    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stopColor="#FF5252" />
+                      <stop offset="1" stopColor="#FF1744" />
+                    </linearGradient>
+                    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#FF8A80" />
+                      <stop offset="1" stopColor="#FF1744" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M 60,12.5 L 95,27.5 L 95,62.5 C 95,83.5 79,101.5 60,107.5 C 41,101.5 25,83.5 25,62.5 L 25,27.5 Z" fill="url(#shieldGrad)" />
+                  <path d="M 60,17.5 L 90,30.5 L 90,62.5 C 90,79.5 76,95.5 60,101.5 Z" fill="url(#glow)" />
+                  <path d="M 48,39.5 L 72,39.5 L 72,75.5 L 60,67.5 L 48,75.5 Z" fill="#FFFFFF" />
+                  <path d="M 54,49.5 L 66,49.5 M 54,55.5 L 66,55.5" stroke="#FF1744" stroke-width="3" stroke-linecap="round" />
                 </svg>
               </div>
               <span data-testid="footer-brand-name">{t('brand')}</span>
@@ -63,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
 
             <div className="flex gap-4">
               <a
-                href="https://github.com/fyosua/officetools-pdfcraft"
+                href="https://github.com/fyosua/pdfmaster"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] hover:bg-[hsl(var(--color-primary))] hover:text-white transition-all"
@@ -184,7 +197,7 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
             &copy; {currentYear} {t('brand')}. {t('footer.copyright', { year: '' }).replace(/^\d{4}\s*/, '')}
           </p>
           <div className="flex items-center gap-6">
-            <Link href="https://github.com/fyosua/officetools-pdfcraft" target="_blank" rel="noopener noreferrer" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">AGPL open-source components — source</Link>
+            <Link href="https://github.com/fyosua/pdfmaster" target="_blank" rel="noopener noreferrer" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">AGPL open-source components — source</Link>
             <a href="https://github.com/PDFCraftTool/pdfcraft" target="_blank" rel="noopener noreferrer" className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">PDFCraft (original)</a>
             <Link href={`/${locale}/notice`} className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">NOTICE</Link>
             <Link href={`/${locale}/terms`} className="text-xs text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]">Terms</Link>

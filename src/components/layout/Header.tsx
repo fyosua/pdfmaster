@@ -191,14 +191,23 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
               className="group flex items-center gap-2.5 text-xl font-bold text-[hsl(var(--color-foreground))] hover:opacity-90 transition-opacity"
               aria-label={`${t('brand')} - ${t('navigation.home')}`}
             >
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--color-primary))] to-[hsl(var(--color-accent))] shadow-lg shadow-primary/25 transition-transform group-hover:scale-105">
-                {/* Officetools lightning bolt */}
-                <svg
-                  className="h-5 w-5 text-white"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M13 2 4.5 14H11l-1 8 8.5-12H12Z" />
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl transition-transform group-hover:scale-105">
+                {/* PDFMaster mark */}
+                <svg className="h-7 w-7" viewBox="0 0 120 120" fill="none">
+                  <defs>
+                    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stopColor="#FF5252" />
+                      <stop offset="1" stopColor="#FF1744" />
+                    </linearGradient>
+                    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#FF8A80" />
+                      <stop offset="1" stopColor="#FF1744" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M 60,12.5 L 95,27.5 L 95,62.5 C 95,83.5 79,101.5 60,107.5 C 41,101.5 25,83.5 25,62.5 L 25,27.5 Z" fill="url(#shieldGrad)" />
+                  <path d="M 60,17.5 L 90,30.5 L 90,62.5 C 90,79.5 76,95.5 60,101.5 Z" fill="url(#glow)" />
+                  <path d="M 48,39.5 L 72,39.5 L 72,75.5 L 60,67.5 L 48,75.5 Z" fill="#FFFFFF" />
+                  <path d="M 54,49.5 L 66,49.5 M 54,55.5 L 66,55.5" stroke="#FF1744" stroke-width="3" stroke-linecap="round" />
                 </svg>
               </div>
               <span className="text-xl tracking-tight" data-testid="brand-name">
@@ -344,7 +353,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
 
               {/* GitHub Repository Link */}
               <a
-                href="https://github.com/fyosua/officetools-pdfcraft"
+                href="https://github.com/fyosua/pdfmaster"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:flex items-center justify-center h-9 w-9 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))/0.5] transition-all"
@@ -411,7 +420,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
               {/* GitHub Link in Mobile Menu */}
               <li>
                 <a
-                  href="https://github.com/fyosua/officetools-pdfcraft"
+                  href="https://github.com/fyosua/pdfmaster"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-4 py-3 text-base font-medium text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))] rounded-lg transition-colors"

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
-/* PDFCraft Design System - CSS Variables for Theming */
+/* PDFMaster Design System - CSS Variables for Theming */
 :root {
   /* Light / DAY theme (default when .dark is absent). Neutrals match the
      design system so component light-mode variants render coherently; the
-     neon cyan/magenta remain as the OfficeTools brand accent. */
+     red remains as the PDFMaster brand accent. */
   color-scheme: light;
-  --color-primary: 189 94% 43%;   /* deeper cyan for contrast on light */
+  --color-primary: 4 100% 54%;   /* PDFMaster red */
   --color-primary-foreground: 0 0% 100%;
-  --color-primary-hover: 189 94% 36%;
+  --color-primary-hover: 4 84% 46%;
 
   --color-secondary: 214 32% 91%;
   --color-secondary-foreground: 222 47% 11%;
   --color-secondary-hover: 214 32% 84%;
 
-  --color-accent: 300 100% 45%;   /* magenta stays the brand accent */
+  --color-accent: 2 100% 47%;   /* PDFMaster deep red */
   --color-accent-foreground: 0 0% 100%;
 
   --color-background: 0 0% 98%;   /* near-white day background */
@@ -78,15 +78,15 @@
 /* Dark Mode Theme */
 .dark {
   color-scheme: dark;
-  --color-primary: 178 100% 50%;
+  --color-primary: 4 100% 56%;
   --color-primary-foreground: 240 20% 5%;
-  --color-primary-hover: 178 90% 58%;
+  --color-primary-hover: 4 90% 48%;
   
   --color-secondary: 240 20% 16%;
   --color-secondary-foreground: 0 0% 88%;
   --color-secondary-hover: 240 20% 26%;
   
-  --color-accent: 300 100% 50%;
+  --color-accent: 2 100% 50%;
   --color-accent-foreground: 0 0% 100%;
   
   --color-background: 240 20% 5%; /* #0a0a0f */

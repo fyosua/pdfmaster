@@ -7,7 +7,7 @@ import {
   UpdateSettings,
 } from '@/types/updater';
 
-export const GITHUB_REPO = 'fyosua/officetools-pdfcraft';
+export const GITHUB_REPO = 'fyosua/pdfmaster';
 export const DEFAULT_CURRENT_VERSION =
   process.env.NEXT_PUBLIC_APP_VERSION || '0.1.0';
 

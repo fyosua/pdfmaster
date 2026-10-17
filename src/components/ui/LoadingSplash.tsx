@@ -37,7 +37,7 @@ export function LoadingSplash() {
       }}
     >
       <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: ".15em" }}>
-        ⚡ OFFICETOOLS
+        ⚡ PDFMASTER
       </div>
       <div
         style={{

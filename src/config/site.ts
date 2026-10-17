@@ -2,14 +2,14 @@
  * Site configuration
  */
 export const siteConfig = {
-  name: 'OfficeTools',
+  name: 'PDFMaster',
   description: 'Professional PDF Tools - Free, Private & Browser-Based. Merge, split, compress, convert, and edit PDF files online without uploading to servers.',
-  url: 'https://officetools.yosuaf.com',
+  url: 'https://pdfmaster.yosuaf.com',
   ogImage: '/images/og-image.png',
   links: {
-    github: 'https://github.com/fyosua/officetools-pdfcraft',
+    github: 'https://github.com/fyosua/pdfmaster',
   },
-  creator: 'OfficeTools',
+  creator: 'PDFMaster',
   keywords: [
     'PDF tools',
     'PDF editor',
@@ -24,8 +24,8 @@ export const siteConfig = {
   ],
   // SEO-related settings
   seo: {
-    titleTemplate: '%s | OfficeTools',
-    defaultTitle: 'OfficeTools - Professional PDF Tools',
+    titleTemplate: '%s | PDFMaster',
+    defaultTitle: 'PDFMaster - Professional PDF Tools',
     locale: 'en_US',
   },
 };

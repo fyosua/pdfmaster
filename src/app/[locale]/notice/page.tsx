@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'NOTICE — OfficeTools (PDFCraft fork)',
-  description: 'AGPL-3.0 open-source component notice for the OfficeTools PDF toolkit.',
+  title: 'NOTICE — PDFMaster (PDFCraft fork)',
+  description: 'AGPL-3.0 open-source component notice for the PDFMaster PDF toolkit.',
 };
 
 export default function NoticePage() {
@@ -10,7 +10,7 @@ export default function NoticePage() {
     <div className="container mx-auto px-4 py-16 max-w-3xl">
       <h1 className="text-3xl font-bold mb-6">NOTICE</h1>
       <p className="text-[hsl(var(--color-muted-foreground))] text-sm mb-8">
-        This OfficeTools PDF toolkit is a white-labeled fork of the open-source project{' '}
+        This PDFMaster PDF toolkit is a white-labeled fork of the open-source project{' '}
         <a className="underline" href="https://github.com/PDFCraftTool/pdfcraft" target="_blank" rel="noopener noreferrer">PDFCraft</a>{' '}
         (by PDFCraftTool), which is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
       </p>
@@ -21,8 +21,8 @@ export default function NoticePage() {
         toolkit, including all white-label/branding modifications, is publicly available at:
       </p>
       <p className="mb-6">
-        <a className="underline text-[hsl(var(--color-primary))]" href="https://github.com/fyosua/officetools-pdfcraft" target="_blank" rel="noopener noreferrer">
-          https://github.com/fyosua/officetools-pdfcraft
+        <a className="underline text-[hsl(var(--color-primary))]" href="https://github.com/fyosua/pdfmaster" target="_blank" rel="noopener noreferrer">
+          https://github.com/fyosua/pdfmaster
         </a>
       </p>
 

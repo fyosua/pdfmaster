@@ -226,7 +226,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({
               <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
                 {getMsg(
                   'latestDesc',
-                  'OfficeTools is currently at the latest version ({version}).',
+                  'PDFMaster is currently at the latest version ({version}).',
                   { version: result?.currentVersion || '' }
                 )}
               </p>
